@@ -27,6 +27,42 @@ It includes the following features:
 
 ## Features
 
+### NextBuild Studio IDE
+
+![Syntax Checker](./images/syntax-checker.png)
+
+NextBuild Studio is a fork of Visual Studio Code that adds support for ZX Next development. A comprehensive language syntax linter is included, and the editor is fully customisable, allow you to hide common warnings and errors. NextBuild studio features **as you type** syntax checking and auto-completion.
+
+- Custom editor for ZX Next files
+- Support for ZX Next sprite files (.spr), font files (.fnt), palette files (.pal, .nxp) and tile files (.til, .nxt)
+- Support for ZX Next block files (.nxb)
+
+### Help System 
+
+![Help System](./images/comprehensive-helpsystem.png)
+
+NextBuild Studio includes a comprehensive help system that provides detailed information about the ZX Next file formats, as well as a comprehensive list of commands and their usage.
+
+- Comprehensive help system for ZX Next file formats
+- Detailed information about ZX Next file formats
+- Comprehensive list of commands and their usage
+
+### Action Buttons 
+
+![Action Buttons](./images/action-buttons.png)
+
+NextBuild Studio includes a comprehensive list of action buttons that provide quick access to the most common actions.
+
+### Modules 
+
+NextBuild Studio now officially supports creating programs and games using a moduler system. All handled seamlessly within the IDE.
+
+### Templates 
+
+![Templates](./images/template-system.png)
+
+NextBuild Studio includes a convienient template system that allows you to quickly create new projects.
+
 ### Palette Viewer
 
 ![Palette Viewer](./images/palette-viewer.png)
