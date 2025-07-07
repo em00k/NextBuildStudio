@@ -1,6 +1,8 @@
 # NextBuildStudio
 Repo for NextBuild Studio
 
+![NextBuild Studio](./images/nextbuild-studio.png)
+
 # Overview
 
 NextBuild Studio is a Visual Studio Code fork that adds support for ZX Next development.    
@@ -23,12 +25,18 @@ It includes the following features:
 ## Features
 
 ### Palette Viewer
+
+![Palette Viewer](./images/palette-viewer.png)
+
 - View ZX Next palette files (.pal and .nxp)
 - Proper support for the ZX Next's 9-bit RGB color format (3 bits per component)
 - Displays colors with index information
 - Compact UI optimized for palette viewing
 
 ### Sprite Editor
+
+![Sprite Editor](./images/sprite-viewer.png)
+
 - View ZX Next sprite files (.spr), font files (.fnt), and tile files (.til, .nxt)
 - Support for multiple ZX Next sprite formats:
   - 8-bit sprites (16×16 pixels, 256 colors)
@@ -38,17 +46,26 @@ It includes the following features:
 - Interactive viewer with zoom, grid view, and palette loading
 
 ### Block Viewer
+
+![Block Viewer](./images/block-viewer.png)
+
 - View ZX Next block files (.nxb)
 - View ZX Next map files (.nxm)
 - Interactive display of block data
 - Support for different block formats
 
 ### Image Viewer
+
+![Image Viewer](./images/image-viewer.png)
+
 - View ZX Next image files (.nxi)
 - Support for screen layer formats (.sl2, .sll)
 - Display of ZX Next image formats with proper colors
 
 ### Sprite Importer
+
+![Sprite Importer](./images/image-importer.png)
+
 - Import sprites from standard image formats (PNG, JPG, GIF, BMP, etc.)
 - Extract multiple sprites from a single image using:
   - Manual selection for individual sprites
@@ -63,8 +80,12 @@ It includes the following features:
 - Extract and save palettes from source images
 - Manage multiple sprite selections in a list before exporting
 - Export as .spr or .til files
+- Import "panels" from images for use with DrawImage()
 
 ### File Icon Theme
+
+![File Icon Theme](./images/nextbuild-icons.png)
+
 - Custom file icons for ZX Next file types
 - Includes icons for:
   - Palette files (.pal, .nxp)
@@ -79,6 +100,9 @@ It includes the following features:
 - Compatible with other icon themes (can be toggled on/off)
 
 ### ProTracker 3 Module Playback
+
+![ProTracker 3 Module Playback](./images/protracker-playback.png)
+
 - Support for playing .pt3 music files
 - Integration with playpt3.exe (configurable path)
 
@@ -87,6 +111,8 @@ It includes the following features:
 - Support for map and block editing
 
 ## AYFX Editor
+
+![AYFX Editor](./images/ayfx-editor.png)
 
 - Edit AYFX files (.afb)
 - Create new AYFX files (.afb)
