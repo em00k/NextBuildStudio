@@ -1,4 +1,5 @@
 # NextBuildStudio
+#### (currently in private beta https://www.patreon.com/posts/nextbuild-studio-133526642)
 
 ![NextBuild Studio](./images/NB-1024x169.png)
 
