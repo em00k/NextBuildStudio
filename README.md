@@ -1,4 +1,7 @@
 # NextBuildStudio
+
+![NextBuild Studio](./images/NB-1024x169.png)
+
 Repo for NextBuild Studio
 
 ![NextBuild Studio](./images/nextbuild-studio.png)
