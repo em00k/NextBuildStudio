@@ -1,10 +1,18 @@
 {
-    "recommendations": [
-        "seunlanlege.action-buttons",
-        "natqe.reload",
-        "maziac.nex-fileviewer",
-        "maziac.asm-code-lens",
-        "maziac.z80-instruction-set",
-        "em00k.nextbuild-viewers"
-    ]
+  "recommendations": [
+    "alefragnani.bookmarks",
+    "beardedbear.beardedtheme",
+    "em00k.nextbuild-viewer-extra",
+    "em00k.nextbuild-viewers",
+    "em00k.vscode-hexeditor",
+    "github.vscode-pull-request-github",
+    "maziac.asm-code-lens",
+    "maziac.hex-hover-converter",
+    "maziac.nex-fileviewer",
+    "maziac.sna-fileviewer",
+    "maziac.z80-instruction-set",
+    "natqe.reload",
+    "rioj7.command-variable",
+    "seunlanlege.action-buttons"
+  ]
 }
