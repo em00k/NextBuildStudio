@@ -1,0 +1,85 @@
+{
+	"name": "nex-fileviewer",
+	"displayName": "NEX-FileViewer",
+	"description": "A viewer for ZX Spectrum NEX (.nex) files.",
+	"version": "1.4.1",
+	"publisher": "maziac",
+	"author": {
+		"name": "Thomas Busse"
+	},
+	"license": "MIT",
+	"keywords": [
+		"assembler",
+		"zx",
+		"spectrum",
+		"next",
+		"nex"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maziac/nex-fileviewer"
+	},
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"icon": "assets/local/icon.png",
+	"categories": [
+		"Visualization"
+	],
+	"activationEvents": [
+		"onCommand:nex-fileviewer.opennex"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
+	"main": "./out/extension",
+	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "nex-fileviewer.viewer",
+				"displayName": "ZX NEX File Viewer",
+				"selector": [
+					{
+						"filenamePattern": "*.nex"
+					}
+				],
+				"priority": "default"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run esbuild-node -- --minify && npm run esbuild-browser -- --minify",
+		"esbuild-node": "esbuild ./src/extension.ts --bundle --outdir=out --external:vscode --format=cjs --platform=node",
+		"esbuild-browser": "esbuild ./src/html/main.ts --bundle --outdir=out/html --platform=browser",
+		"watch-node": "npm run esbuild-node -- --sourcemap --watch",
+		"watch-browser": "npm run esbuild-browser -- --sourcemap --watch",
+		"package": "vsce package"
+	},
+	"dependencies": {
+		"gif-writer": "^0.9.4"
+	},
+	"devDependencies": {
+		"@types/node": "^16.11.4",
+		"@types/vscode": "^1.61.0",
+		"@types/vscode-webview": "^1.57.0",
+		"esbuild": "^0.16.10",
+		"source-map-support": "^0.5.21",
+		"typescript": "^4.4.4"
+	},
+	"__metadata": {
+		"id": "88c52711-4997-4fde-8e86-9477143cb4ce",
+		"publisherId": "8e0bd66d-43ba-49ba-be8e-1c11111f3e5b",
+		"publisherDisplayName": "maziac",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1742006055630,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery",
+		"size": 223962
+	}
+}

@@ -1,0 +1,104 @@
+{
+	"name": "z80-instruction-set",
+	"displayName": "Z80 Instruction Set",
+	"version": "1.2.5",
+	"publisher": "maziac",
+	"description": "Provides documentation of the Z80 instructions on hovering.",
+	"author": {
+		"name": "Thomas Busse"
+	},
+	"license": "MIT",
+	"keywords": [
+		"assembler",
+		"z80",
+		"instruction set",
+		"opcodes"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maziac/z80-instruction-set"
+	},
+	"engines": {
+		"vscode": ">=1.71.0"
+	},
+	"icon": "assets/local/icon.png",
+	"categories": [
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Z80 Instruction Set Configuration",
+			"properties": {
+				"z80-instruction-set.enableHovering": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/disable the display of instruction documentation on hovering."
+				},
+				"z80-instruction-set.z80Link": {
+					"type": "string",
+					"default": "https://zany80.github.io/documentation/Z80/UserManual.html",
+					"description": "Link to Z80 documentation. You can change this e.g. to point to your local Z80 manual pdf. Use an empty string \"\" to disable."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "z80-instruction-set.show-all-instructions",
+				"title": "Show all Z80 instructions"
+			}
+		],
+		"languages": [
+			{
+				"id": "asm-collection",
+				"extensions": [
+					".list",
+					".lis",
+					".a80",
+					".asm",
+					".inc",
+					".s"
+				],
+				"aliases": [
+					"Assembler file"
+				]
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run esbuild-base -- --minify",
+		"esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+		"compile": "npm run esbuild-base -- --sourcemap",
+		"watch": "npm run esbuild-base -- --sourcemap --watch",
+		"package": "vsce package",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.25",
+		"@types/vscode": "^1.71.0",
+		"@types/jest": "^29.5.14",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.3.2",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.7.3",
+		"esbuild": "^0.25.4"
+	},
+	"__metadata": {
+		"id": "71c1a125-6b48-46dc-9b64-280033f8d86c",
+		"publisherId": "8e0bd66d-43ba-49ba-be8e-1c11111f3e5b",
+		"publisherDisplayName": "maziac",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1746552620729,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery",
+		"size": 409264
+	}
+}

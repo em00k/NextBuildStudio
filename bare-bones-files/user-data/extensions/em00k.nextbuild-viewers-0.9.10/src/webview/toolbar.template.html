@@ -1,0 +1,38 @@
+<div class="control-group">
+    <label for="viewMode">View mode:</label>
+    <select id="viewMode">
+        {{MODE_OPTIONS}}
+    </select>
+</div>
+
+<div class="control-group">
+    <label for="paletteOffset">Palette offset:</label>
+    <input type="number" id="paletteOffset" min="0" max="15" value="{{OFFSET_VALUE}}" {{OFFSET_DISABLED}}>
+</div>
+
+<div class="control-group">
+    <label for="scaleSlider">Scale:</label>
+    <input type="range" id="scaleSlider" min="1" max="8" value="{{SCALE_VALUE}}">
+    <span id="scaleValue">{{SCALE_VALUE}}x</span>
+</div>
+
+<div class="control-group">
+    <label><input type="checkbox" id="showGrid" {{GRID_CHECKED}}> Show grid</label>
+</div>
+
+<div class="control-group">
+    <button id="loadPalette">Load Palette</button>
+    <button id="useDefaultPalette">Default palette</button>
+    <span id="paletteStatus" title="{{PALETTE_STATUS_TITLE}}">{{PALETTE_STATUS_TEXT}}</span>
+    <button id="savePaletteButton" style="margin-left: 10px;" {{SAVE_PALETTE_DISABLED}}>Save Palette</button>
+    <button id="mergePaletteButton" style="margin-left: 10px;" {{MERGE_PALETTE_DISABLED}}>Merge Palette</button>
+</div>
+<div class="control-group">
+    <button id="saveButton" style="margin-left: 15px;">Save Sprite Changes</button>
+</div>
+<div class="control-group">
+    <button id="reloadDataButton" style="margin-left: 5px;">Reload Sprite Data</button>
+</div>
+<div class="control-group">
+    <button id="analyzeDuplicatesButton" style="margin-left: 5px;">Analyze Duplicates</button>
+</div> 

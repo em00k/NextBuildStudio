@@ -1,0 +1,1 @@
+gfx2next -tile-size=8x8 -tile-norepeat -tile-norotate -pal-std -preview map1.bmp

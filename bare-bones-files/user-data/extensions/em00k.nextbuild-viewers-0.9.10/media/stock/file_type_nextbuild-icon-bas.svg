@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#000000" />
+  
+  <!-- ZX Spectrum color stripes -->
+  <rect x="0" y="54" width="11" height="10" fill="#ff0000"/>
+  <rect x="11" y="54" width="11" height="10" fill="#ff9900"/>
+  <rect x="22" y="54" width="11" height="10" fill="#ffff00"/>
+  <rect x="33" y="54" width="11" height="10" fill="#00ff00"/>
+  <rect x="44" y="54" width="11" height="10" fill="#0000ff"/>
+  <rect x="55" y="54" width="11" height="10" fill="#ff00ff"/>
+  
+  <!-- Main NB letters -->
+  <text x="6" y="42" font-family="Arial, sans-serif" font-weight="bold" font-size="36" fill="#ffffff" stroke="#ffffff" stroke-width="1">NB</text>
+</svg>

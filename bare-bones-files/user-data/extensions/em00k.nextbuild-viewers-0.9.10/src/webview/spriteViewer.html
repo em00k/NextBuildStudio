@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add CSP meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'none';
+        img-src ${webview.cspSource} https: data:;
+        script-src 'nonce-__NONCE__' ${webview.cspSource};
+        style-src ${webview.cspSource} 'unsafe-inline'; 
+        font-src ${webview.cspSource};
+    ">
+    <link rel="stylesheet" href="__CSS_URI__">
+    <style nonce="__NONCE__">
+        /* Inline styles to prevent FOUC */
+        #mainContentContainer {
+            visibility: hidden; /* Initially hidden */
+        }
+        /* Optional: Add styles for loading indicator if desired */
+    </style>
+    <title>ZX Next Sprite Viewer</title>
+    <style>
+        /* Dynamic root styles injected by provider */
+        __ROOT_STYLES__
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ZX Next Sprite Viewer</h1>
+        </div>
+        <div class="file-info">__FILE_INFO__</div>
+
+        <div class="toolbar">
+            __TOOLBAR__
+        </div>
+
+        <!-- Wrap main content -->
+        <div id="mainContentContainer" style="visibility: hidden;">
+            <div class="main-content">
+                <h2>Sprites</h2>
+                
+                <!-- SCROLLABLE WRAPPER -->
+                <div class="scrollable-content">
+                    <div class="sprites-grid-container">
+                        <div class="sprites-grid-scroll">
+                            __SPRITES_GRID__
+                        </div>
+                    </div>                     
+                </div>
+                <!-- END SCROLLABLE WRAPPER -->    
+
+                <!-- SPRITE TRANSFORM CONTROLS -->
+                <div class="sprite-transform-controls">                    
+                    __SPRITE_TRANSFORM_CONTROLS__
+                    __SPRITE_HOVER_INFO__
+                    __SPRITE_R9_CONTROLS__
+                </div>
+
+                <div class="sprite-detail-container">
+                    __SPRITE_DETAIL__
+                    __SIZE_CONTROLS__
+                    __SPRITE_DETAIL_INFO__
+                </div>      
+                
+            </div>
+        </div> <!-- End mainContentContainer -->
+
+        <div class="help-section">
+            <details>
+                <summary>Help / Controls</summary>
+                <div class="help-content">
+                    __HELP_CONTENT__
+                </div>
+            </details>
+        </div>
+        <div class="footer">
+            __FOOTER__
+        </div>
+    </div>
+
+    <!-- Inject initial state before loading main script -->
+    __INITIAL_STATE_SCRIPT__
+    
+    <script nonce="__NONCE__" src="__SCRIPT_URI__"></script>
+</body>
+</html>

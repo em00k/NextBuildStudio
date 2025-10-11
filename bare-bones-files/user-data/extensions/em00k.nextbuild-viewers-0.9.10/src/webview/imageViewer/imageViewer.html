@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZX Next Image Viewer</title>
+    <link rel="stylesheet" href="imageViewer.css">
+</head>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-row">
+            <div class="control-group palette-controls">
+                <button id="loadPalette">Load Palette</button>
+                <button id="useDefaultPalette">Use Default</button>
+                <button id="applyAppendedPalette" class="hidden">Use Appended</button>
+                <button id="applyPrefixPalette" class="hidden">Use Prefix</button>
+                <span id="paletteStatus">Default Palette</span>
+            </div>
+            <div class="control-group">
+                <label for="paletteOffset">Palette offset:</label>
+                <input type="number" id="paletteOffset" min="0" max="240" value="0">
+            </div>
+            <div class="control-group">
+                <label for="scaleSlider">Scale:</label>
+                <input type="range" id="scaleSlider" min="1" max="8" step="1" value="1">
+                <span id="scaleValue">1x</span>
+                <select id="scalePreset" class="scale-preset">
+                    <option value="">Presets</option>
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="4">4x</option>
+                    <option value="8">8x</option>
+                </select>
+            </div>
+            <div class="checkbox-control">
+                <input type="checkbox" id="aspect43">
+                <label for="aspect43">4:3 Aspect Ratio</label>
+            </div>
+            <div class="control-group save-controls">
+                <button id="saveAsPng">Save as PNG</button>
+                <select id="exportScale">
+                    <option value="1">1x</option>
+                    <option value="2" selected>2x</option>
+                    <option value="4">4x</option>
+                    <option value="8">8x</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="toolbar-row">
+            <div class="control-group custom-dims">
+                <label for="customWidth">Width:</label>
+                <input type="number" id="customWidth" min="8" max="1024" step="8">
+                <label for="customHeight">Height:</label>
+                <input type="number" id="customHeight" min="8" max="1024">
+                <button id="applyCustomDims">Apply</button>
+                <span class="help-text">Adjust dimensions if needed for non-standard formats.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <canvas id="imageCanvas"></canvas>
+    </div>
+
+    <div class="info-bar">
+        <span id="infoFileName"></span> | 
+        <span id="infoFormatDesc"></span>
+        <span id="infoOffset" class="hidden"> | Offset: <span id="infoOffsetValue"></span></span>
+        <span id="infoGuessed" class="orange-warning hidden">(Dimensions Guessed)</span>
+        <span id="infoAspect" class="aspect-info hidden"> | 4:3 Aspect Ratio Enabled</span>
+    </div>
+</body>
+</html> 

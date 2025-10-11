@@ -1,0 +1,3695 @@
+# Command Variable
+
+Visual Studio Code provides [variable substitution](https://code.visualstudio.com/docs/editor/variables-reference) to be used in `launch.json` and `tasks.json`.
+
+One of the variables allows the [result of a command](https://code.visualstudio.com/docs/editor/variables-reference#_command-variables) to be used with the following syntax: **`${command:commandID}`**
+
+If a [command](#commands) or [variable](#variables) is almost what you need you can use the [transform](#transform) command to perform a regular expression find-replace of the result.
+
+Not all commands are supported yet in the web extension version. Supported commands are marked with : (**Web**)
+
+Some commands can store/remember the result to be retrieved later in the session.  
+If you want persistent storage have a look at the [`commandvariable.remember.persistent.file`](#settings) setting.
+
+## Table of contents
+
+* [Commands](#commands)
+* [Usage](#usage)
+* [Configuration / Settings](#settings)
+* [FileAsKey](#fileaskey)
+* [File Content](#file-content)
+* [File Content Key Value pairs](#file-content-key-value-pairs)
+* [File Content JSON Property](#file-content-json-property)
+* [File Content YAML Property](#file-content-yaml-property)
+* [File Content Multiple Key-Values/Properties](#file-content-multiple-key-valuesproperties)
+* [File Content in Editor](#file-content-in-editor)
+* [Config Expression](#config-expression)
+* [JavaScript Expression](#javascript-expression)
+* [Pick File](#pick-file)
+* [Open Dialog](#open-dialog)
+* [Save Dialog](#save-dialog)
+* [number](#number)
+* [remember](#remember)
+* [pickStringRemember](#pickstringremember)
+* [promptStringRemember](#promptstringremember)
+* [Multicursor and text](#multicursor-and-text)
+* [inTerminal](#interminal)
+* [getClipboard](#getclipboard)
+* [setClipboard](#setclipboard)
+* [Transform](#transform)
+* [Transform::saveToFile](#save-to-file)
+* [Variables](#variables)
+  * [Variable Filters](#variable-filters)
+  * [Variables in Javascript expression](#variables-in-javascript-expression)
+  * [`${workspaceFolder}`](#variable-workspacefolder)
+  * [`${workspaceFolderBasename}`](#variable-workspacefolderbasename)
+  * [`${selectedText}`](#variable-selectedtext)
+  * [`${pickStringRemember}`](#variable-pickstringremember)
+  * [`${promptStringRemember}`](#variable-promptstringremember)
+  * [`${pickFile}`](#variable-pickfile)
+  * [`${openDialog}`](#variable-opendialog)
+  * [`${saveDialog}`](#variable-savedialog)
+  * [`${command}`](#variable-command)
+  * [`${transform}`](#variable-transform)
+  * [`${remember}`](#variable-remember)
+* [`checkEscapedUI`](#checkescapedui)
+* [Workspace name in `argument`](#workspace-name-in-argument)
+* [UUID](#uuid)
+* [dateTime](#datetime)
+* [Credits](#credits)
+
+## Commands
+
+This extension provides a number of commands that give a result based on the current file or the workspace path or that produce a result based on arguments
+
+* `extension.commandvariable.file.relativeDirDots` : The directory of the current file relative to the workspace root directory with dots as separator. Can be used to specify a Python module.
+* `extension.commandvariable.file.relativeFileDots` : The same result as `${relativeFile}` but with dots as separator.
+* `extension.commandvariable.file.relativeFileDotsNoExtension` : The same result as `${relativeFile}` but with dots as separator and no file extension. Can be used to specify a Python module.
+* `extension.commandvariable.file.filePosix` : The same result as `${file}` but in Posix form. Directory separator '`/`', and drive designation as '`/z/project/`'
+* `extension.commandvariable.file.fileDirnamePosix` : The same result as `${fileDirname}` but in Posix form.
+* `extension.commandvariable.file.fileDirname1Up` : The directory path 1 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirname2Up` : The directory path 2 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirname3Up` : The directory path 3 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirname4Up` : The directory path 4 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirname5Up` : The directory path 5 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirname1UpPosix` : The same result as `${extension.commandvariable.file.fileDirname1Up}` but in Posix form.
+* `extension.commandvariable.file.fileDirname2UpPosix` : The same result as `${extension.commandvariable.file.fileDirname2Up}` but in Posix form.
+* `extension.commandvariable.file.fileDirname3UpPosix` : The same result as `${extension.commandvariable.file.fileDirname3Up}` but in Posix form.
+* `extension.commandvariable.file.fileDirname4UpPosix` : The same result as `${extension.commandvariable.file.fileDirname4Up}` but in Posix form.
+* `extension.commandvariable.file.fileDirname5UpPosix` : The same result as `${extension.commandvariable.file.fileDirname5Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname1Up` : The directory path 1 Up of `${relativeFileDirname}`
+* `extension.commandvariable.file.relativeFileDirname2Up` : The directory path 2 Up of `${relativeFileDirname}`
+* `extension.commandvariable.file.relativeFileDirname3Up` : The directory path 3 Up of `${relativeFileDirname}`
+* `extension.commandvariable.file.relativeFileDirname4Up` : The directory path 4 Up of `${relativeFileDirname}`
+* `extension.commandvariable.file.relativeFileDirname5Up` : The directory path 5 Up of `${relativeFileDirname}`
+* `extension.commandvariable.file.relativeFileDirnamePosix` : The same result as `${relativeFileDirname}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname1UpPosix` : The same result as `${extension.commandvariable.file.relativeFileDirname1Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname2UpPosix` : The same result as `${extension.commandvariable.file.relativeFileDirname2Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname3UpPosix` : The same result as `${extension.commandvariable.file.relativeFileDirname3Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname4UpPosix` : The same result as `${extension.commandvariable.file.relativeFileDirname4Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFileDirname5UpPosix` : The same result as `${extension.commandvariable.file.relativeFileDirname5Up}` but in Posix form.
+* `extension.commandvariable.file.relativeFilePosix` : The same result as `${relativeFile}` but in Posix form.
+* `extension.commandvariable.file.fileAsKey` : Use part of the file path as a key in a map lookup. Can be used in `lauch.json` to select arguments based on filename, see [example](#fileaskey).
+* `extension.commandvariable.file.fileDirBasename` : (**Web**) The basename of the `${fileDirname}`
+* `extension.commandvariable.file.fileDirBasename1Up` : (**Web**) The directory name 1 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirBasename2Up` : (**Web**) The directory name 2 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirBasename3Up` : (**Web**) The directory name 3 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirBasename4Up` : (**Web**) The directory name 4 Up of `${fileDirname}`
+* `extension.commandvariable.file.fileDirBasename5Up` : (**Web**) The directory name 5 Up of `${fileDirname}`
+* `extension.commandvariable.file.content` : The content of the given file name. Use "inputs", see [example](#file-content). Or the value of a Key-Value pair, see [example](#file-content-key-value-pairs). Or the value of a JSON file property, see [example](#file-content-json-property).
+* `extension.commandvariable.config.expression` : Apply a JavaScript expression to the content of a configuration variable in `settings.json`. Use it to extract an array element or property from an object, see [example](#config-expression).
+* `extension.commandvariable.file.contentInEditor` : The same as `extension.commandvariable.file.content` to be used for keybindings. Result will be inserted in the current editor.
+* `extension.commandvariable.file.pickFile` : Show a Quick Pick selection box with file paths that match an **include** and an **exclude** glob pattern. Use "inputs", see [example](#pick-file).
+* `extension.commandvariable.workspace.folder` : The path of the workspace root directory of the current file. `${workspaceFolder}` does not give this path in Multi Root workspaces. You can target a particular workspace by [supplying a `name` in the arguments](#workspace-name-in-argument).
+* `extension.commandvariable.workspace.folder1Up` : The directory path 1 Up of the workspace root directory of the current file. The parent of the workspace root folder.
+* `extension.commandvariable.workspace.folder2Up` : The directory path 2 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folder3Up` : The directory path 3 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folder4Up` : The directory path 4 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folder5Up` : The directory path 5 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.workspaceFolderPosix` : **deprecated** - identical to `extension.commandvariable.workspace.folderPosix`
+* `extension.commandvariable.workspace.folderPosix` : The same result as `extension.commandvariable.workspace.folder` but in Posix form. You can target a particular workspace by [supplying a `name` in the arguments](#workspace-name-in-argument).
+* `extension.commandvariable.workspace.folder1UpPosix` : The same result as `extension.commandvariable.workspace.folder1Up` but in Posix form.
+* `extension.commandvariable.workspace.folder2UpPosix` : The same result as `extension.commandvariable.workspace.folder2Up` but in Posix form.
+* `extension.commandvariable.workspace.folder3UpPosix` : The same result as `extension.commandvariable.workspace.folder3Up` but in Posix form.
+* `extension.commandvariable.workspace.folder4UpPosix` : The same result as `extension.commandvariable.workspace.folder4Up` but in Posix form.
+* `extension.commandvariable.workspace.folder5UpPosix` : The same result as `extension.commandvariable.workspace.folder5Up` but in Posix form.
+* `extension.commandvariable.workspace.folderBasename` : (**Web**) The directory name of the workspace root directory of the current file. You can get info for a particular workspace by [supplying a `name` in the arguments](#workspace-name-in-argument).
+* `extension.commandvariable.workspace.folderBasename1Up` : (**Web**) The directory name 1 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folderBasename2Up` : (**Web**) The directory name 2 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folderBasename3Up` : (**Web**) The directory name 3 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folderBasename4Up` : (**Web**) The directory name 4 Up of the workspace root directory of the current file.
+* `extension.commandvariable.workspace.folderBasename5Up` : (**Web**) The directory name 5 Up of the workspace root directory of the current file.
+* `extension.commandvariable.selectedText` : (**Web**) The selected text in the active editor, empty string if nothing selected. Supports [multicursor](#multicursor-and-text).
+* `extension.commandvariable.selectionStartLineNumber` : (**Web**) Line number of the selection start
+* `extension.commandvariable.selectionStartColumnNumber` : (**Web**) Column number of the selection start
+* `extension.commandvariable.selectionEndLineNumber` : (**Web**) Line number of the selection end
+* `extension.commandvariable.selectionEndColumnNumber` : (**Web**) Column number of the selection end
+* `extension.commandvariable.currentLineText` : (**Web**) The text of the line in the active editor where the selection starts or where the cursor is. Supports [multicursor](#multicursor-and-text).
+* `extension.commandvariable.dirSep` : Directory separator for this platform. '\\' on Windows, '/' on other platforms
+* `extension.commandvariable.envListSep` : Environment variable list separator for this platform. ';' on Windows, ':' on other platforms
+* `extension.commandvariable.pickStringRemember` : (**Web**) like [Input variable pickString](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables) but it remembers the picked item by a key, configured by strings or [_label_,_value_] tuples, see [example](#pickstringremember).
+* `extension.commandvariable.promptStringRemember` : (**Web**) like [Input variable promptString](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables) but it remembers the entered string by a key, see [example](#promptstringremember).
+* `extension.commandvariable.remember` : (**Web**) retreive a [remembered](#remember) pickString, promptString, pickFile or fileContent by key and/or store _key_-_value_ pair(s).
+* `extension.commandvariable.rememberPick` : **deprecated** - identical to `extension.commandvariable.remember`, it is not only picks that are remembered
+* `extension.commandvariable.number` : (**Web**) from a range of numbers return a number, in sequence with a step or random (with last uniqueCount), see [example](#number).
+* `extension.commandvariable.dateTime` : (**Web**) language-sensitive format of current date and time (using a Locale), see [example](#datetime)
+* `extension.commandvariable.dateTimeInEditor` : (**Web**) language-sensitive format of current date and time (using a Locale) to be used for keybindings
+* `extension.commandvariable.transform` : make a custom variable by echoing static text or transform the content of a variable with a Regular Expression Find-Replace, see [example](#transform).
+* `extension.commandvariable.UUID` : (**Web**) generate a UUID v4 (from random numbers) with different output formats, see [example](#uuid)
+* `extension.commandvariable.UUIDInEditor` : (**Web**) generate a UUID v4 (from random numbers) to be used for keybindings
+* `extension.commandvariable.inTerminal` : type the string result of a command in the terminal (optional with Carriage Return), see [example](#interminal).
+* `extension.commandvariable.getClipboard` : (**Web**) get the content of the clipboard, see [example](#getclipboard).
+* `extension.commandvariable.setClipboard` : (**Web**) set the content of the clipboard, see [example](#setclipboard).
+
+We can give an extension command arguments with `input variables`, but for single numeric arguments putting the argument in the command name is simpler.
+
+## Usage
+
+An example `launch.json` :
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Module",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "module": "${command:extension.commandvariable.file.relativeFileDotsNoExtension}",
+    }
+  ]
+}
+```
+
+You can use a Task to [see the value of a variable substitution](https://code.visualstudio.com/docs/editor/variables-reference#_how-can-i-know-a-variables-actual-value).
+
+## Settings
+
+* `commandvariable.remember.persistent.file`: (**Not in Web**) string containing the persistent storage file system path for `remember`. The load and save of the file is done in the `activate` and `deactivate` (on close VSC) methods of the extension. All actions there needs to be done synchronous and I don't know what parts of VSC are still valid in `deactivate`. I use the NodeJS module `fs`, so storing in a remote workspace is not supported. The file needs to be in the local file system.  
+  The remembered values are stored in a JSON file.  
+  Saving it in a local/workspace file allows you to use the same values if you open the workspace with a different installed version of VSC.  
+  **If you set/change the setting restart VSC.** The file path is evaluated in the `activate` method.  
+  The following [variables](#variables) are supported: `${workspaceFolder}`, <code>&dollar;{workspaceFolder:<em>name</em>}</code>, `${pathSeparator}`, <code>&dollar;{env:<em>name</em>}</code>, `${userHome}`  
+  A file path in the workspace `.vscode` folder could be:  
+  `${workspaceFolder}${pathSeparator}.vscode${pathSeparator}remember.json`
+
+The following settings can only be defined in the User settings:
+
+* `commandvariable.file.pickFile.labelMaximumLength` : number ∈ ℕ (>= 0), the [pickFile](#pick-file) command can show a list of predefined directories. It can be that the directory path is too large to show in the QuickPick List. VSC does clip the path but only on the end and thus can make it difficult to choose a path when they have the save start. This setting allows to transform the shown label if larger than a maximum number of characters. The transforms to apply are defined in the pickFile command. If this setting is `0` (default value) no transforms are applied.  
+**!!** Be aware that the text shown in the QuickPick List use a **variable width** font.
+* `commandvariable.file.pickFile.labelClipPoint` : number ∈ ℤ (positive and negative), used in the pickFile label transform: `clipMiddle`, determines how many characters to pick from the start (`>=0`) or from the end (`<0`). The characters taken from the other end are calculated using `commandvariable.file.pickFile.labelMaximumLength`
+
+## FileAsKey
+
+The command `extension.commandvariable.file.fileAsKey` makes it possible to select a string based on part of a file path. The file path can be taken from the current active editor or by executing a command.
+
+The keys of the `args` object are searched for in the path of the active file (directory separator is `/`).
+
+If you have files with the same name use part of the full path to select the correct one like `"/dir1/main.py"` and `"/dir2/main.py"`.
+
+The `args` property can contain a few special keys:
+
+* `@useCommand` : the value is a [command variable](https://code.visualstudio.com/docs/editor/variables-reference#_command-variables) that describes the command to execute to get the file path to use.<br/>Example for [CMake build projects](https://code.visualstudio.com/docs/cpp/CMake-linux): `"@useCommand": "${command:cmake.launchTargetPath}"`
+* `@default` : the string to return when none of the keys is found in the file path (default: `Unknown`)
+
+The value strings may contain [variables](#variables). If you use the variable `${selectedText}` you have to embed the properties `separator` and `filterSelection` in the variable, example `${selectedText##separator=@@##filterSelection=index%3===1##}`.
+
+### Example
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "args" : ["${input:chooseArgs}"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "chooseArgs",
+      "type": "command",
+      "command": "extension.commandvariable.file.fileAsKey",
+      "args": {
+        "calculation.py": "-n 4224",
+        "client.py": "-i calc-out.yaml"
+      }
+    }
+  ]
+}
+```
+
+## File Content
+
+Sometimes you want to use the result of a shell script (batch file). Setting environment variables will not work because they modify only the child shell.
+
+If you store the content in a file you can retrieve this with the `extension.commandvariable.file.content` command.
+
+The content of the file is assumed to be encoded with UTF-8.
+
+The supported arguments:
+
+* `fileName` : specifies the file to read. Supports [variables](#variables), like `${workspaceFolder}`, <code>&dollar;{workspaceFolder:<em>name</em>}</code>, <code>&dollar;{pickFile:<em>name</em>}</code> and <code>&dollar;{remember:<em>key</em>}</code>
+* `keyRemember` : (Optional) If you want to [remember](#remember) the value for later use. (default: `"fileContent"`)
+* `debug` : (Optional) [ `true` | `false` ] Show debug log messages in **Developer Tools Console**. (default: `false`)
+
+Can be used as [variable](#variables) <code>&dollar;{fileContent:<em>name</em>}</code>
+
+With additional arguments it is possible to parse the content of the file types:
+
+* [Key Value pairs](#file-content-key-value-pairs)
+* [JSON](#file-content-json-property)
+* [YAML](#file-content-yaml-property)
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo FileContent",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:fileContent}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fileContent",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "c:\\temp\\result.txt"
+      }
+    }
+  ]
+}
+```
+
+## File Content Key Value pairs
+
+If you have a file that contains key-value pairs and you want the value for a given key you can use the command `extension.commandvariable.file.content`.
+
+The supported arguments:
+
+* `fileName` : specifies the file to read, see [File Content](#file-content).
+* `key` : specifies for which key you want the value. Can contain [variables](#variables).
+* `default` : (Optional) If the key is not found and you have defined `default` that string is returned else `"Unknown"` is returned.
+* `keyRemember` : (Optional) If you want to [remember](#remember) the value for later use. (default: `"fileContent"`)
+* `debug` : (Optional) [ `true` | `false` ] Show debug log messages in **Developer Tools Console**. (default: `false`)
+
+Can be used as [variable](#variables) <code>&dollar;{fileContent:<em>name</em>}</code>
+
+### Key-Value files
+
+A key-value file consists of lines that contain key-value pairs.
+
+The file can contain comments and empty lines. A comment line starts with `#` or `//`. You can have whitespace before the comment characters.
+
+A key-value pair is a line in the file that specifies the key and the value separated by a character. The supported separators are `:` and `=`. The line is split with the following regular expression: `^\s*([^:=]+)(?:[:=])(.*)`
+
+The non-capturing group `(?:)` is only needed in this Markdown file to [prevent detection of a Markdown link](https://github.com/microsoft/vscode/issues/103846).
+
+Everything, after the starting whitespace, before the first separator is the key, everything after the separator is the value. You can have a separator character in the value. Only the first separator is important.
+
+### Example
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo FileContentKey",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:fileContentKey}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fileContentKey",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/key-values.txt",
+        "key": "PLUGIN",
+        "default": "special-plugin"
+      }
+    }
+  ]
+}
+```
+
+**key-values.txt**
+```txt
+// a few key values
+PLUGIN=cool-pugin
+THEME=new-school
+```
+
+## File Content JSON Property
+
+If you have a JSON file and you want the value for a given property you can use the command `extension.commandvariable.file.content`.
+
+The supported arguments:
+
+* `fileName` : specifies the file to read, see [File Content](#file-content).
+* `json` : specifies a JavaScript expression that gets the property you want from the variable `content`. The variable `content` is the parsed JSON file. The JavaScript expression can contain [variables](#variables) like `${remember:foobar}`
+* `default` : (Optional) If the JavaScript expression fails and you have defined `default` that string is returned else `"Unknown"` is returned.
+* `keyRemember` : (Optional) If you want to [remember](#remember) the value for later use. (default: `"fileContent"`)
+* `debug` : (Optional) [ `true` | `false` ] Show debug log messages in **Developer Tools Console**. (default: `false`)
+
+The JSON file can be an array and you can address the elements with: `content[3]`
+
+Can be used as [variable](#variables) <code>&dollar;{fileContent:<em>name</em>}</code>
+
+### Example
+
+You have a JSON configuration file in your workspace:
+
+**`config.json`**
+
+```json
+{
+  "log": "foobar.log",
+  "server1": {
+    "port": 5011
+  },
+  "server2": {
+    "port": 5023
+  }
+}
+```
+
+In your `tasks.json` you want to use the server1 port value.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Server1Port",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:configServer1Port}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configServer1Port",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${workspaceFolder}/config.json",
+        "json": "content.server1.port",
+        "default": "4321",
+        "keyRemember": "ServerPort"
+      }
+    }
+  ]
+}
+```
+
+## File Content YAML Property
+
+If you have a YAML file and you want the value for a given property you can use the command `extension.commandvariable.file.content`.
+
+The supported arguments:
+
+* `fileName` : specifies the file to read, see [File Content](#file-content).
+* `yaml` : specifies a JavaScript expression that gets the property you want from the variable `content`. The variable `content` is the parsed YAML file. The JavaScript expression can contain [variables](#variables) like `${remember:foobar}`
+* `default` : (Optional) If the JavaScript expression fails and you have defined `default` that string is returned else `"Unknown"` is returned.
+* `keyRemember` : (Optional) If you want to [remember](#remember) the value for later use. (default: `"fileContent"`)
+* `debug` : (Optional) [ `true` | `false` ] Show debug log messages in **Developer Tools Console**. (default: `false`)
+
+Can be used as [variable](#variables) <code>&dollar;{fileContent:<em>name</em>}</code>
+
+See [File Content JSON Property](#file-content-json-property) for examples.
+
+## File Content Multiple Key-Values/Properties
+
+If the file contains multiple key-values or properties you want in your task or launch you can remember the picked file and use the same path in another `extension.commandvariable.file.content` use.
+
+You have the following configuration files in your workspace:
+
+**`server1-config.json`**
+
+```json
+{
+  "log": "foobar1.log",
+  "server": {
+    "port": 5011,
+    "publicCryptKey": "01234abcd"
+  }
+}
+```
+
+**`server2-config.json`**
+
+```json
+{
+  "log": "foobar2.log",
+  "server": {
+    "port": 5023,
+    "publicCryptKey": "9876zyxw"
+  }
+}
+```
+
+Use it in your `tasks.json`:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo ServerPortAndCryptKey",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:configServerPort}",
+        "${input:configServerCryptKey}",
+        "${input:serverURL}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configServerPort",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${pickFile:config}",
+        "json": "content.server.port",
+        "default": "4321",
+        "keyRemember": "ServerPort",
+        "pickFile": {
+          "config": {
+            "include": "**/*.json",
+            "exclude": ".vscode/*.json",
+            "keyRemember": "configFile"
+          }
+        }
+      }
+    },
+    {
+      "id": "configServerCryptKey",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${remember:configFile}",
+        "json": "content.server.publicCryptKey"
+      }
+    },
+    {
+      "id": "serverURL",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": { "text": "https://example.org:${remember:ServerPort}/" }
+    }
+  ]
+}
+```
+
+## File Content in Editor
+
+If you want the (partial) result of an external program inserted in the editor you can use the command `extension.commandvariable.file.contentInEditor`. This command uses the same arguments as `extension.commandvariable.file.content`.
+
+Most likely you want to call the program first to write the output to a file that you read and extract the parts you want. For this you can use the extension [multi-command](https://marketplace.visualstudio.com/items?itemName=ryuta46.multi-command).
+
+1. Define a task that runs the external command
+1. Define a multi-command that calls the task and then `extension.commandvariable.file.contentInEditor`
+1. Define a key binding that calls the multi-command
+
+Add to **`.vscode/tasks.json`**
+
+```json
+    {
+      "label": "get Timestamp",
+      "type": "shell",
+      "command": "echo timestamp=2021-04-01 12:34 >${workspaceFolder}/timequery.txt",
+      "problemMatcher": []
+    }
+```
+
+Add to **`.vscode/settings.json`**
+
+```json
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.insertTimestamp",
+      "interval": 500,
+      "sequence": [
+        { "command": "workbench.action.tasks.runTask",
+          "args": "get Timestamp"
+        },
+        { "command": "extension.commandvariable.file.contentInEditor",
+          "args": {
+            "fileName": "${workspaceFolder}/timequery.txt",
+            "key": "timestamp",
+            "default": "Query failed"
+          }
+        }
+      ]
+    }
+  ]
+```
+
+Add to **`keybindings.json`**
+
+```json
+  {
+    "key": "F1", // or any other key combo
+    "command": "extension.multiCommand.execute",
+    "args": { "command": "multiCommand.insertTimestamp" },
+    "when": "editorTextFocus"
+  }
+```
+
+## Config Expression
+
+If you have an array or object as configuration variable content (`settings.json`) and you want a particular element of the array or the value for a given object property you can use the command `extension.commandvariable.config.expression`.
+
+Can be used to have a [JavaScript expression containing variables](#variables-in-javascript-expression).
+
+The supported arguments:
+
+* `configVariable` : (Optional) specifies the settings variable to read. Must contain a `section` part (at least 1 `.`) : `sectionX.configY`. Supports [variables](#variables) (default: `"editor.fontSize"`).
+* `expression` : specifies a JavaScript expression that has the value of the `configVariable` in the variable `content`. The JavaScript expression can contain [variables](#variables) like <code>&dollar;{remember:<em>foobar</em>}</code> or <code>&dollar;{pickStringRemember:<em>name</em>}</code>
+* `default` : (Optional) If the JavaScript expression fails and you have defined `default` that string is returned else `"Unknown"` is returned.
+* `keyRemember` : (Optional) If you want to [remember](#remember) the value for later use. (default: `"configExpression"`)
+* `debug` : (Optional) [ `true` | `false` ] Show debug log messages in **Developer Tools Console**. (default: `false`)
+
+If the `configVariable` is an array you can address the elements with: `content[3]`
+
+If the `configVariable` is an object you can address a property with: `content.inputDir`
+
+If the `configVariable` is a single data type (string, number, boolean) **don't set** the `expression` property. Strings are returned without `"` separator characters.
+
+If you want the value of the `configVariable` as a JSON string **don't set** the `expression` property.
+
+Any expression is allowed that does not have a function call. All arithmetic operators, comparison operators, ...
+
+Can be used as [variable](#variables): <code>&dollar;{configExpression:<em>name</em>}</code>
+
+### Example
+
+You have the following variable in `settings.json`:
+
+```json
+{
+  "someExt.servers": {
+    "log": "foobar.log",
+    "server1": {
+      "port": 5011
+    },
+    "server2": {
+      "port": 5023
+    }
+  }
+}
+```
+
+In your `tasks.json` you want to use the server1 port value.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Server1Port",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:configServer1Port}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configServer1Port",
+      "type": "command",
+      "command": "extension.commandvariable.config.expression",
+      "args": {
+        "configVariable": "someExt.servers",
+        "expression": "content.server1.port",
+        "default": "4321",
+        "keyRemember": "ServerPort"
+      }
+    }
+  ]
+}
+```
+
+If you want to select the server from a pick list you can change the `inputs` part:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Server1Port",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:configServerPort}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "configServerPort",
+      "type": "command",
+      "command": "extension.commandvariable.config.expression",
+      "args": {
+        "configVariable": "someExt.servers",
+        "expression": "content.server${pickStringRemember:serverNr}.port",
+        "pickStringRemember": {
+          "serverNr": {
+            "description": "Which server to use?",
+            "options": [
+              ["development", "1"],
+              ["live", "2"]
+            ]
+          }
+        },
+        "default": "4321",
+        "keyRemember": "ServerPort"
+      }
+    }
+  ]
+}
+```
+## JavaScript Expression
+
+The command `extension.commandvariable.js.expression` is an alias of [`extension.commandvariable.config.expression`](#config-expression).
+
+You can use it to perform an expression with [variables](#variables).
+
+Can be used as [variable](#variables): <code>&dollar;{jsExpression:<em>name</em>}</code>
+
+## Pick File
+
+See also:
+* [Open Dialog](#open-dialog)
+* [Save Dialog](#save-dialog)
+
+If you want to pick a file and use it in your `launch.json` or `tasks.json` you can use the `extension.commandvariable.file.pickFile` command.
+
+This command uses [`vscode.workspace.findFiles`](https://code.visualstudio.com/api/references/vscode-api#workspace.findFiles) to get a list of files to show in a Quick Pick selection box.
+
+Specify the start directory path with the `fromWorkspace` or `fromFolder` property.  
+The `include` Glob Pattern can contain a path relative to the start directory.
+
+If you don't specify `fromWorkspace` or `fromFolder` the search will be done over all workspaces.
+
+You can set the following properties to this command:
+
+* `include` : a [Glob Pattern](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) that defines the files to search for (default: `"**/*"`)
+* `exclude` : a Glob Pattern that defines files and folders to exclude. (default: `"undefined"`)
+
+    Two special strings are possible to pass special values:
+    * `"undefined"` to set the `exclude` argument to `undefined` to use default excludes
+    * `"null"` to set the `exclude` argument to `null` to use **no** excludes
+
+    **Known problem**: `exclude` is not working as expected under Windows. Excluded files are put at the end of the list.
+
+* `multiPick` : [ `true` | `false` ] (Optional) If `true` you can pick multiple items. The values of the items are concatenated with the property `separator` string. (default: `false`)
+* `separator` : [_string_] (Optional) If multiple items are picked (`multiPick`) the URI's are transformed (`transform`) and then joined with this string. Also the filepaths remembered with `keyRemember` use this separator. (default: `" "`)
+* `canPickMany` : alias for `multiPick`
+* `keyRemember` : (Optional) If you want to [remember](#remember) the filepath(s) for later use. (default: `"pickFile"`)
+* `description` : (Optional) A text shown in the pick list box. (default: `"Select a file"`, `"Select 1 or more files"`)
+* `maxResults` : Limit the number of files to choose from. Must be a number (no `"` characters). (default: no limits)
+* `addEmpty` : [ `true` | `false` ] If `true`: add an entry to the list (`*** Empty ***`) that will return an empty string when selected. (default: `false`)
+* `addAsk` : [ `true` | `false` ] If `true`: add an entry to the list (`*** Ask ***`) that will open an Input Box where you enter the path to be returned. (default: `false`)
+* `acceptIfOneFile` : [ `true` | `false` ] If `true`: if only one file is shown in the pickList accept this file. (default: `false`)
+* `display` : How do you want to see the files displayed (default: `"relativePath"`)
+    * `"fullpath"` : show the file full path, if path is big it can be clipped by the selection box
+    * `"relativePath"` : show the file path relative to the chosen folder (`fromWorkspace`, `fromFolder`) followed by the path of the chosen folder, that is relative to a possible workspace, the Fuzzy Search is now on the relative file path.
+    * `"fileName"` : show the file name followed by the directory path of the file, the Fuzzy Search is now only on the file name and file extension.
+    * `"transform"` : use the properties `valueTransform`, `labelTransform` and `descriptionTransform` to construct the text for the QuickPickItem properties `value`, `label` and `description`. Only items with unique `value` texts are shown.
+* `valueTransform` : (Optional) [ `string` &vert; `object` ] If an object it has the same properties as the [`transform`](#transform) command. It allows to extract part of the picked file URI by using a [variable](#variables) and perform a find-replace operation. The default value of the `text` property is `${file}`. Only used if `"display": "transform"`. The resulting text is the `value` property of the QuickPickItem.  
+If a string it uses the transform with the given name: [`valueTransform` &vert; `labelTransform` &vert; `descriptionTransform`] (max redirections 4)
+* `labelTransform` : (Optional) [ `string` | `object` ] see `valueTransform`. The resulting text is the `label` property of the QuickPickItem.
+* `descriptionTransform` : (Optional) [ `string` | `object` ] see `valueTransform`. The resulting text is the `description` property of the QuickPickItem.
+* `fromWorkspace` : [ <code>"<em>name</em>"</code> | `true` | `false` ] - limit the `include` pattern relative to a workspace (default: `false`)
+    * if <code>"<em>name</em>"</code>: find the workspace with that name
+    * if `true`: show a Pick List of Workspaces to choose from
+* `fromFolder` : (Optional) Object with the properties (Filepaths support [variables](#variables)):
+    * `predefined` : (Optional) An array with file system paths of directories to limit the `include` pattern relative to that directory.  
+    Each entry can be a string or an object with properties:
+
+      * `path` : file system path of directory
+      * `label` : used in certain transformations
+    * `labelTransform` : (Optional) An array of strings of the transformations to apply to the pickList label when it is longer than the setting: [`commandvariable.file.pickFile.labelMaximumLength`](#settings)  
+      Transformations are applied to the pickList label in the order defined as long as it is too large.  
+      Possible transformations are:
+        * `useLabel` : regardless of the current length use the label property if defined in the entry in the `predefined` property.
+        * `hasLabel` : if current length is too large use the label property if defined in the entry in the `predefined` property.
+        * `removeWorkspacePath` : if the path can be found in one of the (Multi Root) Workspaces remove the workspace path
+        * `clipMiddle` : use the setting [`commandvariable.file.pickFile.labelClipPoint`](#settings) to determine how many characters to take from the start and from the end.
+
+      An example would be: `"labelTransform": ["useLabel", "removeWorkspacePath", "clipMiddle"]`
+
+    * `fixed` : (Optional) A string with a file system directory path to limit the `include` pattern relative to that directory.
+
+    Show a Pick list of folders specified in the property `predefined` and 2 additional entries
+
+    * `*** Ask ***` : open an Input Box where you enter the path of the folder
+    * `*** Workspace ***` : show a Pick List of Workspaces
+
+    ```json
+    "fromFolder": {
+      "predefined": [
+        "C:\\temp\\log",
+        "D:\\Data\\GPR\\2021"
+      ]
+    }
+    ```
+* `showDirs` : [ `true` | `false` ] If `true`: Show the directories that contain files that are found. The result of the pick is a directory path. (default: `false`)
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+* `transform` : (Optional) an object with the same properties as the [`transform`](#transform) command. It allows to extract part of the picked file URI by using a [variable](#variables) and perform a find-replace operation. The default value of the `text` property is `${file}`.
+* `empty` : (Optional) [ `true` | `false` ] The full file path is saved for the given `keyRemember`. If `true`: result of command is the empty string. Can be used with [`remember:transform`](#remember) command or variable. This is the last test of the command (it overrules a possible `transform`). (default: `false`)
+
+Example:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo FilePick",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:filePick}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "filePick",
+      "type": "command",
+      "command": "extension.commandvariable.file.pickFile",
+      "args": {
+        "include": "**/*.{htm,html,xhtml}",
+        "exclude": "**/{scratch,backup}/**"
+      }
+    }
+  ]
+}
+```
+
+If you want the directory name of the picked file but using forward slash (on Windows, see [issue 47](https://github.com/rioj7/command-variable/issues/47))
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo FilePick Dirname Forward Slash",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:filePickDirnameForwardSlash}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "filePickDirnameForwardSlash",
+      "type": "command",
+      "command": "extension.commandvariable.file.pickFile",
+      "args": {
+        "include": "**/*.{htm,html,xhtml}",
+        "exclude": "**/{scratch,backup}/**",
+        "transform": {
+          "text": "${fileDirname}",
+          "find": "\\\\",  // Reason for four '\': https://stackoverflow.com/a/4025505/2909854
+          "replace": "/",
+          "flags": "g"
+        }
+      }
+    }
+  ]
+}
+```
+
+If your project contains file paths like:
+
+`testType1/LOG/testName1/src/test.c`
+
+and you only want to show the Type and the Name but return the full path use the following `input` element
+
+```json
+    {
+      "id": "filePickCTests",
+      "type": "command",
+      "command": "extension.commandvariable.file.pickFile",
+      "args": {
+        "display": "transform",
+        "description": " Select one test to open",
+        "include": "**/test.c",
+        "labelTransform": {
+          "text": "${relativeFile}",
+          "apply": [
+            {
+              "find": "\\\\",
+              "replace": "/",
+              "flags": "g"
+            },
+            {
+              "find": "(.*)/LOG/(.*)/src/.*",
+              "replace": "$1/$2"
+            }
+          ]
+        }
+      }
+    }
+```
+
+If using the same file paths as the previous example but you want to show and return the test type folders that have a `LOG` subdirectory
+
+```json
+    {
+      "id": "filePickCTests",
+      "type": "command",
+      "command": "extension.commandvariable.file.pickFile",
+      "args": {
+        "display": "transform",
+        "description": "[my_tests] Select one test to open it",
+        "include": "my_tests/**/test.c",
+        "labelTransform": "valueTransform",
+        "valueTransform": {
+          "text": "${relativeFile}",
+          "apply": [
+            {
+              "find": "\\\\",
+              "replace": "/",
+              "flags": "g"
+            },
+            {
+              "find": "(.*/LOG)/.*",
+              "replace": "$1"
+            }
+          ]
+        }
+      }
+    }
+```
+
+## Open Dialog
+
+See also: [Pick File](#pick-file)
+
+If you want to select a file or directory/folder you can use the command: `extension.commandvariable.file.openDialog`. It uses the [`vscode.window.showOpenDialog`](https://code.visualstudio.com/api/references/vscode-api#window.showOpenDialog) function of the VSC API.
+
+You can set the following properties to this command:
+
+* `canSelect`: specify if you want to select a file or a directory (default: `files`)  
+  Possible values are:  
+  * `files`: select a file
+  * `folders`: select a directory/folder
+* `canSelectMany`: (Optional) can we select multiple files. (default: `false`)
+* `defaultUri`: a OS file path where the dialog will open. You can use [variables](#variables) to construct a file path, like `${workspaceFolder}${pathSeparator}configs`
+* `filters`: set of file filters. Use `"` as string separator because this is here specified in a JSON file. See [`vscode.OpenDialogOptions.filters`](https://code.visualstudio.com/api/references/vscode-api#OpenDialogOptions.filters)
+* `openLabel`: label of the accept button. See [`vscode.OpenDialogOptions.openLabel`](https://code.visualstudio.com/api/references/vscode-api#OpenDialogOptions.openLabel)
+* `title`: title of the dialog. See [`vscode.OpenDialogOptions.title`](https://code.visualstudio.com/api/references/vscode-api#OpenDialogOptions.title)
+* `keyRemember` : (Optional) If you want to [remember](#remember) the filepath for later use. (default: `"openDialog"`)
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+* `transform` : (Optional) an object with the same properties as the [`transform`](#transform) command. It allows to extract part of the picked file URI by using a [variable](#variables) and perform a find-replace operation. The default value of the `text` property is `${file}`.
+* `separator`: (Optional) If you have picked multiple files the URI's are transformed and then joined with this string. (default: `" "`)
+* `empty` : (Optional) [ `true` | `false` ] The full file path is saved for the given `keyRemember`. If `true`: result of command is the empty string. Can be used with [`remember:transform`](#remember) command or variable. This is the last test of the command (it overrules a possible `transform`). (default: `false`)
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Open Dialog",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:openDialog}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "openDialog",
+      "type": "command",
+      "command": "extension.commandvariable.file.openDialog",
+      "args": {
+        "canSelect": "files",
+        "defaultUri": "${workspaceFolder}",
+        "filters": {
+          "Images": ["png", "jpg"],
+          "TypeScript": ["ts", "tsx"]
+        }
+      }
+    }
+  ]
+}
+```
+
+## Save Dialog
+
+See also: [Pick File](#pick-file)
+
+If you want to select a file to save some results (it can be a new file name) you can use the command: `extension.commandvariable.file.saveDialog`. It uses the [`vscode.window.showSaveDialog`](https://code.visualstudio.com/api/references/vscode-api#window.showSaveDialog) function of the VSC API.
+
+You can set the following properties to this command:
+
+* `defaultUri`: a OS file path where the dialog will open. You can use [variables](#variables) to construct a file path, like `${workspaceFolder}${pathSeparator}configs`
+* `filters`: set of file filters. Use `"` as string separator because this is here specified in a JSON file. See [`vscode.SaveDialogOptions.filters`](https://code.visualstudio.com/api/references/vscode-api#SaveDialogOptions.filters)
+* `saveLabel`: label of the accept button. See [`vscode.SaveDialogOptions.saveLabel`](https://code.visualstudio.com/api/references/vscode-api#SaveDialogOptions.saveLabel)
+* `title`: title of the dialog. See [`vscode.SaveDialogOptions.title`](https://code.visualstudio.com/api/references/vscode-api#SaveDialogOptions.title)
+* `keyRemember` : (Optional) If you want to [remember](#remember) the filepath for later use. (default: `"saveDialog"`)
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+* `transform` : (Optional) an object with the same properties as the [`transform`](#transform) command. It allows to extract part of the picked file URI by using a [variable](#variables) and perform a find-replace operation. The default value of the `text` property is `${file}`.
+* `empty` : (Optional) [ `true` | `false` ] The full file path is saved for the given `keyRemember`. If `true`: result of command is the empty string. Can be used with [`remember:transform`](#remember) command or variable. This is the last test of the command (it overrules a possible `transform`). (default: `false`)
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Save Dialog",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:saveDialog}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "saveDialog",
+      "type": "command",
+      "command": "extension.commandvariable.file.saveDialog",
+      "args": {
+        "defaultUri": "${workspaceFolder}",
+        "saveLabel": "Save",
+        "filters": {
+          "Images": ["png", "jpg"],
+          "TypeScript": ["ts", "tsx"]
+        }
+      }
+    }
+  ]
+}
+```
+
+## number
+
+If you want a different whole number (n ∈ ℤ) in your task or launch config each time you run you can use the command `extension.commandvariable.number`.
+
+The configuration attributes need to be passed to the command in the `args` attribute.
+
+The command has the following configuration attributes:
+
+* `name` : if you have more than 1 number you have to name them to keep track of the previous value(s)
+* `range` : an array with 2 numbers, `[min, max]`, both values are inclusive and can be the result returned, `min < max` (default: `[0, 100]`)
+* `random` : boolean, do you want a random number from the range (default: `false`)
+* `step` : number, if `random` is `false` the number returned is the previous value incremented with `step`, can be negative (default: `1`)
+* `uniqueCount` : number, if `random` is `true` the number returned is unique compared to the previous `uniqueCount` numbers (default: `0`)
+
+You can get the last value of a named number with the `remember` [command](#remember) or [variable](#variables).  
+You must use a special key format: <code>number-<em>name</em></code>
+
+### Sequence of numbers
+
+The value of `step` determines the first value returned.
+
+* if `step >= 0`
+  * start with minimum
+  * when next value > maximum return minimum
+* if `step < 0`
+  * start with maximum
+  * when next value < minimum return maximum
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Number from sequence",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${input:numberSeq}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "numberSeq",
+      "type": "command",
+      "command": "extension.commandvariable.number",
+      "args": {
+        "name": "sequence",
+        "range": [0, 20],
+        "step": 3
+      }
+    }
+  ]
+}
+```
+
+### Random number
+
+If you want a random number but it must be unique compared to the previous `n` numbers you have to set the attribute `uniqueCount`.
+
+The example is for debugging the Nios ii Embedded Design Suite:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "app",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/app/app.elf",
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "miDebuggerServerAddress": "localhost:${input:randomPort}",
+      "miDebuggerPath": "/home/me/intelFPGA/20.1/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/bin/nios2-elf-gdb",
+      "debugServerPath": "/home/me/intelFPGA/20.1/quartus/bin/nios2-gdb-server",
+      "debugServerArgs": "--tcpport ${input:rememberRandomPort} --reset-target --tcptimeout 5",
+    }
+  ],
+  "inputs": [
+    {
+      "id": "randomPort",
+      "type": "command",
+      "command": "extension.commandvariable.number",
+      "args": {
+        "name": "randomPort",
+        "range": [1500, 60000],
+        "random": true,
+        "uniqueCount": 10
+      }
+    },
+    {
+      "id": "rememberRandomPort",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "number-randomPort" }
+    }
+  ]
+}
+```
+
+## remember
+
+It can be useful to store key-value pairs to be used later. The value of the key is remembered for this session of Visual Studio Code.
+
+Some commands in this extension can store key-value pairs: [`pickStringRemember`](#pickstringremember), [`promptStringRemember`](#promptstringremember), [`file.content`](#file-content) (json, key-value, yaml), [`file.pickFile`](#pick-file).
+
+The stored value is retrieved with a command or a [variable](#variables). In the same task/launch config or in a different one, or in a keybinding.
+
+The command `extension.commandvariable.remember` is used to retreive a value for a particular key or store _key_-_value_ pair(s).
+
+`text` is not a valid _`key`_. It is a property of a string manipulation object and used to determine if an object is a string manipulation object or an object with _key_-_value_ pair(s).
+
+The `args` property of this command is an object with the properties:
+
+* `store` : (Optional) an object with _key_-_value_ pair(s). Every _key_-_value_ is stored in the `remember` storage.  
+  The _value_ can be a string or a **string manipulation object**. With a string manipulation object you can modify the current value that is stored for the given _key_. If the key is not in the store it has a current value of the empty string. The possible properties of this object are:
+  * `text`: a string used to modify the current value
+  * `delimiter`: (Optional) if we need to concatenate strings use this as delimiter string, if current value is the empty string `delimiter` is also empty string (default: `""`).
+  * `action`: (Optional) what to do with the _`text`_ string (default: `store`). Possible values:
+    * `store`: replace current value with _`text`_.
+    * `append`: append `text` to current value and use given _`delimiter`_
+    * `prepend`: prepend `text` to current value and use given _`delimiter`_
+* `key` : (Optional) the name of the key to retreive from the remember store. The `key` can contain [variables](#variables). (default: `"empty"`)  
+   To get the value of a named [number](#number) use the key format: <code>number-<em>name</em></code>
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+* `default`: (Optional) If the given key is not found in the remember store: if there is a property `default` use this value, otherwise use a string with value `I don't remember`.
+* `transform`: (Optional) (**Not in Web**) an object with the same properties as the [`transform`](#transform) command. It allows to find and replace in the string or to extract part of the [`file.pickFile`](#pick-file) picked file URI by using a [variable](#variables). The default value of the `text` property is `${result}`. This is the value stored in the remember store for the given `key`.
+* `separator`: (Optional) (**Not in Web**) If you have picked multiple files ([`pickFile`](#pick-file), [openDialog](#open-dialog)) the URI's are transformed and then joined with this string. (default: `" "`)
+
+If you need to construct a new string with the value you can use the [variable](#variables): <code>&dollar;{remember:<em>key</em>}</code>. This can only be used in `args` properties of commands in this extension. The `inputs` list of `launch.json` and `tasks.json` or in `keybindings` or extensions that call commands with arguments ([Multi Command](https://marketplace.visualstudio.com/items?itemName=ryuta46.multi-command)). You can modify the value with the [`transform`](#transform) command or the `transform` property.
+
+If the stored value contains variables and you want them substituted you have to set the `transform` property. An empty object is enough.
+
+```jsonc
+{
+  // .....
+  "inputs": [
+    {
+      "id": "remember.path",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "path", "transform": { } }
+    }
+  ]
+}
+```
+
+The default content of the remember store:
+
+* `empty` : `""`, the empty string, useful if you want to store the value(s) but not return some string in `pickStringRemember`
+
+The command [pickStringRemember](#pickstringremember) also supports string manipulation objects.
+
+The example is a bit contrived but it shows how you can store _key_-_value_ pair(s) in a launch config or task without using a stored value, the result of the `${input:rememberConfig}` is the empty string. This enables you to store values in a launch config to be used in a `prelaunchTask` in `tasks.json`.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DoSomething",
+      "type": "shell",
+      "command": "${config:python.pythonPath}${input:rememberConfig}",
+      "args": [
+        "my_script.py",
+        "${input:remember.path}",
+        "${input:remember.name}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "rememberConfig",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": {
+        "store": {"path":"server","name":"boya","user":"Mememe","option":"yeah"}
+      }
+    },
+    {
+      "id": "remember.path",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "path" }
+    },
+    {
+      "id": "remember.name",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "name" }
+    }
+  ]
+}
+```
+
+If you have picked a file, the `key` used is `sourceFile`, and you don't want the full file path you can get certain parts with the `transform` property:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DoSomething2",
+      "type": "shell",
+      "command": "${config:python.pythonPath}",
+      "args": [
+        "my_script2.py",
+        "${input:remember.showWorkspace}",
+        "${input:remember.showBasename}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "remember.showWorkspace",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "sourceFile", "transform": { "text": "${workspaceFolder}" } }
+    },
+    {
+      "id": "remember.showBasename",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "sourceFile", "transform": { "text": "${fileBasename}" } }
+    }
+  ]
+}
+```
+
+An example of a string manipulation object. If you have a remembered _`key`_ `buildArgs` and want to add an argument to get a release build:
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    // .....
+  ],
+  "inputs": [
+    {
+      "id": "addReleaseArgument",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": {
+        "store": {
+          "buildArgs": {
+            "text": "-c release",
+            "action": "append",
+            "delimiter": " "
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+## pickStringRemember
+
+The command `extension.commandvariable.pickStringRemember` look a lot like the [Input variable `pickString`](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables).
+
+The configuration attributes need to be passed to the command in the `args` attribute.
+
+The command has the following configuration attributes:
+
+* `description` : Shown some context for the input.
+* `default` : Value returned if the user does not make a choice.  
+  (**Not in Web**) It can contain [variables](#variables).
+* `options` : An array that can contain the following elements:
+  * `string` : The label in the pickList and the value returned are this string.
+  * <code>[<em>label</em>,<em>value</em>]</code> tuple : The label in the pickList is the first element of the tuple, the second element is the value returned and the description in the pickList.
+  * An object with the following attributes:
+    * `value` : The value returned when selected.  
+      (**Not in Web**) Any [variables](#variables) are resolved when item is picked.
+    * `label` : (Optional) The label to be displayed for the item in the pick list. If not specified, the `value` is used.  
+      (**Not in Web**) Any [variables](#variables) are resolved when pick list is constructed.
+    * `description`: (Optional) The description to be used for the item in the pick list.  
+      (**Not in Web**) Any [variables](#variables) are resolved when pick list is constructed.
+    * `detail`: (Optional) The detail to be used for the item in the pick list.  
+      (**Not in Web**) Any [variables](#variables) are resolved when pick list is constructed.
+    * `picked`: [_boolean_] (Optional) Used in multi pick list. In the **first** show of the list should this item have a check mark (is picked) (default: `false`).
+    * `name`: [_string_] (Optional) Used in multi pick list. They are the variables used in the `dependsOn` expressions.  
+      It must be a [valid JavaScript variable name](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables).
+    * `dependsOn`: [_string_] (Optional) Used in multi pick list. It must be a [valid JavaScript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) that has a boolean ([ `true` | `false` ]) result. The variables allowed in the expression are the `name`s of items or groups. Here defined on an item it controls if the value of the item is part of the result when it is picked. See [`dependsOn`](#`dependson`). (default: `true`)
+
+  The _`value`_ can be a string, a [**string manipulation object**](#remember) or an object with _key_-_value_ pair(s). The _`value`_ of a _key_-_value_ pair can be a string or a string manipulation object. Every _key_-_value_ is stored in the `remember` storage. `pickStringRemember` returns the value from the `remember` storage for the `key` argument of the command (see Example 4). You can override the `key` argument by using a special key in the object. If the object contains the key `__key` its value is used as the key to get a value from the `remember` storage for this object, also when `multiPick` is true (see Example 11).  
+  If you only want to store some _key_-_value_ pairs you can set the _`key`_ argument of the command to `"empty"`. The command will then return an empty string (see [`remember`](#remember) command).  
+  A special _`key`_ is `__undefined`. If used any selected option that uses a _key_-_value_ pair(s) object will return `undefined`. This will abort the current task/launch/command, but the remember store is updated.
+* `optionGroups` : An array that contains groups of options with constraint checks. If `optionGroups` is defined the property `options` is ignored.  
+  If a group has a constraint the `pickStringRemember` is not accepted until all constraints are met.  
+  An option group is an object with the properties:
+  * `label` : (Optional) A description of the group shown in the top right of the group (below separator line)
+  * `minCount` : [_number_] (Optional) If defined a check is performed if the number of items selected is at least `minCount`, also shown in the top right of the group
+  * `maxCount` : [_number_] (Optional) If defined a check is performed if the number of items selected is at most `maxCount`, also shown in the top right of the group
+  * `options` : Identical to the `options` property of the `args` attribute
+  * `name`: [_string_] (Optional) Used in multi pick list. They are the variables used in the `dependsOn` expressions.  
+    It must be a [valid JavaScript variable name](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables).
+  * `dependsOn`: [_string_] (Optional) Used in multi pick list. It must be a [valid JavaScript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) that has a boolean ([ `true` | `false` ]) result. The variables allowed in the expression are the `name`s of items or groups. Here defined on a group it controls if the group validation is performed and if the value of the group items is part of the result when it is picked. See [`dependsOn`](#`dependson`). (default: `true`)
+  * `key`, `separator`, `joinByKey` : (Optional) If you want to remember the picked items of a group in a different remember store item define these properties in the group. They have the same meaning as for the top `args`  property. They are not inherited from the top `args` property (see Example 13).
+* `addLabelToTop` : [_string_] (Optional) Any [variables](#variables) are resolved. The pickItem with the identical label will be put on top. If needed add an extra remember item (see Example 7).
+* `key` : (Optional) Used to store and retrieve a particular pick. (default: `pickString` )  
+  The value can later be retrieved with the [`remember`](#remember) command or [`${remember}`](#variable-remember) variable.
+* `separator` : [_string_] (Optional) If multiple items are picked (`multiPick`) the values are concatenated with this string (default: `" "`)
+* `multiPick` : [ `true` | `false` ] (Optional) If `true` you can pick multiple items. The values of the items are joined (concatenated) with the property `separator` string. The selected items are remembered persistent, `multiPickStorage`. (default: `false`)
+* `joinByKey` : [ `true` | `false` ] (Optional) If `multiPick` is `true` you can determine what happens if the values are objects with key-value pairs. If `false` each objects key-value pairs are put in the remember storage and the value for this picked item is determined by `key` (or `__key` in the object). If `true` the objects are joined (concatenated) by key with the property `separator` string. And these new key-value pairs are put in the remember storage. See Example 12. (default: `false`)
+* `multiPickStorage` : [ `"global"` | `"workspace"` ] (Optional) If `multiPick` is `true` the picked items are remembered and stored persistent. This property determines if that is done global or for the current workspace. Using the property `key`. (default: `"workspace"`)
+* `rememberTransformed` : (**Not in Web**) if _`value`_ contains variables they are transformed in the result of the command. If `true` we store the transformed string. If `false` we store the _`value`_ string as given in the `options` property. (default: `false` )
+* `fileName` : (**Not in Web**) A string, with possible [variables](#variables), specifying a file path that contains additional options. The options in the file are appended to the already specified `options`. The file is assumed to have an UTF-8 encoding. The format of the file is determined by the `fileFormat` property.
+* `fileFormat` : (**Not in Web**) [_string_] (Optional) How should the file content be processed. (default: `pattern` )  
+  Possible values:
+  * `pattern` : use the `pattern` property
+  * `json` : use the `jsonOption` property
+* `pattern` : (**Not in Web**) An object describing a line to match in the file containing the _label_ and optional _value_ of the option. Optional if all attributes have the default value.  
+  The object has the following attributes:
+  * `regexp` : (Optional) A regular expression describing a line with capture groups for the _label_, _value_ and _option_ strings for the option. (default: `^(.*)$` )
+  * `flags` : (Optional) The flags to be used in the regular expression, like `gimsy`, default (`""`)
+  * `label`: (Optional) A string containing capture group references <code>&dollar;<em>n</em></code> (like `$1`) that makes up the _label_ in the pickList. (default: `$1` )
+  * `value`: (Optional) A string containing capture group references <code>&dollar;<em>n</em></code> (like `$1`) that makes up the _value_ in the pickList. (default: the same as `label`)
+  * `json`: (Optional) A string containing a capture group reference <code>&dollar;<em>n</em></code> (like `$1`) that makes up the _value_ object in the pickList. You have to write the `regexp` to recognize a possible JSON object string.
+  * `match`: (Optional) How should the `regexp` be applied. (default: `"line"` )  
+    Possible values:  
+    * `line` : the file content is parsed line by line and the `regexp` is used to create an option if a match is found.
+    * `find` : the file content is searched for all matches of `regexp` and any match is used to create an option. You have to use the `g` flag otherwise only 1 match is found. To be used for multi line options.
+    * `split` : the file content is split using `split-regexp`. Every split that has a match for `regexp` is used to create an option. To be used for multi line options.
+  * `split-regexp` : (Optional) A regular expression describing where to split the file content. The start of a match is used to split the file content. The matched text is part of the next split. You have to use the `g` flag otherwise only 1 match is found. If you use `^` and/or `$` you have to use the `m` flag. If set `match` is set to `split`. If you split with `/^/gm` you get an infinite loop, use `"match": "line"`.
+  * `split-flags` : (Optional) The flags to be used in `split-regexp`, like `gimsy`, default (`"gm"`)
+  * `option`: (Optional) In the `options` array you can specify an option in multiple ways. The `option` property can be any of those alternatives but the strings contain capture group references <code>&dollar;<em>n</em></code> (like `$1`) as found by searching the `regexp`. If `option` specified the properties `label`, `value` and `json` are ignored.  
+  A possible attribute of `option` is `json`. If specified and the resulting string is non empty, the string is parsed as a JSON object string and the result is set as the property `value`.  
+  See a [complete example where you select an SSH server](#select-server-from-pattern).
+* `jsonOption` : (**Not in Web**) In the `options` array you can specify an option in multiple ways. The `jsonOption` property can be any of those alternatives but the strings are JavaScript expressions that gets the value you want from the variable `content`. The variable `content` is the parsed JSON file. You can even use the _`value`_ as object with _key_-_value_ pair(s). The expressions **must** use the variable `__itemIdx__` to address an item in some array of the JSON file. The expression can manipulate the retieved data in any way.  
+  As an example you can concatenate multiple items from different arrays:  
+      `content.Array1[__itemIdx__].p1+'-'+content.Array2[__itemIdx__].p2`  
+  The maximum number of items read is 10000. To prevent an infinite loop if expressions contain an error.  
+  See a [complete example where you select a server](#select-server-from-json) and Example 12 for a usage in a multi pick list.
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+
+(**Not in Web**) The `value` string can contain [variables](#variables), so you can add a pickFile or promptString or .... and use that result.  
+&nbsp;&nbsp;&nbsp;&nbsp;`["pick directory", "${pickFile:someDir}"]`
+
+If you Escape the UI and a `default` property is given the UI is not marked as Escaped.  
+(**Not in Web**) If the `default` property contains variables that have a UI they can be Escaped and that will be remembered.
+
+The `name` and `label` properties in `options` and `optionGroups` must be unique for this `pickStringRemember`.
+
+### `dependsOn`
+
+The `dependsOn` property of a group or pick item is a [valid JavaScript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) that has a boolean ([ `true` | `false` ]) result. The variables allowed in the expression are the `name`s of items or groups.
+
+The value of these `name`-variables is the selection count in the group (`0` ... `N`) and for a named pick item it is `0` or `1` depending if it is picked.
+
+The value of the `name`-variables is only calulated once. At the moment of accepting the pickString picked items. If an item in a group is picked but it `dependsOn` expression results in `false` the item is still counted in the group selection count. Otherwise the value of the `name`-variables change by evaluating `dependsOn` expressions that use the value of `name`-variables. Will that eventually converge to a stable situation in all cases?
+
+In boolean expressions the number `0` is treated falsy and any other number is treated truthy.
+
+If groupA has a `dependsOn` with referring to groupB that has a `dependsOn` on _`nameC`_ you must include the `dependsOn` expression of groupB in the groupA's `dependsOn` expression:
+
+`"dependsOn": "((nameC) && groupB)"`
+
+`()` around single variables can be removed. In this example all `()`'s can be removed.
+
+### Examples
+
+**Example 1**
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Task 1",
+      "type": "shell",
+      "command": "dostuff1",
+      "args": ["-p", "${input:pickPath}"]
+    },
+    {
+      "label": "Task 2",
+      "type": "shell",
+      "command": "dostuff2",
+      "args": ["-p", "${input:rememberPath}"]
+    },
+    {
+      "label": "Do Task 1 and 2",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Task 1", "Task 2"],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "pickPath",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "path",
+        "options": [ "path/to/directory/A", "path/to/Z" ],
+        "description": "Choose a path"
+      }
+    },
+    {
+      "id": "rememberPath",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "path" }
+    }
+  ]
+}
+```
+
+**Example 2**
+
+An example of choosing a port number in a launch configuration:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Service1",
+      "type": "python",
+      "request": "attach",
+      "connect": {
+        "host": "127.0.0.1",
+        "port": "${input:envType}"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "envType",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which env do you want to debug?",
+        "options": [
+          ["development", "5000"],
+          ["staging", "5100"],
+          ["live", "5200"]
+        ],
+        "default": "5000"
+      }
+    }
+  ]
+}
+```
+
+**Example 3**
+
+If you have additional options in a file:
+
+* the line is not a comment, does not start with a `#` character
+* the separator of _label_ and _value_ is a `=`
+* _value_ can be a JSON object
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    // see previous example
+  ],
+  "inputs": [
+    {
+      "id": "envType",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which env do you want to debug?",
+        "options": [
+          ["development", "5000"],
+          ["staging", "5100"],
+          ["live", "5200"]
+        ],
+        "default": "5000",
+        "fileName": "${workspaceFolder}/dynamic-env.txt",
+        "pattern": {
+          "regexp": "^\\s*(?!#)([^=]+?)\\s*=\\s*(?:(\\{.+\\})|(.+))$",
+          "label": "$1",
+          "json": "$2",
+          "value": "$3"
+        }
+      }
+    }
+  ]
+}
+```
+
+**Example 4**
+
+An example task that stores multiple values:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Do some project",
+      "type": "process",
+      "command": "echo",
+      "args": [
+        "${input:selectProject.path}",
+        "${input:selectProject.name}",
+        "${input:selectProject.link}",
+        "${input:selectProject.anyOther}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "selectProject.path",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "path",
+        "options": [
+          ["project1", {"path":"p1","name":"n1","link":"lnk1","anyOther":"any1"}],
+          ["project2", {"path":"p2","name":"n2","link":"lnk2","anyOther":"any2"}]
+         ],
+        "description": "Pick a project"
+      }
+    },
+    {
+      "id": "selectProject.name",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "name" }
+    },
+    {
+      "id": "selectProject.link",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "link" }
+    },
+    {
+      "id": "selectProject.anyOther",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "anyOther" }
+    }
+  ]
+}
+```
+
+**Example 5**
+
+Using a string manipulation object you can modify an existing variable:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build project",
+      "type": "process",
+      "command": "build ${input:buildArgsConstruct}",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "buildArgsConstruct",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Construct buildArgs:",
+        "key": "__undefined",
+        "options": [
+          { "label": "Current value",
+            "description": "${remember:buildArgs}",
+            "value": "${remember:buildArgs}"
+          },
+          { "label": "reset", "value": { "buildArgs": "" } },
+          { "label": "append: -c release",
+            "value": {
+              "buildArgs": {
+                "text": "-c release",
+                "action": "append",
+                "delimiter": " "
+              }
+            }
+          },
+          { "label": "prepend: -path ${workspaceFolder}",
+            "value": {
+              "buildArgs": {
+                "text": "-path ${workspaceFolder}",
+                "action": "prepend",
+                "delimiter": " "
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+If we use `"key": "__undefined"` any selected option that uses a _key_-_value_ pair(s) object will return `undefined`. This will abort the current task. The remember store is updated.
+
+When you choose the option **Current value** pickStringRemember returns the value for a given _`key`_.
+
+----
+
+**Example 6**
+
+If you have a `src` directory with a lot of subdirs and you want to run `cpplint` on all or only on a subdir you can add a `pickFile` variable as the value of a `pickString`:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cpp lint",
+      "type": "shell",
+      "command": "cpplint ${input:selectDir}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "selectDir",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which directory to Lint for C++?",
+        "options": [
+          ["Use previous directory", "${remember:lintPath}"],
+          ["All", "all"],
+          ["Pick directory", "${pickFile:srcSubDir}"]
+        ],
+        "rememberTransformed": true,
+        "key": "lintPath",
+        "pickFile": {
+          "srcSubDir": {
+            "description": "Which directory?",
+            "include": "src/**/*.{cpp,h}",
+            "showDirs": true,
+            "keyRemember": "srcSubDir"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+We can also use the object variant of the `options`, this allows us to show resolved variables in the pick list.
+
+Possibilities for the `Use previous directory` are:
+
+* Only show the label text  
+  ```json
+  { "label": "Use previous directory", "value": "${remember:lintPath}" }
+  ```
+* Only show the label text but variables resolved  
+  ```json
+  { "label": "${remember:lintPath}", "value": "${remember:lintPath}" }
+  ```
+* Show the resolved variables in the description  
+  ```json
+  { "label": "Use previous directory:",
+     "description": "${remember:lintPath}",
+     "value": "${remember:lintPath}"
+  }
+  ```
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cpp lint",
+      "type": "shell",
+      "command": "cpplint ${input:selectDir}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "selectDir",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which directory to Lint for C++?",
+        "options": [
+          { "label": "Use previous directory",
+            "description": "${remember:lintPath}",
+            "value": "${remember:lintPath}" },
+          { "label": "All", "value": "all" },
+          { "label": "Pick directory", "value": "${pickFile:srcSubDir}" }
+        ],
+        "rememberTransformed": true,
+        "key": "lintPath",
+        "pickFile": {
+          "srcSubDir": {
+            "description": "Which directory?",
+            "include": "src/**/*.{cpp,h}",
+            "showDirs": true,
+            "keyRemember": "srcSubDir"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+**Example 7**
+
+If you have a list of choices and you want to easy select the previous choice you can use the `addLabelToTop` property:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    .....
+  ],
+  "inputs": [
+    {
+      "id": "robot",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "robot",
+        "description": "Robot type:",
+        "addLabelToTop": "${remember:robot}",
+        "options": [
+          "standard",
+          "hero",
+          "sentry"
+        ]
+      }
+    }
+  ]
+}
+```
+
+If your labels are different from the `value` add an extra remember item:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    .....
+  ],
+  "inputs": [
+    {
+      "id": "robot",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "robot",
+        "description": "Robot type:",
+        "addLabelToTop": "${remember:robotLabel}",
+        "options": [
+          {"label": "Option 1", "value": {"robot":"standard", "robotLabel":"Option 1"} },
+          {"label": "Option 2", "value": {"robot":"hero", "robotLabel":"Option 2"} },
+          {"label": "Option 3", "value": {"robot":"sentry", "robotLabel":"Option 3"} }
+        ]
+      }
+    }
+  ]
+}
+```
+
+**Example 8**
+
+If you have a C++ build task that has many options and you sometimes have to select 1 or more items in a group:
+
+The actual compile task is not shown. It depends on the used compiler. The task uses the variable: `${input:cpp-options-powerAI}`
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    .....
+  ],
+  "inputs": [
+    {
+      "id": "cpp-options-powerAI",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "C++ build options",
+        "key": "cpp-build-powerAI",
+        "multiPick": true,
+        "optionGroups": [
+          {
+            "label": "Debug / Release",
+            "minCount": 1,
+            "maxCount": 1,
+            "options": [
+              ["debug", "-g"],
+              ["release", "-O2"]
+            ]
+          },
+          {
+            "label": "C++ standard",
+            "minCount": 1,
+            "maxCount": 1,
+            "options": [
+              ["C++11", "-std=c++11"],
+              ["C++14", "-std=c++14"],
+              ["C++17", "-std=c++17"],
+              ["C++20", "-std=c++20"]
+            ]
+          },
+          {
+            "label": "Log Options",
+            "options": [
+              ["Input", "-log=input"],
+              ["Output", "-log=output"]
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+An example of using `dependsOn` to select the arguments for an application:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    .....
+  ],
+  "inputs": [
+    {
+      "id": "powerAI",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Execution arguments",
+        "key": "run-powerAI",
+        "multiPick": true,
+        "optionGroups": [
+          {
+            "label": "Debug / Release",
+            "minCount": 1,
+            "maxCount": 1,
+            "options": [
+              {"label": "debug", "value": "--debugg", "name": "debug"},
+              {"label": "release", "value": "--release", "name": "release"}
+            ]
+          },
+          {
+            "label": "Port Number",
+            "minCount": 1,
+            "maxCount": 2,
+            "dependsOn": "release",
+            "options": [
+              ["development", "5000"],
+              ["staging", "5100"],
+              ["live", "5200"]
+            ]
+          },
+          {
+            "label": "Logging",
+            "name": "logging",
+            "dependsOn": "debug",
+            "options": [
+              ["Logging", "--logging"]
+            ]
+          },
+          {
+            "label": "Training",
+            "name": "training",
+            "options": [
+              ["Training", "--training"]
+            ]
+          },
+          {
+            "label": "Log Options",
+            "minCount": 1,
+            "dependsOn": "debug && logging",
+            "options": [
+              ["Log Input", "--log=input"],
+              ["Log Output", "--log=output"],
+              {"label": "Log Training", "value": "--log=training", "dependsOn": "training"}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+**Example 9**
+
+#### Select server from JSON
+
+When you have a JSON file that specifies a list of servers you can use and you want to pick one of the servers and pass some attributes to a task.
+
+The servers are specified in **servers.json** that is in the root of the workspace:
+
+```json
+{
+  "Servers": [
+    {
+      "name": "S1T",
+      "description": "Server Test 1",
+      "hostname": "st001.test.mycomp.com",
+      "port": "1234"
+    },
+    {
+      "name": "S2T",
+      "description": "Server Test 2",
+      "hostname": "sq003.test.mycomp.com",
+      "port": "1235"
+    },
+    {
+      "name": "S1P",
+      "description": "Server Prod 1",
+      "hostname": "spab.mycomp.com",
+      "port": "1236"
+    },
+    {
+      "name": "S2P",
+      "description": "Server Prod 2",
+      "hostname": "sdef01.cs.mycomp.com",
+      "port": "1237"
+    }
+  ]
+}
+```
+
+In **tasks.json**:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Get server progress",
+      "type": "shell",
+      "command": "progress --server ${input:selectServer} --host ${input:server-hostname} --port ${input:server-port}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "selectServer",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which server?",
+        "key": "server-name",
+        "fileName": "${workspaceFolder}/servers.json",
+        "fileFormat": "json",
+        "jsonOption": {
+          "label": "content.Servers[__itemIdx__].name",
+          "description": "content.Servers[__itemIdx__].description",
+          "value": {
+            "server-name": "content.Servers[__itemIdx__].name",
+            "server-hostname": "content.Servers[__itemIdx__].hostname",
+            "server-port": "content.Servers[__itemIdx__].port"
+          }
+        }
+      }
+    },
+    {
+      "id": "server-hostname",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "server-hostname" }
+    },
+    {
+      "id": "server-port",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "server-port" }
+    }
+  ]
+}
+```
+
+**Example 10**
+
+#### Select server from pattern
+
+If you have a configuration file where the pick item properties are specified on multiple lines you can construct a Regular Expression that matches each item. You have to use at least the `g` or `y` flag.
+
+You have a file [**`~/.ssh/config`**](https://www.man7.org/linux/man-pages/man5/ssh_config.5.html) in your home directory where you specify a number of hosts you can use:
+
+```ssh-config
+Host server1
+    HostName 1.1.1.1
+Host server2
+    HostName 2.2.2.2
+Host server3
+    HostName 3.3.3.3
+```
+
+Maybe there are other attributes specified for each `Host`.
+
+A totorial for [ssh config files](https://linuxize.com/post/using-the-ssh-config-file/).
+
+In **tasks.json**:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Get server progress",
+      "type": "shell",
+      "command": "progress --server ${input:selectServer}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "selectServer",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which server?",
+        "key": "server-ip",
+        "fileName": "${env:HOME}/.ssh/config",
+        "pattern": {
+          "regexp": "Host (\\S+).*?HostName (\\S+)",
+          "flags": "gs",
+          "match": "find",
+          "option": {
+            "label": "$1",
+            "value": "$2",
+            "description": "$2"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+You can make the `value` property as complex as you want, like in the previous example.
+
+If you have `Host` sections that don't contain a `HostName` property you have to use the `split-regex` to prevent using a `HostName` of a next `Host` section:
+
+```ssh-config
+Host server1
+    Port 2322
+    HostName 1.1.1.1
+Host server2
+    User daenerys
+    HostName 2.2.2.2
+Host server3
+    HostName 3.3.3.3
+Host *
+    LogLevel INFO
+Host server4
+    HostName 4.4.4.4
+```
+
+```json
+        "pattern": {
+          "regexp": "Host (\\S+).*?HostName (\\S+)",
+          "flags": "gs",
+          "split-regexp": "^Host ",
+          "split-flags": "gm",
+          "option": {
+            "label": "$1",
+            "value": "$2",
+            "description": "$2"
+          }
+        }
+```
+
+The `match` property is set to `split`.
+
+**Example 11**
+
+If the picked value is an object you can override the key used to get a value from the remember storage.
+
+```json
+  "inputs": [
+    {
+      "id": "pickOptions",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Multi Pick Option Select:",
+        "key": "myOptions",
+        "multiPick": true,
+        "options": [
+          {"label": "opt1", "value": "O1"},
+          {"label": "opt2", "value": {"keyA": "O2-a", "keyB": "O2-b", "keyC": "O2-c", "__key": "keyC"}},
+          {"label": "opt3", "value": "O3"},
+          {"label": "opt4", "value": "O4"}
+        ]
+      }
+    }
+  ]
+```
+
+If `opt2` and `opt3` are selected the remember storage contains
+
+* the key `myOptions` with value: `O2-c O3`
+* the key's `keyA`, `keyB` and `keyC` with there values.
+
+**Example 12**
+
+If the picked values are key-value pair objects and you want a result joined by key you have to set the `joinByKey` property.
+
+You use a JSON file to construct some of the pick items.
+
+In the workspaceFolder there is a file: `myconfig.json`
+
+```json
+[
+  {
+    "name": "name1",
+    "some": "some1",
+    "other": "other1"
+  },
+  {
+    "name": "name2",
+    "some": "some2",
+    "other": "other2"
+  },
+  {
+    "name": "name3",
+    "some": "some3",
+    "other": "other3"
+  }
+]
+```
+
+And in `tasks.json`:
+
+```json
+  "inputs": [
+    {
+      "id": "set-v1-v2",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Multi Pick v1 - v2",
+        "key": "v2",
+        "multiPick": true,
+        "joinByKey": true,
+        "separator": " ",
+        "fileName": "${workspaceFolder}${pathSeparator}myconfig.json",
+        "fileFormat": "json",
+        "jsonOption": {
+          "label": "content[__itemIdx__].name",
+          "value": {
+            "v1": "content[__itemIdx__].some",
+            "v2": "content[__itemIdx__].other"
+          }
+        }
+      }
+    }
+  ]
+```
+
+If `name1` and `name3` are selected the remember storage contains
+
+* the key `v1` with value: `some1 some3`
+* the key `v2` with value: `other1 other3`
+
+and `${input:set-v1-v2}` returns the value for key `v2`: `other1 other3`
+
+**Example 13**
+
+Next feature is by Axel Le Bourhis ([issue 108](https://github.com/rioj7/command-variable/issues/108))
+
+Sometimes you also want to use the items selected in a group. Or have the group selected items saved in individual remember keys and use 1 multipick instead of multiple `pickStringRemember` calls for each group.
+
+You specify for the particular groups a `key`. If you want a particular `separator` you can.  
+You can add the property `joinByKey` to a group if the option values are objects with key-value pairs.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Grovery List",
+      "type": "shell",
+      "command": "echo",
+      "args": ["${input:groceryList}"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "groceryList",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Select groceries",
+        "key": "groceries",
+        "multiPick": true,
+        "optionGroups": [
+          {
+            "label": "Fruit",
+            "minCount": 1,
+            "maxCount": 3,
+            "options": ["apple", "orange", "banana", "lychee"],
+            "key": "category-fruit",
+            "separator": "##"
+          },
+          {
+            "label": "Vegetable",
+            "minCount": 1,
+            "maxCount": 3,
+            "options": ["kousenband", "artichoke", "sopropo", "lettuce"],
+            "key": "category-veg",
+            "separator": "%%"
+          }
+        ]
+      }
+    },
+    { "id": "category-fruit", "type": "command", "command": "extension.commandvariable.remember", "args": { "key": "category-fruit" } },
+    { "id": "category-veg", "type": "command", "command": "extension.commandvariable.remember", "args": { "key": "category-veg" } }
+  ]
+}
+```
+
+You can use this also for a single pick list. Groups that do not have an item selected are stored in the remember store as an empty string.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Food Item",
+      "type": "shell",
+      "command": "echo",
+      "args": ["${input:fooditem}"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fooditem",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Select a food item",
+        "key": "food-item",
+        "optionGroups": [
+          {
+            "label": "Fruit",
+            "options": ["apple", "orange", "banana", "lychee"],
+            "name": "fruit",
+            "key": "category-fruit",
+            "dependsOn": "fruit + veg === 1"
+          },
+          {
+            "label": "Vegetable",
+            "options": ["kousenband", "artichoke", "sopropo", "lettuce"],
+            "name": "veg",
+            "key": "category-veg"
+          }
+        ]
+      }
+    },
+    { "id": "category-fruit", "type": "command", "command": "extension.commandvariable.remember", "args": { "key": "category-fruit" } },
+    { "id": "category-veg", "type": "command", "command": "extension.commandvariable.remember", "args": { "key": "category-veg" } }
+  ]
+}
+```
+
+## promptStringRemember
+
+`extension.commandvariable.promptStringRemember` has the same configuration attributes as the [Input variable promptString](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables).
+`extension.commandvariable.promptStringRemember` also has the configuration attributes:
+* `key` : (Optional) It is used to store and retrieve a particular entered string. (default: `promptString` )
+* [`checkEscapedUI`](#checkescapedui) : (Optional) [ `true` | `false` ] Check if in a compound task/launch a previous UI has been escaped, if `true` behave as if this UI is escaped. This will not start the task/launch. (default: `false`)
+
+
+The configuration attributes need to be passed to the command in the `args` attribute. The **`key`** attribute is optional if you only have one prompt to remember or every prompt can use the same **`key`** name.
+
+If you have given a `key` attribute the Input Box will be prefilled with:
+
+* first call in session: the default value
+* next call in session: the previous value
+
+The string can later be retrieved with the [`remember`](#remember) command or variable.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Task 1",
+      "type": "shell",
+      "command": "dostuff1",
+      "args": ["-p", "${input:promptPath}"]
+    },
+    {
+      "label": "Task 2",
+      "type": "shell",
+      "command": "dostuff2",
+      "args": ["-p", "${input:rememberPath}"]
+    },
+    {
+      "label": "Do Task 1 and 2",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Task 1", "Task 2"],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "promptPath",
+      "type": "command",
+      "command": "extension.commandvariable.promptStringRemember",
+      "args": {
+        "key": "path",
+        "description": "Enter a path"
+      }
+    },
+    {
+      "id": "rememberPath",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "path" }
+    }
+  ]
+}
+```
+
+## Multicursor and text
+
+The commands `extension.commandvariable.selectedText` and `extension.commandvariable.currentLineText` combine the content in case of multi cursors. The default separator used is `"\n"`.
+
+The selections are sorted in the order they appear in the file.
+
+You can change the separator by specifying an argument object for the command with a property `"separator"`:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo (selected:currentLine) Text",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:multiCursorText}" ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "multiCursorText",
+      "type": "command",
+      "command": "extension.commandvariable.selectedText",
+      "args": { "separator": "@--@" }
+    }
+  ]
+}
+```
+
+## inTerminal
+
+The command `extension.commandvariable.inTerminal` types the string result of a command in the terminal and optional types a Carriage Return.
+
+The command `extension.commandvariable.inTerminal` has an argument that is an object with the following properties:
+
+* `command` : the command to execute
+* `args` : (Optional) the argument (string, array or object) for the `command`
+* `addCR` : (Optional) boolean: end the text from the `command` with a Carriage Return (`\u000D`) (default: `false`)
+* `when` : (Optional) string: only execute the command when the condition is `true`.  
+  Possible tests:
+  * <code>file.exists <em>path</em></code> : _path_ can contain [variables](#variables).  
+    example: `"when": "file.exists ${workspaceFolder}${pathSeparator}package.json"`
+
+If you want to use the value of a standard variable in the terminal you have to use the command `extension.commandvariable.transform` in the `extension.commandvariable.inTerminal` arguments. An example:
+
+```json
+  {
+    "key": "ctrl+i f5",  // or any other combo
+    "command": "extension.commandvariable.inTerminal",
+    "args": {
+      "command": "extension.commandvariable.transform",
+      "args": { "text": "${relativeFile}" }
+    }
+  }
+```
+
+## getClipboard
+
+The command `extension.commandvariable.getClipboard` gets the content of the clipboard.
+
+VSC has a task/launch variable `${CLIPBOARD}` but it returns an empty string in my version of VSC.
+
+```json
+  {
+    "key": "ctrl+i f5",  // or any other combo
+    "command": "extension.commandvariable.getClipboard"
+  }
+```
+
+## setClipboard
+
+The command `extension.commandvariable.setClipboard` sets the content of the clipboard with the string property `text` of the `args` object.
+
+```json
+  {
+    "key": "ctrl+i f6",  // or any other combo
+    "command": "extension.commandvariable.setClipboard",
+    "args": { "text": "This is the new clipboard content" }
+  }
+```
+
+## Transform
+
+Sometimes you want to modify a variable before you use it. Change the filename of the file in the editor to construct a different filename.
+
+The transform you can apply to fields in snippets is not supported in the variables in the task and launch json files.
+
+With the command `extension.commandvariable.transform` you can find-replace with Regular Expression a selection of variables combined with static text.
+
+The command can be used with the `${input:}` variable and has the following arguments:
+
+* `text` : the string where you want to apply a find-replace. It can contain a selection of [variables](#variables) and literal text.
+* `find` : (Optional) the Regular Expression to search in `text`. Can contain capture groups and [variables](#variables). If no `find` argument there is no `find-replace` operation.
+* `replace` : (Optional) the replace string of what is matched by `find`, can contain group references (`$1`) and [variables](#variables), variables are only evaluated when `find` is found in `text`, default (`""`)
+* `flags` : (Optional) the flags to be used in the Regular Expression, like `gims`, default (`""`)
+    * `g` : replace all occurences (global)
+    * `i` : find case insensitive
+* `apply` : (Optional) defines a sequence of find-replace operations.  
+  It is an array of objects, each object can have the properties: `find`, `replace` and `flags`.  
+  If `apply` is defined: `find`, `replace` and `flags` sibling properties are ignored.  
+  See [`${transform}`](#variable-transform) variable for an example.
+* `key` : (Optional) It is used to [store and retrieve](#remember) the transformed string. (default: `transform` )
+* `separator` : (Optional) the string used to join the (multi cursor) selections for `${selectedText}`, default (`"\n"`)
+* `filterSelection` : (Optional) a JavaScript expression that allows which (multi cursor) selections to use for `${selectedText}`, default (`"true"`) all are selected.<br/>The expression can use the following variables:
+    * `index` : the 0-base sequence number of the selection
+    * `value` : the text of the selection
+    * `numSel` : number of selections (or cursors)
+
+    The `index` is 0-based to make (modulo) calculations easier. The first `index` is 0.
+* `indexName` : (Optional) the name of the index when used to transform a multi file pick ([`remember`](#remember), [`pickFile`](#pick-file), [`openDialog`](#open-dialog)), default (`""`)
+
+  If you want to construct a sequence number with an offset of 31 and a fixed length of 4 digits and separate the individual paths with `***` you can use these properties with the commands that have the `transform` property.
+
+  ```jsonc
+  {
+    // other properties
+    "key": "someKey",
+    "separator": "***",
+    "transform": {
+      "text": "${jsExpression:offset}:${relativeFile}",
+      "find": "\\\\",
+      "replace": "/",
+      "flags": "g",
+      "indexName": "open",
+      "jsExpression": {
+        "offset": {
+          "expression": "(${index:open}+31).toString().padStart(4,'0')"
+        }
+      }
+    }
+  }
+  ```
+* `saveToFile` : (Optional) a file path where to store the result of the transform in UTF-8 format. Can contain [variables](#variables). The string returned is the file path. The file path is also stored under the `key`. (default: undefined )
+* `empty` : (Optional) [ `true` | `false` ] valid when `saveToFile` is defined. If `true`: result of command is the empty string. This is the last test of the command. (default: `false`)
+
+Example:
+
+If you want the directory name of the active editor file but using forward slash (on Windows, see [issue 47](https://github.com/rioj7/command-variable/issues/47))
+
+```jsonc
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo Current File Dirname Forward Slash",
+      "type": "shell",
+      "command": "my_program",
+      "args": [
+        "${input:fileDirnameForwardSlash}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fileDirnameForwardSlash",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${fileDirname}",
+        "find": "\\\\",  // Reason for four '\': https://stackoverflow.com/a/4025505/2909854
+        "replace": "/",
+        "flags": "g"
+      }
+    }
+  ]
+}
+```
+
+### Custom variables
+
+We can use this command to construct custom variables by setting the `text` argument and not defining a `find` argument. The `id` of the `inputs` record is the name of the variable.
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Node",
+      "runtimeArgs": ["user", "${input:TEST_USER}"],
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome",
+      "url": "http://localhost:3000?${input:TEST_USER}",
+    }
+  ],
+  "inputs": [
+    {
+      "id": "TEST_USER",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": { "text": "BobSmith" }
+    }
+  ]
+}
+```
+
+### Save to file
+
+If you want to store the result of a `transform`, `pickStringRemember`, `promptStringRemember`, or any other command to a file and pass the path of the file as the result.
+
+You have to wrap the command with a `transform` command that can save to a file.
+
+You can use an `input` like:
+
+```json
+    {
+      "id": "saveToFile",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "saveToFile": "${workspaceFolder}/.vscode/temp-text.txt",
+        "text": "${promptStringRemember:getContent}",
+        "key": "tmpfile",
+        "promptStringRemember": {
+          "getContent": {
+              "description": "What to store in the file",
+              "key": "fileContent"
+          }
+        }
+      }
+    }
+```
+
+In the task or launch config you use `${input:saveToFile}`. You can use [`remember`](#remember) with the keys `tmpfile` for file path, `fileContent` for the file content. Or the [`${remember}`](#variables) variable.
+
+## Variables
+
+Many strings of commands support variables.
+
+If the variable substitution is done with a [`pickFile:transform`](#pick-file) or [`remember:transform`](#remember) of a picked file, command or variable, the text "**current opened file**" should be replaced with "**picked file**".
+
+VSC does not perform [variable substitution](https://code.visualstudio.com/docs/editor/variables-reference) in the strings of the `inputs` fields, so currently only a selection of variables is replicated here:
+
+* `${selectedText}` : a joined string constructed from the (multi cursor) selections.<br/>You can [overide the used properties by embedding them in the variable](#variable-selectedtext)
+* <code>&dollar;{env:<em>name</em>}</code> : get the value for environment variable <code><em>name</em></code>
+* <code>&dollar;{pathSeparator}</code> : the character used by the operating system to separate components in file paths
+* <code>&dollar;{userHome}</code> : the path of the user's home folder
+* `${workspaceFolder}` : the path of the workspace folder opened in VS Code containing the current file.
+* <code>&dollar;{workspaceFolder:<em>name</em>}</code> : the path of the workspace folder with the specified _name_ opened in VS Code
+* <code>&dollar;{workspaceFolder:<em>name</em>:nomsg}</code> : same as <code>&dollar;{workspaceFolder:<em>name</em>}</code> but there will be no ErrorMessage shown.
+* `${workspaceFolderBasename}` : the name of the workspace folder opened in VS Code containing the current file without any slashes
+* `${file}` : the current opened file (the file system path)
+* `${relativeFile}` : the current opened file relative to workspaceFolder
+* `${relativeFileDirname}` : the current opened file's dirname relative to workspaceFolder
+* `${fileBasename}` : the current opened file's basename
+* `${fileBasenameNoExtension}` : the current opened file's basename with no file extension
+* `${fileExtname}` : the current opened file's extension
+* `${fileDirname}` : the current opened file's dirname
+* <code>&dollar;{pickStringRemember:<em>name</em>}</code> : use the [`pickStringRemember`](#pickstringremember) command as a variable, arguments are part of the [`pickStringRemember` property of the (parent) command](#variable-pickstringremember)
+* <code>&dollar;{promptStringRemember:<em>name</em>}</code> : use the [`promptStringRemember`](#promptstringremember) command as a variable, arguments are part of the [`promptStringRemember` property of the (parent) command](#variable-promptstringremember)
+* <code>&dollar;{remember:<em>key</em>}</code> : use the [remember](#remember) command as a variable,  
+  _`key`_ is first tested as a _named argument object property_ (like `pickStringRemember`), arguments are part of the `remember` property of the (parent) command.  
+  If not found and _`key`_ has the format <code>number-<em>name</em></code> the _name_ is used to get the last value of a named [number](#number).  
+  If not found _`key`_ is a key in the remeber store. _`key`_ matches:
+    * `key` argument of the `pickStringRemember` or `promptStringRemember` variable/command
+    * `keyRemember` argument of the `pickFile` or `fileContent` variable/command
+    * or a key used in storing multiple values in the `remember` command.
+
+  You can add the [`checkEscapedUI`](#checkescapedui) property to the _`key`_ name if it is not a _named argument object_ like <code>&dollar;{remember:<em>key</em>__checkEscapedUI}</code>.  
+  See a few [examples of the `${remember}` variable](#variable-remember).
+* <code>&dollar;{pickFile:<em>name</em>}</code> : use the [`pickFile`](#pick-file) command as a variable, arguments are part of the [`pickFile` property of the (parent) command](#variable-pickfile)
+* <code>&dollar;{openDialog:<em>name</em>}</code> : use the [`openDialog`](#open-dialog) command as a variable, arguments are part of the [`openDialog` property of the (parent) command](#variable-opendialog)
+* <code>&dollar;{saveDialog:<em>name</em>}</code> : use the [`saveDialog`](#save-dialog) command as a variable, arguments are part of the [`saveDialog` property of the (parent) command](#variable-savedialog)
+* <code>&dollar;{fileContent:<em>name</em>}</code> : use the [`file.content`](#file-content) command ([File Content Key Value pairs](#file-content-key-value-pairs), [File Content JSON Property](#file-content-json-property) ) as a variable, arguments are part of the `fileContent` property of the (parent) command. (works the same as <code>&dollar;{pickStringRemember:<em>name</em>}</code>)
+* <code>&dollar;{config:<em>name</em>}</code> : use the variable <code>&dollar;{configExpression:<em>name</em>}</code> (!!_name_ is not the name of the config variable!!)
+* <code>&dollar;{configExpression:<em>name</em>}</code> : use the [`config.expression`](#config-expression) command as a variable, arguments are part of the `configExpression` property of the (parent) command (works the same as <code>&dollar;{pickStringRemember:<em>name</em>}</code>)
+* <code>&dollar;{jsExpression:<em>name</em>}</code> : use the [`js.expression`](#javascript-expression) command as a variable, arguments are part of the `jsExpression` property of the (parent) command (works the same as <code>&dollar;{pickStringRemember:<em>name</em>}</code>)
+* <code>&dollar;{command:<em>name</em>}</code> : use the result of a command as a variable. `name` can be a commandID or a _named argument object property_ (like `pickStringRemember`), arguments are part of the [`command` property of the (parent) command](#variable-command)
+* <code>&dollar;{transform:<em>name</em>}</code> : use the result of a transform as a variable. `name` is a _named argument object property_ (like `pickStringRemember`), arguments are part of the [`transform` property of the (parent) command](#variable-transform). You can transform strings that are the result of a transform.
+* <code>&dollar;{result}</code> : a special variable used in:
+  * the [`remember:transform:text`](#remember) property. It contains the string stored for the given `key`.
+  * the [`pickFile:transform:text`](#pick-file) property. It contains the string that is the value of the picked item.
+  * the [`openDialog:transform:text`](#open-dialog) property. It contains the string that is the value of the picked item.
+  * the [`saveDialog:transform:text`](#save-dialog) property. It contains the string that is the value of the picked item.
+
+  In all other cases it is the empty string.
+* <code>&dollar;{index}</code>  
+  <code>&dollar;{index:<em>name</em>}</code> : a special variable used in:
+  * the [`remember:transform:text`](#remember) property.
+  * the [`pickFile:transform:text`](#pick-file) property.
+  * the [`openDialog:transform:text`](#open-dialog) property.
+
+  Or any variable that is in the `text` property.
+
+  If you have picked multiple files this is the 0-based index of the picked file. You can use it to add a sequence number to the joined result or use it in a JavaScript expression. If using nested transforms you need to name the index variable of the transform using the `indexName` property.
+
+The variables are processed in the order mentioned. This means that if the selected text contains variable descriptions they are handled as if typed in the text.
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo first part fileBaseNameNoExtension",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:firstPart}" ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "firstPart",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${fileBasenameNoExtension}",
+        "find": "(.*?)-.*",
+        "replace": "$1",
+      }
+    }
+  ]
+}
+```
+
+### Variable Filters
+
+You can pass the result of a variable to 0, 1 or more filters.
+
+The filters are specified after the variable name and possible properties:
+
+* <code>&dollar;{<em>varName</em>|<em>filterName</em>}</code>
+* <code>&dollar;{<em>varName</em>:<em>property</em>|<em>filterName</em>}</code>
+* <code>&dollar;{<em>varName</em> <em>separator</em> <em>properties</em> <em>separator</em>|<em>filterName</em>}</code>
+
+You can specify 0, 1 or more filters, each separated with `|`. They are applied in the order defined.
+
+The following filters are defined:
+
+* `upperCase` : convert the text to upper case
+* `lowerCase` : convert the text to lower case
+* `regexEscape` : if you use the variable in a property that is used as a regular expression (like `find` in a `transform`) but you want to search for that text literal it is good to pass it through the `regexEscape` filter. All special characters for a regular expression are escaped.
+
+> [!CAUTION]
+> Be aware you **don't create an infinite loop**. To be able to apply a filter all variables need to be resolved until no variable left. A known possibility is `pickStringRemember` with `"rememberTransformed": false` and you want to have the previous picked string but filtered.
+> ```jsonc
+> {
+>   "version": "2.0.0",
+>   "tasks": [
+>     {
+>       "label": "cpp lint",
+>       "type": "shell",
+>       "command": "cpplint ${input:selectDir}"
+>     }
+>   ],
+>   "inputs": [
+>     {
+>       "id": "selectDir",
+>       "type": "command",
+>       "command": "extension.commandvariable.pickStringRemember",
+>       "args": {
+>         "description": "Which directory to Lint for C++?",
+>         "options": [
+>           ["Use previous", "${remember:lintPath|upperCase}"], // !!! infinite loop
+>           ["All", "all"],
+>           ["dir1", "dir1"],
+>           ["dir2", "dir2"]
+>         ],
+>         "key": "lintPath"
+>       }
+>     }
+>   ]
+> }
+> ```
+>
+> `dir1` and `dir2` are placeholders and can be in reality as complex as you want and most likely contain some prompt or pick option.
+>
+> The result of `pickStringRemember` is always the transformed string (all variables resolved). If `"rememberTransformed": false` and you pick the **Use previous** option the remembered value for `lintPath` is `${remember:lintPath|upperCase}` (save the picked value **before** variable resolution). When we now want to resolve the picked value (`${remember:lintPath|upperCase}`) because we want to filter we need `${remember:lintPath}`.
+>
+> **Solution** always use `"rememberTransformed": true` when you have a **Use previous** option and add the filter to a `${pickStringRemember}` variable:
+> ```jsonc
+> {
+>   "version": "2.0.0",
+>   "tasks": [
+>     {
+>       "label": "cpp lint",
+>       "type": "shell",
+>       "command": "cpplint ${input:selectDir}"
+>     }
+>   ],
+>   "inputs": [
+>     {
+>       "id": "selectDir",
+>       "type": "command",
+>       "command": "extension.commandvariable.transform",
+>       "args": {
+>         "text": "${pickStringRemember:pickDir|upperCase}",
+>         "pickStringRemember": {
+>           "pickDir": {
+>             "description": "Which directory to Lint for C++?",
+>             "options": [
+>               ["Use previous", "${remember:lintPath}"],
+>               ["All", "all"],
+>               ["dir1", "dir1"],
+>               ["dir2", "dir2"]
+>             ],
+>             "key": "lintPath",
+>             "rememberTransformed": true
+>           }
+>         }
+>       }
+>     }
+>   ]
+> }
+> ```
+
+### Variables in Javascript expression
+
+User [`dvirtz`](https://github.com/rioj7/command-variable/issues/78#issuecomment-1918957939) has found a nice way to use the result of variables in a JavaScript expression and have that as a result.
+
+```json
+{
+  "id": "uniqueFolder",
+  "type": "command",
+  "command": "extension.commandvariable.config.expression",
+  "args": {
+    "expression": "['${workspaceFolder:b.1:nomsg}', '${workspaceFolder:b.2:nomsg}', '${workspaceFolder:b.3:nomsg}'].find(folder => folder != 'Unknown')"
+  }
+}
+```
+
+You don't have to specify the `configVariable` property.
+
+### Variable `workspaceFolder`
+
+The variable `${workspaceFolder}` is only valid in certain cases and depends on the URI of a file:
+
+The URI used is:
+
+| location `${workspaceFolder}` | File Open | URI |
+| ---- | ---- | ---- |
+| `pickFile:transform` | -- | URI of the picked file |
+| `remember:transform` of a picked file | -- | URI of the picked file |
+| other | No | `undefined` |
+| other | Yes | URI of the open file |
+
+Be aware that "**other**" also refers to the `pickFile:fromFolder` property.
+
+| URI  | Workspace | `${workspaceFolder}` |
+| ---- | ---- | ---- |
+| --  | No     | `"Unknown"` and Error: `"No Folder"` |
+| --  | Folder | Path of the open folder |
+| `undefined` | Multi Root | `"Unknown"` and Error: `"Use workspace name"` |
+| valid  | Multi Root | Path of the workspace containing URI or first workspace in the list |
+
+An example:
+
+```
+${workspaceFolder:server}
+```
+
+The variable <code>&dollar;{workspaceFolder:<em>name</em>}</code> is only invalid when there is no folder open.
+
+In most cases the _name_ is the basename of the workspace folder path (last directory name).
+
+If you have 2 workspaces with the same (folder base)name you can't target the second one by name only. You have to use more parts of the directory path to make the name unique. Use the `/` as path separator on all platforms. The _name_ is tested to be at the end of the workspace folder path (using `/` as separator).
+
+An example:
+
+```
+${workspaceFolder:/websiteA/server}
+```
+
+### Variable `workspaceFolderBasename`
+
+The variable `${workspaceFolderBasename}` uses the same strategy as variable [`${workspaceFolder}`](#variable-workspacefolder) to determine the workspace to use.
+
+### Variable `selectedText`
+
+If you only have 1 selection you don't need the properties `separator` and `filterSelection`.
+
+For the [transform](#transform) command you can define the properties `separator` and `filterSelection` in the `args` property of the command.
+
+* `separator` : (Optional) the string used to join the (multi cursor) selections for `${selectedText}`, default (`"\n"`)
+* `filterSelection` : (Optional) a JavaScript expression that allows which (multi cursor) selections to use for `${selectedText}`, default (`"true"`) all are selected.<br/>The expression can use the following variables:
+    * `index` : the 0-base sequence number of the selection
+    * `value` : the text of the selection
+    * `numSel` : number of selections (or cursors)
+
+    The `index` is 0-based to make (modulo) calculations easier. The first `index` is 0.
+
+```json
+      "args": {
+        "text": "${selectedText}",
+        "separator": "@-@",
+        "filterSelection": "index%2===1",
+      }
+```
+
+And you can define/overrule the properties by embedding them in the variable:
+
+<code>&dollar;{selectedText <em>separator</em> <em>properties</em> <em>separator</em>}</code>
+
+All _`separator`_'s used in a variable need to be the same.
+
+The _`separator`_ is a string of 1 or more characters that are not part of the a to z alfabet, `|` or `{}`, in regular expression `[^a-zA-Z{}|]+`. Choose a character string that is not used in the values of the _`properties`_ part. If you need to use more than 1 character do not use all the same character, it can lead to non conformant properties description that is still parsed. The reason is that JavaScript does not have non-backtrack greedy quantifiers. Currently the variable is matched with 1 regular expression. This makes everything easy to implement.
+
+The _`properties`_ are the properties you want separated with the _`separator`_ string. Each property is defined as:
+
+<code><em>propertyName</em>=<em>value</em></code>
+
+Everyting between `=` and the next _`separator`_ is the _`value`_
+
+The above example can be written as
+
+```json
+      "args": {
+        "text": "${selectedText#separator=@-@#filterSelection=index%2===1#}"
+      }
+```
+
+A few examples of `filterSelection` expressions
+
+* every other **odd** selection : `"filterSelection": "index%2===1"`
+* every selection containing `foo` or `bar` : `"filterSelection": "value.match(/foo|bar/)"`
+* the before last selection : `"filterSelection": "index===numSel-2"`
+
+You can use multiple `${selectedText}` variables that have different properties:
+
+```json
+      "args": {
+        "text": "${selectedText#filterSelection=index===3#} ${selectedText#filterSelection=index===1#}"
+      }
+```
+
+### Variable `pickStringRemember`
+
+If you want to add an entry you pick from a list use the variable: <code>&dollar;{pickStringRemember:<em>name</em>}</code>
+
+_`name`_ is the property name of the `pickStringRemember` property of the `args` object of the command.
+
+Because the command has no way to determine if it is called from which workspace `tasks.json` or `launch.json` file or from a key binding the arguments for `pickStringRemember` have to be part of the arguments of the command.
+
+See the command [`extension.commandvariable.pickStringRemember`](#pickstringremember) for the arguments you can use.
+
+An example shows faster how it is to be used compared to a lot of text.
+
+```json
+"inputs": [
+  {
+    "id": "appSelect",
+    "type": "command",
+    "command": "extension.commandvariable.transform",
+    "args": {
+      "text": "We are using ${pickStringRemember:appName} on port ${pickStringRemember:portNum}",
+      "pickStringRemember": {
+        "appName": {
+            "description": "What APP are you running?",
+            "options": [ "client", "server", "stresstest", "pentest", "unittest" ],
+            "default": "server"
+        },
+        "portNum": {
+          "description": "What protocol?",
+          "options": [
+            ["http", "80"],
+            ["http over proxy", "8080"],
+            ["ftp", "21"]
+          ],
+          "default": "80"
+        }
+      }
+    }
+  }
+]
+```
+
+### Variable `promptStringRemember`
+
+The `promptStringRemember` variable works the same as the [`pickStringRemember` variable](#variable-pickstringremember).
+If you want to add an entry you type on the keyboard use the variable: <code>&dollar;{promptStringRemember:<em>name</em>}</code>
+
+_`name`_ is the property name of the `promptStringRemember` property of the `args` object of the command.
+
+Because the command has no way to determine if it is called from which workspace `tasks.json` or `launch.json` file or from a key binding the arguments for `promptStringRemember` have to be part of the arguments of the command.
+
+See the command [`extension.commandvariable.promptStringRemember`](#promptstringremember) for the arguments you can use.
+
+### Variable `pickFile`
+
+The `pickFile` variable works the same as the [`pickStringRemember` variable](#variable-pickstringremember).
+If you want a file path use the variable: <code>&dollar;{pickFile:<em>name</em>}</code>
+
+_`name`_ is the property name of the `pickFile` property of the `args` object of the command.
+
+Because the command has no way to determine if it is called from which workspace `tasks.json` or `launch.json` file or from a key binding the arguments for `pickFile` have to be part of the arguments of the command.
+
+See the command [`extension.commandvariable.pickFile`](#pick-file) for the arguments you can use.
+
+An example: you have a number of key-value files and you want to select which environment to use 
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo theme name",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:themeName}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "themeName",
+      "type": "command",
+      "command": "extension.commandvariable.file.content",
+      "args": {
+        "fileName": "${pickFile:environ}",
+        "key": "THEME",
+        "pickFile": {
+          "environ": {
+            "description": "Which environment?",
+            "include": "**/*environ*",
+            "display": "fileName"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+### Variable `openDialog`
+
+The `openDialog` variable works the same as the [`pickStringRemember` variable](#variable-pickstringremember).
+If you want a file path use the variable: <code>&dollar;{openDialog:<em>name</em>}</code>
+
+_`name`_ is the property name of the `openDialog` property of the `args` object of the command.
+
+Because the command has no way to determine if it is called from which workspace `tasks.json` or `launch.json` file or from a key binding the arguments for `openDialog` have to be part of the arguments of the command.
+
+See the command [`extension.commandvariable.openDialog`](#open-dialog) for the arguments you can use.
+
+### Variable `saveDialog`
+
+The `saveDialog` variable works the same as the [`pickStringRemember` variable](#variable-pickstringremember).
+If you want a file path use the variable: <code>&dollar;{saveDialog:<em>name</em>}</code>
+
+_`name`_ is the property name of the `saveDialog` property of the `args` object of the command.
+
+Because the command has no way to determine if it is called from which workspace `tasks.json` or `launch.json` file or from a key binding the arguments for `saveDialog` have to be part of the arguments of the command.
+
+See the command [`extension.commandvariable.saveDialog`](#save-dialog) for the arguments you can use.
+
+### Variable `command`
+
+If you want to transform result of a command you use the <code>&dollar;{command:<em>name</em>}</code> variable in the `text` property of the `extension.commandvariable.transform` command.
+
+`name` can be a commandID or a _named argument object property_ (like `pickStringRemember`)
+
+#### CommandID
+
+If the command does not use arguments you place the commandID directly in the variable.
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo relative file no ext with dots - first dir removed",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:relativeNoExtDotsBaseOff}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "relativeNoExtDotsBaseOff",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${command:extension.commandvariable.file.relativeFileDotsNoExtension}",
+        "find": "^[^.]+\\."
+      }
+    }
+  ]
+}
+```
+
+#### Named Arguments
+
+If the command uses arguments you have to put these in the arguments of the parent command in the property `command`. (Just like with the [<code>&dollar;{pickStringRemember:<em>name</em>}</code> variable](#variable-pickstringremember))
+
+The named arguments have the following properties:
+
+* `command` : the commandID to execute, can contain variables (see example [Construct commandID](#construct-commandid))
+* `args` : the arguments for this commandID
+* `variableSubstArgs` : if `true`, [variables](#variables) will be expanded within the `args` prior to the command being executed (default: `false`)
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo top 2 workspace folder names",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:workspaceTop2Folders}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "workspaceTop2Folders",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${command:folderPosix}",
+        "find": "^.*/([^/]+/[^/]+)$",
+        "replace": "$1",
+        "command": {
+          "folderPosix": {
+            "command": "extension.commandvariable.workspace.folderPosix",
+            "args": { "name": "server" }
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+Next feature and example by Thomas Moore ([issue 50](https://github.com/rioj7/command-variable/issues/50))
+
+The following example shows how the `variableSubstArgs` option can be used to expand variables in a command used as a named argument. In this case, the [<code>&dollar;{pickStringRemember:pickAnOption}</code>](#variable-pickstringremember) variable is expanded prior to the argument being passed to the `shellCommand.execute` command (provided by the [Tasks Shell Input](https://marketplace.visualstudio.com/items?itemName=augustocdias.tasks-shell-input) extension).
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Get Option String",
+      "type": "shell",
+      "command": "echo \"The option string is '${input:getOptionString}' and the selection option is '${input:selectedOption}'\"",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "getOptionString",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "key": "optionString",
+        "text": "${command:getOptionString}",
+        "command": {
+          "getOptionString": {
+            "command": "shellCommand.execute",
+            "variableSubstArgs": true,
+            "args": {
+              "command": "echo You selected ${pickStringRemember:pickAnOption}",
+              "useSingleResult": true,
+            },
+            "pickStringRemember": {
+              "pickAnOption": {
+                "key": "selectedOption",
+                "description": "Pick an option",
+                "options": [
+                  { "label": "Previous option:",
+                    "value": "${remember:selectedOption}",
+                    "description": "${remember:selectedOption}"
+                  },
+                  "Option A",
+                  "Option B",
+                  "Option C",
+                  "Option D"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "selectedOption",
+      "type": "command",
+      "command": "extension.commandvariable.remember",
+      "args": { "key": "selectedOption" }
+    }
+  ]
+}
+```
+
+A realistic example is the execution of different bazel targets and option to use the previous target:
+
+```json
+"inputs": [
+  {
+    "id": "bazelTargetPath",
+    "type": "command",
+    "command": "extension.commandvariable.transform",
+    "args": {
+      "key": "selectedBazelTargetPath",
+      "text": "${command:getBazelTargetPath}",
+      "command": {
+        "getBazelTargetPath": {
+          "command": "shellCommand.execute",
+          "variableSubstArgs": true,
+          "args": {
+            "command": "bazel cquery --config=${command:cpptools.activeConfigName} --compilation_mode=dbg --output=files ${pickStringRemember:pickBazelTarget}",
+            "cwd": "${workspaceFolder}"
+          },
+          "pickStringRemember": {
+            "pickBazelTarget" : {
+              "description": "Choose a target",
+              "key": "selectedBazelTarget",
+              "rememberTransformed": true,
+              "options": [
+                { "label": "Previous Target:",
+                  "value": "${remember:selectedBazelTarget}",
+                  "description": "${remember:selectedBazelTarget}"
+                },
+                { "label": "Select target...", "value": "${command:bazelTargets}" },
+              ],
+              "command": {
+                "bazelTargets": {
+                  "command": "shellCommand.execute",
+                  "args": {
+                    "command": "bazel query 'kind(cc_binary*, //...)'",
+                    "cwd": "${workspaceFolder}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
+```
+
+#### Construct commandID
+
+Sometimes you want to construct the commandID to execute.
+
+Example based on [StackOverflow question](https://stackoverflow.com/q/77335284/9938317).
+
+If you want to launch a particular configuration based on the file name of the current editor you can redefine the `F5` keybinding:
+
+```json
+  {
+    "key": "f5",
+    "command": "extension.commandvariable.transform",
+    "when": "debuggersAvailable && debugState == 'inactive'",
+    "args": {
+      "text": "${command:launchCommand}",
+      "command": {
+        "launchCommand": {
+          "command": "${transform:launchCommand}",
+          "transform": {
+            "launchCommand": {
+              "text": "${command:launchCommand}",
+              "command": {
+                "launchCommand": {
+                  "command": "extension.commandvariable.file.fileAsKey",
+                  "args": {
+                    "app.py": "launches.Streamlit",
+                    "@default": "launches.OtherPython"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+```
+
+The `command` property can't contain a <code>&dollar;{command:<em>name</em>}</code> variable, so we have to insert a <code>&dollar;{transform:<em>name</em>}</code> variable.
+
+This key binding uses the [Launch Configs](https://marketplace.visualstudio.com/items?itemName=ArturoDent.launch-config) extention by ArturoDent.
+
+### Variable `transform`
+
+Say you have a command/script that wants a series of numbers and they can be in a single argument. The numbers have to be clean, no other text in between. You also want to be able to select some text in an editor and use that to filter out the numbers.
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo top 2 workspace folder names",
+      "type": "shell",
+      "command": "myScript",
+      "args": [ "${input:numberSequence}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "numberSequence",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which number list?",
+        "options": [
+          "100 200 300",
+          "51 99 2",
+          ["Use a raw number list", "${transform:removeLeadingTrailingSpaces}"]
+        ],
+        "rememberTransformed": true,
+        "key": "numSeq",
+        "transform": {
+          "removeLeadingTrailingSpaces": {
+            "text": "${transform:nonNumbersToSpace}",
+            "find": "^ +| +$",
+            "flags": "g",
+            "transform": {
+              "nonNumbersToSpace": {
+                "text": "${pickStringRemember:getRawNumberList}",
+                "find": "[^0-9]+",
+                "replace": " ",
+                "flags": "g",
+                "pickStringRemember": {
+                  "getRawNumberList": {
+                    "description": "Which raw number list?",
+                    "options": [
+                      "foo 123 bar bar 456      ",
+                      "Alice: 10,  Bob: 3",
+                      ["Selected text", "${selectedText}"]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+The above example can be made more readable with the `apply` property to define a sequence of find-replace operations (we also replace multiple spaces by 1 space)
+
+```json
+  "inputs": [
+    {
+      "id": "numberSequence",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which number list?",
+        "options": [
+          "100 200 300",
+          "51 99 2",
+          ["Use a raw number list", "${transform:rawNumberList}"]
+        ],
+        "rememberTransformed": true,
+        "key": "numSeq",
+        "transform": {
+          "rawNumberList": {
+            "text": "${pickStringRemember:getRawNumberList}",
+            "apply": [
+              {
+                "find": "[^0-9]+",
+                "replace": " ",
+                "flags": "g",
+              },
+              {
+                "find": "^ +| +$",
+                "flags": "g",
+              },
+              {
+                "find": " {2,}",
+                "replace": " ",
+                "flags": "g",
+              }
+            ]
+            "pickStringRemember": {
+              "getRawNumberList": {
+                "description": "Which raw number list?",
+                "options": [
+                  "foo 123 bar bar 456      ",
+                  "Alice: 10,  Bob: 3",
+                  ["Selected text", "${selectedText}"]
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+```
+
+### Variable `remember`
+
+If you want to use one of the stored values you can use the <code>${remember:<em>name</em>}</code> variable in the `text` property of the `extension.commandvariable.transform` command.
+
+#### Key name
+
+If you only want to retreive a value for a stored key just use the key name <code>${remember:<em>key_name</em>}</code>.
+
+The value for `key` `serverPortNr` was stored with another command.
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo Server Port",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "Attach to port ${input:severPortNr}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "severPortNr",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${remember:serverPortNr}"
+      }
+    }
+  ]
+}
+```
+
+#### Named Arguments
+
+If you want to pass more arguments to the `remember` command you have to put these in the arguments of the parent command in the property `remember`. (Just like with the [<code>${pickStringRemember:<em>name</em>}</code> variable](#variable-pickstringremember))
+
+If you have picked a file, the `key` used is `sourceFile`, and you don't want the full file path you can get certain parts with the `transform` property:
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo Source file",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:sourceFileInfo}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "sourceFileInfo",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "From Workspace ${remember:showWorkspace} we use ${remember:showBasename}",
+        "remember": {
+          "showWorkspace": {
+            "key": "sourceFile",
+            "transform": { "text": "${workspaceFolder}" }
+          },
+          "showBasename": {
+            "key": "sourceFile",
+            "transform": { "text": "${fileBasename}" }
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+## checkEscapedUI
+
+If you have a task/launch that uses variables that have a UI and you Escape the UI the task/launch is not executed.
+
+If you have a compound [task](#https://code.visualstudio.com/docs/editor/tasks#_compound-tasks)/[launch](#https://code.visualstudio.com/docs/editor/debugging#_compound-launch-configurations) you want to also terminate all following tasks/launches. All UI elements in this extension (`pickFile`, `pickString` and `promptString`), as command or variable, record if they are Escaped. They can test if there has been an Escaped UI and behave as if Escaped themself. Also the `remember` [command](#remember) and [variable](#variables) can test for an Escaped UI and behave as being an Escaped UI.
+
+You don't add the `checkEscapedUI` property to the first UI in the compound task/launch because it would check if the previous run was Escaped.
+
+### Example
+
+This example uses simple `echo` tasks to keep it short.
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "Task 1",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "Task 1 using envType: ${input:envType}" ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Task 2",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "Task 2 with envMessage: ${input:envMessage}" ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Task 3",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "Task 3 with message: ${input:transformEnvMessage}" ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Task Sequence",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Task 1", "Task 2", "Task 3"],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "envType",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "description": "Which env do you want to debug?",
+        "key": "envType",
+        "options": [
+          ["development", "5000"],
+          ["staging", "5100"],
+          ["live", "5200"]
+        ]
+      }
+    },
+    {
+      "id": "envMessage",
+      "type": "command",
+      "command": "extension.commandvariable.promptStringRemember",
+      "args": {
+        "key": "envMessage",
+        "description": "Enter message",
+        "checkEscapedUI": true
+      }
+    },
+    {
+      "id": "transformEnvMessage",
+      "type": "command",
+      "command": "extension.commandvariable.transform",
+      "args": {
+        "text": "${remember:envMessage__checkEscapedUI}",
+        "find": "(\\d+)",
+        "replace": "Number($1)"
+      }
+    }
+  ]
+}
+```
+
+## Workspace name in `argument`
+
+The commands
+
+* `extension.commandvariable.workspace.folder`
+* `extension.commandvariable.workspace.folderPosix`
+* <code>extension.commandvariable.workspace.folder<em>N</em>Up</code>
+* <code>extension.commandvariable.workspace.folder<em>N</em>UpPosix</code>
+* <code>extension.commandvariable.workspace.folderBasename</code>
+* <code>extension.commandvariable.workspace.folderBasename<em>N</em>Up</code>
+
+allow to get the information from a different workspace by specifying the name or last parts of the file path of the workspace directory. This can also be done when there is no editor active.
+
+You supply the name in the arguments of the command. You have to use an `${input}` variable.
+
+```json
+{
+  "version": "0.2.0",
+  "tasks": [
+    {
+      "label": "echo server name",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:server1Up}" ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "server1Up",
+      "type": "command",
+      "command": "extension.commandvariable.workspace.folderBasename1Up",
+      "args": { "name": "server" }
+    }
+  ]
+}
+```
+
+If you have 2 workspaces with the same (folder base)name you can't target the second one by name only. You have to use more parts of the directory path to make the name unique. Use the `/` as path separator on all platforms. The `name` argument is tested to be at the end of the workspace folder path (using `/` as separator). An example of an `args` property is:
+
+```json
+"args": { "name": "/websiteA/server" }
+```
+
+## UUID
+
+The commands `extension.commandvariable.UUID` and `extension.commandvariable.UUIDInEditor` generate a v4 UUID.
+
+It has the following arguments:
+
+* `output` : can change the output format (default: `hexString`):
+
+    * `hexString` : `a0e0f130-8c21-11df-92d9-95795a3bcd40`
+    * `hexNoDelim` : `a0e0f1308c2111df92d995795a3bcd40`
+    * `bitString` : `101000001110000 ... 1100110101000000`
+    * `urn` : `urn:uuid:a0e0f130-8c21-11df-92d9-95795a3bcd40`
+
+* `use` : which UUID to use (default: `new`):
+    * `new` : generate a new UUID
+    * `previous`, `prev` : use the previous generated UUID
+
+In this example the 3 printed UUIDs are all different
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo UUIDs",
+      "type": "shell",
+      "command": "echo",
+      "args": [
+        "${command:extension.commandvariable.UUID}",
+        "${input:uuid-hexnodelim}",
+        "${input:uuid-urn}"
+      ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "uuid",
+      "type": "command",
+      "command": "extension.commandvariable.UUID"
+    },
+    {
+      "id": "uuid-hexnodelim",
+      "type": "command",
+      "command": "extension.commandvariable.UUID",
+      "args": { "output": "hexNoDelim" }
+    },
+    {
+      "id": "uuid-urn",
+      "type": "command",
+      "command": "extension.commandvariable.UUID",
+      "args": { "output": "urn" }
+    },
+    {
+      "id": "uuid-bits",
+      "type": "command",
+      "command": "extension.commandvariable.UUID",
+      "args": { "output": "bitString" }
+    }
+  ]
+}
+```
+
+## dateTime
+
+For `keybindings.json` use `extension.commandvariable.dateTimeInEditor`.
+
+For `launch.json` and `tasks.json` use `extension.commandvariable.dateTime`.
+
+This command uses [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) to create a language-sensitive format of current date and time.
+
+The `locale` and `options` command arguments are the arguments for the [`Intl.DateTimeFormat constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/DateTimeFormat) and are optional.
+
+The `locale` command argument can be a single string or an array of strings of language tags. If not specified the browser default locale is used.
+
+The `template` command argument is an optional template string that uses the same placeholder syntax as the [Javascript template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). You can add as many literal text as needed.
+
+The only expressions valid are the `type` values returned by the [`Intl.DateTimeFormat.prototype.formatToParts()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts) method. See first example.
+
+If there is no `template` command argument the value parts of the `Intl.DateTimeFormat.prototype.formatToParts()` are joined. See second example.
+
+### Example 1
+```json
+  {
+    "key": "ctrl+shift+alt+f4",
+    "when": "editorTextFocus",
+    "command": "extension.commandvariable.dateTimeInEditor",
+    "args": {
+      "locale": "en-US",
+      "options": {
+        "year": "numeric",
+        "month": "2-digit",
+        "day": "2-digit",
+        "hour12": false,
+        "hour": "2-digit",
+        "minute": "2-digit",
+        "second": "2-digit"
+      },
+      "template": "${year}/${month}/${day}-${hour}:${minute}:${second}"
+    }
+  }
+```
+The result is
+```
+2020/03/19-18:01:18
+```
+### Example 2
+
+You can use a different locale and number system and use the long format:
+```json
+  {
+    "key": "ctrl+shift+alt+f5",
+    "when": "editorTextFocus",
+    "command": "extension.commandvariable.dateTimeInEditor",
+    "args": {
+      "locale": "fr-FR-u-nu-deva",
+      "options": {
+        "dateStyle": "full",
+        "timeStyle": "full"
+      }
+    }
+  }
+```
+The result is
+```
+jeudi १९ mars २०२० à १७:५९:५७ heure normale d’Europe centrale
+```
+
+### Example 3
+
+For `launch.json` and `tasks.json` use the `inputs` attribute:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo date",
+      "type": "shell",
+      "command": "echo",
+      "args": [ "${input:shortDate}" ],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "shortDate",
+      "type": "command",
+      "command": "extension.commandvariable.dateTime",
+      "args": {
+        "locale": "es-ES",
+        "options": {
+          "weekday": "long",
+          "year": "numeric",
+          "month": "2-digit",
+          "day": "2-digit",
+          "hour12": false,
+          "hour": "2-digit",
+          "minute": "2-digit",
+          "second": "2-digit"
+        },
+        "template": "${weekday}__${year}${month}${day}T${hour}${minute}${second}"
+      }
+    }
+  ]
+}
+```
+The result is:
+```
+jueves__20200319T184634
+```
+
+# Credits
+
+* uses [UUID node module by LiosK](https://www.npmjs.com/package/uuidjs)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="14" fill="#2d2d30"/>
+  <text x="64" y="54" font-family="Consolas, monospace" font-size="36" font-weight="bold" text-anchor="middle" fill="#61dafb">0x</text>
+  <text x="64" y="88" font-family="Consolas, monospace" font-size="36" font-weight="bold" text-anchor="middle" fill="#61dafb">FF</text>
+  <rect x="14" y="14" width="100" height="100" rx="8" stroke="#61dafb" stroke-width="2" fill="none"/>
+  <rect x="20" y="40" width="88" height="48" rx="4" stroke="#61dafb" stroke-width="1" fill="none" stroke-dasharray="4 2"/>
+</svg> 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tile grid -->
+  <rect x="10" y="10" width="40" height="40" fill="#4CAF50" stroke="#000" stroke-width="4"/>
+  <rect x="58" y="10" width="40" height="40" fill="#FFC107" stroke="#000" stroke-width="4"/>
+  <rect x="10" y="58" width="40" height="40" fill="#2196F3" stroke="#000" stroke-width="4"/>
+  <rect x="58" y="58" width="40" height="40" fill="#E91E63" stroke="#000" stroke-width="4"/>
+
+  <!-- Magnifying glass over grid -->
+  <circle cx="96" cy="96" r="20" stroke="#000" stroke-width="6" fill="none"/>
+  <line x1="110" y1="110" x2="124" y2="124" stroke="#000" stroke-width="6" stroke-linecap="round"/>
+</svg>

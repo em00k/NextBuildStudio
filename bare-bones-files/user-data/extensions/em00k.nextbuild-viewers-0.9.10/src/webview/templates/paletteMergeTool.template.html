@@ -1,0 +1,20 @@
+<div class="secondary-palette-area">
+    <h4>Palette Merge Tool</h4>
+    <div class="secondary-controls">
+        <button id="loadSecondaryPaletteButton">Load Palette to Merge...</button>
+        <div id="secondaryPaletteInfo" style="font-size: 0.9em; margin-top: 5px; display: none;">
+            Loaded: <span id="secondaryPaletteName"></span>
+        </div>
+    </div>
+
+    <div class="merge-controls" style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+         <label for="mergeOffsetInput">Target Offset:</label>
+         <input type="number" id="mergeOffsetInput" min="0" max="240" step="16" value="0" style="width: 50px;">
+         <label for="mergeCountInput">Count:</label>
+         <input type="number" id="mergeCountInput" min="1" max="16" value="16" style="width: 40px;">
+         <button id="mergeButton" disabled>Merge -> Main</button>
+    </div>
+    <div id="secondary-palette-container" style="margin-top: 10px;">
+        <!-- Secondary palette grid will be rendered here by JS -->
+    </div>
+</div>

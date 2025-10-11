@@ -1,0 +1,1013 @@
+:root {
+    /* These will be set by the provider based on sprite data */
+    --sprite-scale: 2; 
+    --sprite-width: 16;
+    --sprite-height: 16;
+    --detail-pixel-size: 16; /* Default size for detail pixels */
+}
+
+body {
+    padding: 10px;
+    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+    font-size: var(--vscode-font-size);
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    max-width: 1900px; /* Slightly wider */
+    margin: 0 auto;
+}
+
+.main-content {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+    color: var(--vscode-textLink-foreground);
+    font-weight: 600;
+    text-align: left;
+    /* max-width: 95vh; */
+    justify-content: center;
+    margin: 0 auto;
+    content: center;
+}
+
+h1, h2 {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+    color: var(--vscode-textLink-foreground);
+    font-weight: 600;
+    text-align: left;
+    max-width: 95vh;
+    margin: 0 auto;
+}
+
+.file-info {
+    font-size: 0.9em;
+    color: var(--vscode-descriptionForeground);
+    margin-bottom: 1em;
+    font-weight: 500;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+   
+    
+    margin: 0 auto;
+
+    gap: 4px;
+    padding: 8px;
+    background-color: var(--vscode-sideBar-background);
+    border-radius: 4px;
+    border: 1px solid var(--vscode-sideBar-border, transparent);
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+label {
+    color: var(--vscode-input-placeholderForeground);
+    font-weight: 500;
+}
+
+select, button, input {
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--vscode-input-border);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+}
+
+button {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 1px solid var(--vscode-button-border, transparent);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+/* Style for active tool buttons */
+button.active {
+    background-color: var(--vscode-button-secondaryBackground); /* Use secondary style */
+    color: var(--vscode-button-secondaryForeground);
+    outline: 1px solid var(--vscode-focusBorder); /* Add outline */
+}
+
+/* Style for the save button when dirty */
+#saveButton.save-button-dirty {
+    background-color: var(--vscode-button-background);
+    border: 1px solid var(--vscode-errorForeground);
+    color: var(--vscode-errorForeground); /* Optional: Change text color too */
+}
+
+#saveButton.save-button-dirty:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+/* Style for the save palette button when dirty */
+#savePaletteButton.save-button-dirty {
+    background-color: var(--vscode-button-background);
+    border: 1px solid var(--vscode-errorForeground);
+    color: var(--vscode-errorForeground);
+}
+
+#savePaletteButton.save-button-dirty:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+input[type="checkbox"] { /* Consistent checkbox look */
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: var(--vscode-input-background);
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--vscode-button-background);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    font-size: 10px;
+    color: var(--vscode-button-foreground);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#paletteStatus {
+    font-weight: 500;
+    color: var(--vscode-textLink-foreground);
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.sprites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 16px;
+    justify-content: center;
+    justify-items: center;
+    background-color: var(--vscode-editorWidget-background, #252526); /* Dark background */
+    border: 1px solid var(--vscode-editorWidget-border, #454545); /* Border around grid */
+    padding: 4px; /* Small padding inside the grid border */
+}
+
+.sprite-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 0px; 
+    transition: background-color 0.1s;
+    /* Add borders for grid lines */
+    /* Remove borders, use gap instead */
+    /* border-right: 1px solid var(--vscode-editorWidget-border, #454545); */
+    /* border-bottom: 1px solid var(--vscode-editorWidget-border, #454545); */
+}
+
+/* Remove border from last column/row if needed (complex selector) */
+/* Example for 16 columns - adjust if needed */
+/* .sprites-grid > .sprite-box:nth-child(16n) { border-right: none; } */
+/* .sprites-grid > .sprite-box:nth-last-child(-n+16) { border-bottom: none; } */
+
+.sprite-box:hover {
+    background-color: rgba(0, 120, 215, 0.1);
+}
+
+.sprite-box.selected {
+    background-color: rgba(0, 120, 215, 0.2); 
+    outline: 3px solid rgba(228, 253, 0, 0.8); 
+    /* --background-color: rgba(var(--vscode-focusBorder), 0.9); */ /* Use focus color with more opacity */
+    /* outline: 2px solid var(--vscode-focusBorder); Thicker, brighter outline */
+    outline-offset: -1px; /* Draw outline slightly inside */
+}
+
+.sprite-index {
+    font-size: 10px;
+    margin-top: 2px;
+    color: var(--vscode-descriptionForeground);
+}
+
+.sprite-container {
+    display: grid;
+    grid-template-columns: repeat(var(--sprite-width), 1fr);
+    width: calc(var(--sprite-width) * var(--sprite-scale) * 1px);
+    height: calc(var(--sprite-height) * var(--sprite-scale) * 1px);
+    /* Add border to sprite itself */
+    border: 1px solid var(--vscode-input-border, #ccc); 
+}
+
+.sprite-pixel {
+    width: calc(var(--sprite-scale) * 1px);
+    height: calc(var(--sprite-scale) * 1px);
+    /* Optional: Add grid lines via border */
+    /* border-right: 1px solid rgba(0, 0, 0, 0.1); */
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
+    /* box-sizing: border-box; */
+}
+
+.sprite-detail {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Allow detail area to take full width */
+}
+
+.detail-area { /* Container for sprite AND edit controls now */
+    display: flex; /* Use flexbox */
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.detail-container { /* The large editable sprite grid */
+    display: grid;
+    grid-template-columns: repeat(var(--sprite-width), 1fr);
+    /* Use detail-pixel-size variable */
+    /* remove so can show full brush */
+    /* width: calc(var(--sprite-width) * var(--detail-pixel-size)); */
+    /* height: calc(var(--sprite-height) * var(--detail-pixel-size)); */
+    border: 1px solid var(--vscode-editorWidget-border, #ccc);
+    cursor: crosshair;
+}
+
+.detail-pixel {
+    /* Use detail-pixel-size variable */
+    width: var(--detail-pixel-size);
+    height: var(--detail-pixel-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px; /* Smaller font for index */
+    color: var(--vscode-editor-foreground);
+    border-right: 1px solid var(--vscode-editorWidget-border, rgba(0,0,0,0.1));
+    border-bottom: 1px solid var(--vscode-editorWidget-border, rgba(0,0,0,0.1));
+    box-sizing: border-box; /* Include border in size */
+}
+
+.detail-info {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: var(--vscode-editorWidget-background);
+    color: var(--vscode-editorWidget-foreground);
+    border-radius: 4px;
+    font-size: 11px;
+    border: 1px solid var(--vscode-editorWidget-border, transparent);
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--vscode-descriptionForeground);
+    text-align: center;
+    border-top: 1px solid var(--vscode-editorWidget-border, transparent);
+    padding-top: 10px;
+}
+
+/* Styles for Palette Picker / Editor Panel */
+.sprite-editor-panel { 
+    padding: 10px;
+    border: 1px solid var(--vscode-editorWidget-border, #ccc);
+    border-radius: 4px;
+    background-color: var(--vscode-sideBar-background);
+    flex-shrink: 0; /* Keep size based on content */
+    display: flex; 
+    gap: 15px; 
+}
+/* Actual grid of pixels  */
+.editor-sprite-grid-area { /* Container for the zoom grid, transform controls, hover info */
+    /* width: calc(var(--sprite-width) * var(--detail-pixel-size)); */ /* Width will now be dynamic based on content */
+    flex-shrink: 0; /* Don't shrink the grid area itself initially */
+    display: flex; /* Use flex to arrange children vertically */
+    flex-direction: column; /* Stack detail-container, hover-info, transforms vertically */
+    gap: 10px; /* Space between grid, hover info, and transforms */
+
+    /* Add max dimensions and scrolling */
+    overflow: auto; /* Add scrollbars when content (composite grid) exceeds max dimensions */
+    /* padding: 5px; Optional: some padding inside the scrollable area */
+    border: 1px solid var(--vscode-editorWidget-border, rgba(128,128,128,0.2)); /* Optional: border for scroll area */
+    border-radius: 3px;
+}
+
+.editor-palette-controls { /* Container for palette controls */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between title and controls */
+    padding: 10px;
+    border: 1px solid var(--vscode-editorWidget-border, rgba(128,128,128,0.2));
+}
+
+.palette-picker-layout { 
+    display: flex;
+    gap: 15px; 
+    align-items: flex-start;
+}
+
+.selected-colors-area { 
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    padding-top: 5px;
+
+}
+
+
+
+#palettePicker { /* The grid of small swatches */
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 2px;
+    flex-grow: 1; /* Allow the grid to take available horizontal space */
+    /* Maybe add a min-width based on swatch size? */
+    min-width: calc(16 * (16px + 2px)); /* 16 swatches * (width + gap) - Adjust if swatch size changes */
+}
+
+.color-swatch { /* Small swatches in the grid */
+    width: calc(var(--detail-pixel-size)/2);
+    height: calc(var(--detail-pixel-size)/2);
+    border: 2px solid transparent;
+    cursor: pointer;
+    /* display: inline-block; */
+    display: flex;
+    vertical-align: middle;
+    padding: 2px; /* Match sprite box */
+    border-radius: 1px; /* Match sprite box */
+    cursor: pointer; 
+}
+
+.color-swatch.selected {
+    border-color: var(--vscode-focusBorder); 
+    box-shadow: 0 0 3px var(--vscode-focusBorder);
+}
+
+/* Styles for L/R Display */
+.selected-color-display { 
+     display: flex;
+     flex-direction: column; 
+     align-items: center;
+     gap: 3px;
+     width: 100%; /* Add width to contain child elements */
+}
+
+.selected-color-display .label {
+     font-size: 10px;
+     font-weight: 600;
+     color: var(--vscode-input-placeholderForeground);
+}
+
+.selected-color-display .preview-box { 
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--vscode-inputOption-activeBorder);
+    border-radius: 2px;
+    margin-right: 5px;
+}
+
+.selected-color-display .index-value,
+.selected-color-display .hex-value {
+    font-size: 11px; 
+    color: var(--vscode-foreground);
+    font-family: var(--vscode-editor-font-family, monospace);
+}
+
+/* Drag & Drop Styles */
+.color-swatch.dragging {
+    opacity: 0.4;
+    cursor: grabbing;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+}
+
+/* This selector is for when a color is being dragged over */
+.color-swatch.drag-over {
+    outline: 2px dashed var(--vscode-focusBorder);
+    outline-offset: 1px;
+    background-color: rgba(0, 120, 215, 0.1); /* Add slight background */
+    box-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+}
+.hover-info-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.sprite-transform-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 10px;
+        max-width: fit-content;
+        margin-block: auto;
+        align-items: center;
+        margin-left:auto;
+        margin-right:auto;
+}
+
+/* Updated RGB Slider Styles */
+.picker-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 4px;
+    background-color: var(--vscode-editorWidget-background);
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slider-group label {
+    width: 15px;
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--vscode-input-placeholderForeground);
+}
+
+.slider-group input[type="range"] {
+    flex-grow: 1;
+    cursor: pointer;
+    height: 4px;
+    background: var(--vscode-input-background);
+    border-radius: 2px;
+    border: 1px solid var(--vscode-input-border);
+    appearance: none; 
+    outline: none;
+    transition: background 0.15s ease-in-out;
+}
+
+ .slider-group input[type="range"]:focus {
+    background: var(--vscode-inputOption-activeBackground);
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--vscode-button-background);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid var(--vscode-button-border, var(--vscode-input-border)); 
+    transition: background 0.15s ease-in-out;
+}
+
+ .slider-group input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+ .slider-group input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--vscode-button-background);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid var(--vscode-button-border, var(--vscode-input-border));
+    transition: background 0.15s ease-in-out;
+}
+
+ .slider-group input[type="range"]::-moz-range-thumb:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+.slider-value {
+    width: 20px; 
+    text-align: right;
+    font-family: var(--vscode-editor-font-family);
+    font-size: 11px;
+}
+
+/* Style for sprite container borders when grid is active */
+.sprites-grid.show-sprite-borders .sprite-container {
+    /* border applied directly to sprite-container already */
+    /* We can make it more prominent if needed */
+    outline: 1px solid var(--vscode-editorWidget-foreground, rgba(255, 255, 255, 0.5));
+    outline-offset: -1px; /* Draw outline inside the existing border */
+}
+
+/* Remove old rule for .grid-active .sprite-pixel */
+/* 
+.grid-active .sprite-pixel {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; 
+}
+*/
+
+/* --- Add Sprite Button --- */
+.add-sprite-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center the plus sign */
+    cursor: pointer;
+    padding: 2px;
+    transition: background-color 0.1s;
+    box-sizing: border-box; /* Ensure padding/border are included */
+    
+    /* Match sprite container size using CSS variables */
+    width: calc((var(--sprite-width) * var(--sprite-scale) * 1px) + 4px); /* Add padding */
+    height: calc((var(--sprite-height) * var(--sprite-scale) * 1px) + 4px + 14px); /* Add padding + space for text */
+
+    border: 1px dashed var(--vscode-inputOption-activeBorder);
+    background-color: rgba(var(--vscode-focusBorder), 0.1);
+}
+
+.add-sprite-box:hover {
+    background-color: rgba(var(--vscode-focusBorder), 0.2);
+}
+
+.add-sprite-plus {
+    font-size: calc(var(--sprite-scale) * 8px); /* Scale plus size */
+    font-weight: bold;
+    color: var(--vscode-button-foreground);
+    line-height: 1;
+}
+
+.add-sprite-text {
+    font-size: 10px;
+    margin-top: 2px;
+    color: var(--vscode-descriptionForeground);
+}
+
+/* --- End Add Sprite Button --- */
+
+/* --- Hover Info Display --- */
+#hoverInfoContainer {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background-color: var(--vscode-editorWidget-background);
+    border: 1px solid var(--vscode-editorWidget-border, transparent);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: none;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    min-height: 20px; /* Ensure it doesn't collapse */
+    color: var(--vscode-editorWidget-foreground);
+}
+
+#hoverPreviewBox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--vscode-inputOption-activeBorder);
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#hoverInfoContainer span { /* Style for the labels/values */
+    font-family: var(--vscode-editor-font-family, monospace);
+}
+
+#hoverInfoContainer span strong { /* Style for labels like "Raw:" */
+    color: var(--vscode-descriptionForeground);
+    margin-right: 4px;
+}
+
+/* --- Fixed Width for Hover Values --- */
+#hoverInfoContainer span span { /* Target the inner spans holding the values */
+    display: inline-block; /* Allow width setting */
+    text-align: left;  /* Align text within the span */
+    min-width: 45px; /* Adjust as needed - enough for #RRGGBB */
+}
+
+#hoverInfoContainer span #hoverRawValue, 
+#hoverInfoContainer span #hoverPaletteIndex {
+     min-width: 25px; /* Shorter width for numerical indices */
+}
+/* --- End Fixed Width --- */
+
+/* Palette Hover Highlight */
+.color-swatch.hover-highlight {
+    outline: 3px solid var(--vscode-focusBorder); /* Thicker and use focus color */
+    outline-offset: 0px; /* Adjust offset for thicker border */
+    box-shadow: 0 0 5px var(--vscode-focusBorder); /* Slightly stronger shadow */
+    position: relative;
+    z-index: 5; /* Ensure the highlighted swatch appears above others */
+}
+
+/* Remove border from last column/row if needed (complex selector) */
+/* Example for 16 columns - adjust if needed */
+/* .sprites-grid > .sprite-box:nth-child(16n) { border-right: none; } */
+/* .sprites-grid > .sprite-box:nth-last-child(-n+16) { border-bottom: none; } */
+
+/* border-bottom: 1px solid var(--vscode-editorWidget-border, #454545); */
+
+/* Transform Controls Container */
+#transformControls {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* width: 90%; */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 8px;
+    border: 1px solid var(--vscode-editorWidget-border, rgba(0,0,0,0.1));
+    border-radius: 4px;
+    background-color: var(--vscode-editorWidget-background);
+}
+
+/* Style for transform buttons */
+.transform-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--vscode-button-border, transparent);
+    background-color: var(--vscode-button-background);
+}
+
+.transform-button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.transform-button img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Color picker input styling to match width */
+.color-picker-control {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#colorPickerInput {
+    height: 30px;
+    margin-bottom: 5px;
+    max-width: 100%;
+}
+
+/* Center the RGB9 display and priority control */
+.primary-color-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+    gap: 5px;
+}
+
+.rgb9-display {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.rgb9-display span {
+    text-align: center;
+    min-width: 30px;
+}
+
+.priority-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+/* Add styles for color copy operations */
+.color-swatch.copy-target {
+    outline: 2px dashed var(--vscode-editorWarning-foreground);
+    outline-offset: -1px;
+    z-index: 50; 
+}
+
+/* Special style for CTRL+RMB drag copy operations */
+.color-swatch.ctrl-drag-copy {
+    outline: 2px dashed var(--vscode-focusBorder);
+    outline-offset: -1px;
+    transform: scale(1.05);
+}
+
+/* Primary color selection highlight */
+.color-swatch.primary-selected {
+    outline: 2px solid var(--vscode-focusBorder);
+    outline-offset: -1px;
+    z-index: 10;
+}
+
+/* Secondary color selection highlight */
+.color-swatch.secondary-selected {
+    outline: 2px dashed var(--vscode-focusBorder);
+    outline-offset: -1px; 
+    z-index: 5;
+}
+
+/* Add styles for error message display */
+.error-message {
+    background-color: var(--vscode-inputValidation-errorBackground, #5a1d1d);
+    color: var(--vscode-inputValidation-errorForeground, #ffffff);
+    border: 1px solid var(--vscode-inputValidation-errorBorder, #be1100);
+    border-left: 4px solid var(--vscode-inputValidation-errorBorder, #be1100);
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 3px;
+    font-size: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Add hover effect for palette swatches */
+.color-swatch.palette-hover {
+    outline: 2px solid var(--vscode-focusBorder);
+    z-index: 5;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Help section styling */
+.usage-help {
+    margin: 20px auto;
+    padding: 12px 15px;
+    background-color: var(--vscode-editor-background);
+    border: 1px solid var(--vscode-editorWidget-border, rgba(128, 128, 128, 0.3));
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--vscode-foreground);
+}
+
+.usage-help h3 {
+    margin-top: 5px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--vscode-editorBracketMatch-foreground, var(--vscode-foreground));
+}
+
+.usage-help ul {
+    margin: 7px 0;
+    padding-left: 25px;
+}
+
+.usage-help .shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.usage-help .shortcuts div {
+    flex: 1;
+    min-width: 250px;
+}
+
+.usage-help kbd {
+    background-color: var(--vscode-button-secondaryBackground, rgba(60, 60, 60, 0.4));
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--vscode-button-secondaryBorder, rgba(120, 120, 120, 0.4));
+    font-family: var(--vscode-editor-font-family);
+    font-size: 11px;
+}
+
+/* Color Copy UI Elements */
+.color-swatch.color-pickup {
+    outline: 2px solid var(--vscode-editorInfo-foreground);
+    outline-offset: -1px;
+    transform: scale(1.1);
+    z-index: 100;
+    box-shadow: 0 0 5px var(--vscode-focusBorder);
+}
+
+.color-copy-notification {
+    background-color: var(--vscode-editorHoverWidget-background);
+    color: var(--vscode-editorHoverWidget-foreground);
+    border: 1px solid var(--vscode-editorHoverWidget-border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-size: 12px;
+    transition: opacity 0.3s ease-out;
+}
+
+/* Add styles for the new scrollable container */
+.scrollable-content {
+    /* max-width: 95vh; */
+    max-height: 35vh; /* Limit height to 75% of viewport height */
+    overflow-y: auto; /* Add vertical scrollbar when content overflows */
+    /* overflow-x: hidden; Prevent horizontal scroll */
+    /* padding: 10px; Add some padding inside */
+    border: 1px solid var(--vscode-editorWidget-border, #454545); /* Match grid border */
+    background-color: var(--vscode-editorWidget-background, #252526); /* Match grid background */
+    border-radius: 4px;
+}
+
+/* Add a .fill-mode class style for the cursor */
+.detail-container.fill-mode {
+  cursor: crosshair;
+}
+
+
+
+/* Explicitly ensure scrollable-content is not affected by fill-mode
+.scrollable-content {
+  /* Keep original styles intact */
+  /* max-height: 35vh !important; */
+  /* overflow-y: auto !important; */
+  /* overflow-x: hidden !important; */
+/* } */ */
+
+/* Style for the fill button when active */
+#transformControls button[data-action="fill"].active {
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+}
+
+/* Add visual feedback for fill-mode in the UI */
+.fill-mode-indicator {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.detail-container.fill-mode + .fill-mode-indicator {
+  display: block;
+}
+
+/* Color Replace Mode Styles */
+.detail-container.color-replace-mode {
+    outline: 2px solid #ff6b00; /* Orange outline for color replace mode */
+    outline-offset: 2px;
+}
+
+.detail-container.color-replace-mode ~ * {
+    pointer-events: none; /* Prevent other controls during color replace */
+}
+
+.color-replace-mode-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff6b00;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 100;
+    display: none;
+    pointer-events: none;
+}
+
+.detail-container.color-replace-mode + .color-replace-mode-indicator {
+    display: block;
+}
+
+/* --- Sprite Drag & Drop Styles --- */
+.sprite-box.dragging-sprite {
+    opacity: 0.4;
+    border: 1px dashed var(--vscode-focusBorder);
+}
+
+.sprite-box.drag-over-sprite {
+    outline: 2px dashed var(--vscode-focusBorder);
+    outline-offset: -2px;
+    background-color: rgba(var(--vscode-focusBorder-rgb, 0, 120, 215), 0.1); /* Use RGB version if available */
+}
+/* --- End Sprite Drag & Drop Styles --- */
+
+.color-swatch.ctrl-dragging {
+    outline: 2px solid var(--vscode-focusBorder);
+    outline-offset: -1px;
+    box-shadow: 0 0 5px var(--vscode-focusBorder);
+    position: relative;
+    z-index: 10;
+    cursor: move;
+}
+
+.color-swatch.swap-target {
+    outline: 2px dashed var(--vscode-focusBorder);
+    outline-offset: -1px;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, 
+                      transparent 50%, rgba(255, 255, 255, 0.1) 50%, 
+                      rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
+    background-size: 6px 6px;
+    cursor: copy;
+}
+
+/* Add a special cursor for color swatches when Ctrl is pressed */
+.color-swatch.ctrl-hover {
+    cursor: move;
+}
+
+.color-swap-notification {
+    position: fixed;
+    padding: 5px 10px;
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    border-radius: 3px;
+    border: 1px solid var(--vscode-widget-border);
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Brush area highlight styles */
+.sprite-box.brush-area-sprite {
+    /* Example: A dashed orange outline for the general brush area */
+    outline: 1px dashed var(--vscode-terminalCommandDecoration-successIconForeground, orange);
+    background-color: rgba(255, 165, 0, 0.05); /* Example: A very light orange tint */
+    box-shadow: inset 0 0 0 1px rgba(255, 165, 0, 0.2); /* Inner glow to differentiate from main selection */
+}
+
+/* Ensure the main selected sprite (top-left of the brush) is still distinct */
+/* This style should take precedence over the general .brush-area-sprite if both are applied */
+.sprite-box.selected.brush-area-sprite {
+    /* Example: A more solid orange outline for the top-left selected sprite */
+    outline: 2px solid var(--vscode-focusBorder, orange);
+    /* The background-color from .selected should still apply or can be made more prominent here if needed */
+    /* e.g., background-color: rgba(0, 120, 215, 0.25); if .selected has a base background */
+}
+
+/* Duplicate highlight styles */
+.sprite-box.original-sprite {
+    border: 2px solid #55a630 !important; /* Green for original */
+}
+
+.sprite-box.duplicate-exact {
+    border: 2px solid #e63946 !important; /* Red for exact duplicates */
+    position: relative;
+}
+
+.sprite-box.duplicate-flipped {
+    border: 2px solid #ff9500 !important; /* Orange for flipped duplicates */
+    position: relative;
+}
+
+.sprite-box.duplicate-rotated {
+    border: 2px solid #9d4edd !important; /* Purple for rotated duplicates */
+    position: relative;
+}
+
+/* Add visual indicator for duplicates */
+.sprite-box.duplicate-exact::after,
+.sprite-box.duplicate-flipped::after,
+.sprite-box.duplicate-rotated::after {
+    content: '✓';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 10px;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+/* Brush area highlight styles */
+/* .sprite-box.brush-area-sprite { */
+    /* Example: A dashed orange outline for the general brush area */
+    /* outline: 1px dashed var(--vscode-terminalCommandDecoration-successIconForeground, orange); */
+    /* background-color: rgba(255, 165, 0, 0.05); */ /* Example: A very light orange tint */
+    /* box-shadow: inset 0 0 0 1px rgba(255, 165, 0, 0.2); */ /* Inner glow to differentiate from main selection */
+/* } */
+
+/* Ensure the main selected sprite (top-left of the brush) is still distinct */
+/* .sprite-box.selected.brush-area-sprite { */
+    /* Example: A more solid orange outline for the top-left selected sprite */
+    /* outline: 2px solid var(--vscode-focusBorder, orange); */
+    /* The background-color from .selected should still apply or can be made more prominent here if needed */
+/* } */

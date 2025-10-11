@@ -1,0 +1,12 @@
+{
+    "comments": {
+      "lineComment": "'",
+      "blockComment": ["'/", "'/"]
+    },
+    "brackets": [["{", "}"], ["[", "]"], ["(", ")"]],
+    "indentationRules": {
+      "increaseIndentPattern": "^\\s*(?:if|else|elsif|while|for|do|sub|function|asm)\\b.*\\{?\\s*(?:'.*)?$",
+      "decreaseIndentPattern": "^\\s*(?:endif|end\\s+if|wend|end|until|next|else\\s+if|elseif|end\\s+function|end\\s+sub|end\\s+asm)\\b"
+    }
+  }
+  

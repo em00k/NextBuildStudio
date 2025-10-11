@@ -1,0 +1,85 @@
+{
+	"name": "sna-fileviewer",
+	"displayName": "SNA-FileViewer",
+	"description": "A viewer for ZX Spectrum snapshot (.sna) files.",
+	"version": "1.5.3",
+	"publisher": "maziac",
+	"author": {
+		"name": "Thomas Busse"
+	},
+	"license": "MIT",
+	"keywords": [
+		"assembler",
+		"snapshot",
+		"sna",
+		"zx",
+		"spectrum"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maziac/sna-fileviewer"
+	},
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"icon": "assets/local/icon.png",
+	"categories": [
+		"Visualization"
+	],
+	"activationEvents": [
+		"onCommand:sna-fileviewer.openSna"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
+	"main": "./out/extension",
+	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "sna-fileviewer.viewer",
+				"displayName": "ZX SNA File Viewer",
+				"selector": [
+					{
+						"filenamePattern": "*.sna"
+					}
+				],
+				"priority": "default"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run esbuild-node -- --minify && npm run esbuild-browser -- --minify",
+		"esbuild-node": "esbuild ./src/extension.ts --bundle --outdir=out --external:vscode --format=cjs --platform=node",
+		"esbuild-browser": "esbuild ./src/html/main.ts --bundle --outdir=out/html --platform=browser",
+		"watch-node": "npm run esbuild-node -- --sourcemap --watch",
+		"watch-browser": "npm run esbuild-browser -- --sourcemap --watch",
+		"package": "vsce package"
+	},
+	"dependencies": {
+		"gif-writer": "^0.9.4"
+	},
+	"devDependencies": {
+		"@types/node": "^16.11.4",
+		"@types/vscode": "^1.61.0",
+		"@types/vscode-webview": "^1.57.0",
+		"esbuild": "^0.25.3",
+		"source-map-support": "^0.5.21",
+		"typescript": "^4.4.4"
+	},
+	"__metadata": {
+		"id": "ecbfef53-baf9-4ed1-8603-d63d67564643",
+		"publisherId": "8e0bd66d-43ba-49ba-be8e-1c11111f3e5b",
+		"publisherDisplayName": "maziac",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1749341131061,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery",
+		"size": 234069
+	}
+}

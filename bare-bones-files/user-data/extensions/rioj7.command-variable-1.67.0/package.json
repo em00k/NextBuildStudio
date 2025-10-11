@@ -1,0 +1,189 @@
+{
+	"name": "command-variable",
+	"displayName": "Command Variable",
+	"description": "Calculate command variables for launch.json and tasks.json",
+	"publisher": "rioj7",
+	"license": "MIT",
+	"version": "1.67.0",
+	"engines": {
+		"vscode": "^1.55.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"command",
+		"variable",
+		"launch",
+		"tasks",
+		"date",
+		"multi-root ready",
+		"pick",
+		"file",
+		"key",
+		"value",
+		"uuid",
+		"clipboard",
+		"number",
+		"remember"
+	],
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#000080",
+		"theme": "dark"
+	},
+	"activationEvents": [
+		"onCommand:extension.commandvariable.file.relativeDirDots",
+		"onCommand:extension.commandvariable.file.relativeFileDots",
+		"onCommand:extension.commandvariable.file.relativeFileDotsNoExtension",
+		"onCommand:extension.commandvariable.file.relativeFilePosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirnamePosix",
+		"onCommand:extension.commandvariable.file.filePosix",
+		"onCommand:extension.commandvariable.file.fileDirnamePosix",
+		"onCommand:extension.commandvariable.file.fileDirname1Up",
+		"onCommand:extension.commandvariable.file.fileDirname2Up",
+		"onCommand:extension.commandvariable.file.fileDirname3Up",
+		"onCommand:extension.commandvariable.file.fileDirname4Up",
+		"onCommand:extension.commandvariable.file.fileDirname5Up",
+		"onCommand:extension.commandvariable.file.fileDirname1UpPosix",
+		"onCommand:extension.commandvariable.file.fileDirname2UpPosix",
+		"onCommand:extension.commandvariable.file.fileDirname3UpPosix",
+		"onCommand:extension.commandvariable.file.fileDirname4UpPosix",
+		"onCommand:extension.commandvariable.file.fileDirname5UpPosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirname1Up",
+		"onCommand:extension.commandvariable.file.relativeFileDirname2Up",
+		"onCommand:extension.commandvariable.file.relativeFileDirname3Up",
+		"onCommand:extension.commandvariable.file.relativeFileDirname4Up",
+		"onCommand:extension.commandvariable.file.relativeFileDirname5Up",
+		"onCommand:extension.commandvariable.file.relativeFileDirname1UpPosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirname2UpPosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirname3UpPosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirname4UpPosix",
+		"onCommand:extension.commandvariable.file.relativeFileDirname5UpPosix",
+		"onCommand:extension.commandvariable.file.fileAsKey",
+		"onCommand:extension.commandvariable.file.fileDirBasename",
+		"onCommand:extension.commandvariable.file.fileDirBasename1Up",
+		"onCommand:extension.commandvariable.file.fileDirBasename2Up",
+		"onCommand:extension.commandvariable.file.fileDirBasename3Up",
+		"onCommand:extension.commandvariable.file.fileDirBasename4Up",
+		"onCommand:extension.commandvariable.file.fileDirBasename5Up",
+		"onCommand:extension.commandvariable.file.content",
+		"onCommand:extension.commandvariable.file.contentInEditor",
+		"onCommand:extension.commandvariable.file.pickFile",
+		"onCommand:extension.commandvariable.file.openDialog",
+		"onCommand:extension.commandvariable.file.saveDialog",
+		"onCommand:extension.commandvariable.workspace.folder",
+		"onCommand:extension.commandvariable.workspace.folder1Up",
+		"onCommand:extension.commandvariable.workspace.folder2Up",
+		"onCommand:extension.commandvariable.workspace.folder3Up",
+		"onCommand:extension.commandvariable.workspace.folder4Up",
+		"onCommand:extension.commandvariable.workspace.folder5Up",
+		"onCommand:extension.commandvariable.workspace.workspaceFolderPosix",
+		"onCommand:extension.commandvariable.workspace.folderPosix",
+		"onCommand:extension.commandvariable.workspace.folder1UpPosix",
+		"onCommand:extension.commandvariable.workspace.folder2UpPosix",
+		"onCommand:extension.commandvariable.workspace.folder3UpPosix",
+		"onCommand:extension.commandvariable.workspace.folder4UpPosix",
+		"onCommand:extension.commandvariable.workspace.folder5UpPosix",
+		"onCommand:extension.commandvariable.workspace.folderBasename",
+		"onCommand:extension.commandvariable.workspace.folderBasename1Up",
+		"onCommand:extension.commandvariable.workspace.folderBasename2Up",
+		"onCommand:extension.commandvariable.workspace.folderBasename3Up",
+		"onCommand:extension.commandvariable.workspace.folderBasename4Up",
+		"onCommand:extension.commandvariable.workspace.folderBasename5Up",
+		"onCommand:extension.commandvariable.selectedText",
+		"onCommand:extension.commandvariable.selectionStartLineNumber",
+		"onCommand:extension.commandvariable.selectionStartColumnNumber",
+		"onCommand:extension.commandvariable.selectionEndLineNumber",
+		"onCommand:extension.commandvariable.selectionEndColumnNumber",
+		"onCommand:extension.commandvariable.currentLineText",
+		"onCommand:extension.commandvariable.dirSep",
+		"onCommand:extension.commandvariable.envListSep",
+		"onCommand:extension.commandvariable.pickStringRemember",
+		"onCommand:extension.commandvariable.promptStringRemember",
+		"onCommand:extension.commandvariable.rememberPick",
+		"onCommand:extension.commandvariable.remember",
+		"onCommand:extension.commandvariable.number",
+		"onCommand:extension.commandvariable.dateTime",
+		"onCommand:extension.commandvariable.dateTimeInEditor",
+		"onCommand:extension.commandvariable.transform",
+		"onCommand:extension.commandvariable.UUID",
+		"onCommand:extension.commandvariable.UUIDInEditor",
+		"onCommand:extension.commandvariable.inTerminal",
+		"onCommand:extension.commandvariable.config.expression",
+		"onCommand:extension.commandvariable.js.expression",
+		"onCommand:extension.commandvariable.getClipboard",
+		"onCommand:extension.commandvariable.setClipboard"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.commandvariable.dateTimeInEditor",
+				"title": "Language-sensitive format of current Date and Time"
+			},
+			{
+				"command": "extension.commandvariable.UUIDInEditor",
+				"title": "Generate a UUID v4 (from random numbers)"
+			}
+		],
+		"configuration": {
+			"title": "Command Variable",
+			"properties": {
+				"commandvariable.remember.persistent.file": {
+					"type": "string",
+					"description": "File path of persistent storage of the remembered values",
+					"scope": "resource"
+				},
+				"commandvariable.file.pickFile.labelMaximumLength": {
+					"type": "integer",
+					"description": "If pickFile label is longer apply the defined transforms",
+					"scope": "machine",
+					"minimum": 0
+				},
+				"commandvariable.file.pickFile.labelClipPoint": {
+					"type": "integer",
+					"description": "Define the clip point at start (>=0) or at end (<0) of the path, other clip point is calculated",
+					"scope": "machine"
+				}
+			}
+		}
+	},
+	"main": "./extension.js",
+	"browser": "./out/extension-common.js",
+	"homepage": "https://github.com/rioj7/command-variable",
+	"bugs": {
+		"url": "https://github.com/rioj7/command-variable/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rioj7/command-variable.git"
+	},
+	"scripts": {
+		"build": "rollup -c --environment BUILD:production",
+		"dev": "rollup -c --environment BUILD:development"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^19.0.0",
+		"@rollup/plugin-node-resolve": "^13.0.0",
+		"@types/assert": "^1.5.4",
+		"@types/mocha": "^8.2.1",
+		"glob": "^7.1.6",
+		"mocha": "^9.1.3",
+		"rollup": "^2.48.0",
+		"simple-mock": "^0.8.0"
+	},
+	"__metadata": {
+		"id": "cbb68238-96f0-4372-9e2c-7f9b10e757cf",
+		"publisherId": "1d5ba1ea-d2c3-47c5-91a7-a4e7ee99af99",
+		"publisherDisplayName": "rioj7",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1744592665025,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery",
+		"size": 437946
+	}
+}

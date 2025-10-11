@@ -1,0 +1,456 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "MODULE : Build all modules",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/build.py",
+                "-b",
+                "${file}",
+                "-m"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/build.py",
+                    "-b",
+                    "${file}",
+                    "-m"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "MODULE : Build single module",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/build.py",
+                "-b",
+                "${file}",
+                "-s"
+            ],
+            "group": "build",
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/build.py",
+                    "-b",
+                    "${file}",
+                    "-s"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "MODULE : Build single module & run",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/build.py",
+                "-b",
+                "${file}",
+                "-s",
+                "-e"
+            ],
+            "group": "build",
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/build.py",
+                    "-b",
+                    "${file}",
+                    "-s",
+                    "-e"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "MODULE : Build all modules & run",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/build.py",
+                "-b",
+                "${file}",
+                "-m",
+                "-e"
+            ],
+            "group": "build",
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/build.py",
+                    "-b",
+                    "${file}",
+                    "-m",
+                    "-e"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Source",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/nextbuild.py",
+                "-b",
+                "'${file}'",
+                "-s"
+            ],
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/nextbuild.py",
+                    "-b",
+                    "'${file}'",
+                    "-s"
+                ],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "problemMatcher": {
+                    "owner": "nextbuild-viewers",
+                    "fileLocation": [
+                        "absolute"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "severity": 3,
+                        "message": 4
+                    }
+                },
+
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+        }
+        },
+        {
+            "label": "Start CSpect",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/launch_cspect.py",
+                "--map",
+                "${fileDirname}/build/${fileBasename}.map",
+                "--nex",
+                "${fileDirname}/${fileBasenameNoExtension}.nex",
+                "--echo"
+            ],
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/launch_cspect.py",
+                    "--map",
+                    "${fileDirname}/build/${fileBasename}.map",
+                    "--nex",
+                    "${fileDirname}/${fileBasenameNoExtension}.nex",
+                    "--echo"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": false,
+                "revealProblems": "onProblem",
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "close": false
+            },
+            "problemMatcher": [
+                // Warning: Map file not found: /home/usb/Documents/GitHub/NextBuildv9-Gold/build/launch_cspect.md.map
+                // Error: NEX file not found: /home/usb/Documents/GitHub/NextBuildv9-Gold/launch_cspect.nex
+                {
+                    "owner": "nextbuild-viewers",
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):\\s+(warning|Error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "severity": 3,
+                        "message": 4
+                    }
+                }
+            ]
+        },
+        {
+            "label": "Start NextZXOS",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/launch_cspect.py",
+                "--hdf",
+                "--map",
+                "${fileDirname}/build/${fileBasename}.map"
+            ],
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/launch_cspect.py",
+                    "--hdf",
+                    "--map",
+                    "${fileDirname}/build/${fileBasename}.map"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Sync Files to HDF",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/nextbuild.py",
+                "-b",
+                "${file}",
+                "--sync-hdf"
+            ],
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/nextbuild.py",
+                    "-b",
+                    "${file}",
+                    "--sync-hdf"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Edit Config",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/module.py",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/module.py",
+                    "${file}"
+                ],
+                "options": {
+                    "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Cleanup",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-rf",
+                "${workspaceFolder}/build/*"
+            ],
+            "windows": {
+                "command": "rmdir",
+                "args": [
+                    "/s",
+                    "/q",
+                    "${workspaceFolder}\\build"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Template",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "Scripts/templates.py",
+                "${workspaceFolder}"
+            ],
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "Scripts/templates.py"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "panel": "dedicated",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Source & Run CSpect",
+            "dependsOn": [
+                "Build Source",
+                "Start CSpect"
+            ],
+            "dependsOrder": "sequence",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "panel": "dedicated",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Source & Run NextZXOS",
+            "dependsOn": [
+                "Build Source",
+                "Sync Files to HDF",
+                "Start NextZXOS"
+            ],
+            "dependsOrder": "sequence",
+            "group": "build"
+        },
+        {
+            "label": "Check for CSpect Update",
+            "type": "shell",
+            "command": "python/bin/python",
+            "args": [
+                "-m",
+                "Scripts.update"
+            ],
+            "windows": {
+                "command": "python/python",
+                "args": [
+                    "-m",
+                    "Scripts.update"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "dedicated",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test CWD and Config",
+            "type": "shell",
+            "command": "echo",
+            "args": [
+                "Config value is: [${config:nextbuild-viewers.linting.rootFolderForIncludes}]",
+                "Current working directory should be the same:"
+            ],
+            "windows": {
+                "command": "echo",
+                "args": [
+                    "Config value is: [${config:nextbuild-viewers.linting.rootFolderForIncludes}]"
+                ]
+            },
+            "options": {
+                "cwd": "${config:nextbuild-viewers.linting.rootFolderForIncludes}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        }
+    ]
+}
+

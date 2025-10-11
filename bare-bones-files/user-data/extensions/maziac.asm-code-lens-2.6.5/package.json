@@ -1,0 +1,338 @@
+{
+	"name": "asm-code-lens",
+	"displayName": "ASM Code Lens",
+	"version": "2.6.5",
+	"publisher": "maziac",
+	"description": "A language server that enables code lens, references, hover information, symbol renaming and the outline view for assembler files.",
+	"author": {
+		"name": "Thomas Busse"
+	},
+	"keywords": [
+		"assembler",
+		"references",
+		"code lens",
+		"z80",
+		"x86"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maziac/asm-code-lens-issues"
+	},
+	"bugs": {
+		"url": "https://github.com/maziac/asm-code-lens-issues/issues"
+	},
+	"engines": {
+		"vscode": "^1.98.0"
+	},
+	"icon": "assets/local/icon.png",
+	"categories": [
+		"Programming Languages"
+	],
+	"activationEvents": [],
+	"main": "./out/extension.js",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"type": "webview",
+					"id": "asm-code-lens.calcview-explorer",
+					"name": "Hexadecimal Calculator",
+					"icon": "assets/local/hexcalc_icon.svg",
+					"contextualTitle": "Hex Calculator",
+					"when": "config.asm-code-lens.hexCalculator.showInExplorer"
+				}
+			],
+			"debug": [
+				{
+					"type": "webview",
+					"id": "asm-code-lens.calcview-debug",
+					"name": "Hexadecimal Calculator",
+					"icon": "assets/local/hexcalc_icon.svg",
+					"contextualTitle": "Hex Calculator",
+					"when": "config.asm-code-lens.hexCalculator.showInDebug"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "asm-code-lens configuration",
+			"properties": {
+				"asm-code-lens.enableWorkspaceSymbols": {
+					"order": 11,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable ['Open symbol by name'](https://code.visualstudio.com/docs/editor/editingevolved#_open-symbol-by-name)"
+				},
+				"asm-code-lens.workspaceSymbolsRequiredLength": {
+					"order": 12,
+					"scope": "resource",
+					"type": "number",
+					"default": 2,
+					"markdownDescription": "The number of characters required before symbols will be presented."
+				},
+				"asm-code-lens.enableOutlineView": {
+					"order": 21,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable outline view for the active document."
+				},
+				"asm-code-lens.enableCodeLenses": {
+					"order": 31,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable the display of code lenses ([references](https://code.visualstudio.com/docs/editor/editingevolved#_reference-information)) above labels."
+				},
+				"asm-code-lens.enableHovering": {
+					"order": 41,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable showing the comments while hovering labels etc."
+				},
+				"asm-code-lens.enableCompletions": {
+					"order": 51,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable symbol input completion."
+				},
+				"asm-code-lens.completionsRequiredLength": {
+					"order": 52,
+					"scope": "resource",
+					"type": "number",
+					"default": 1,
+					"markdownDescription": "The number of characters required before completion proposals will be presented."
+				},
+				"asm-code-lens.enableGotoDefinition": {
+					"order": 61,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable ['Go to Definition'](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)."
+				},
+				"asm-code-lens.enableFindAllReferences": {
+					"order": 71,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable 'Find All References'."
+				},
+				"asm-code-lens.enableRenaming": {
+					"order": 81,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable the possibility to [rename](https://code.visualstudio.com/docs/editor/editingevolved#_rename-symbol) labels. You need to reload the extension to take effect."
+				},
+				"asm-code-lens.enableFolding": {
+					"order": 86,
+					"scope": "resource",
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Enable/disable the folding of e.g. labels in asm files."
+				},
+				"asm-code-lens.comments.toggleLineCommentPrefix": {
+					"order": 91,
+					"scope": "application",
+					"markdownDescription": "Configure the prefix used when toggling the line comment.",
+					"type": "string",
+					"default": ";"
+				},
+				"asm-code-lens.enablePushPopMatching": {
+					"order": 92,
+					"scope": "application",
+					"markdownDescription": "Enable highlighting of matching push/pop pairs.",
+					"type": "boolean",
+					"default": true
+				},
+				"asm-code-lens.labels.colon": {
+					"order": 101,
+					"scope": "resource",
+					"markdownDescription": "Determines if labels with or without or both should be recognized.\nPlease note: labels without colons cannot be determined in list files.",
+					"type": "string",
+					"enum": [
+						"Both",
+						"With colon",
+						"Without colon"
+					],
+					"enumDescriptions": [
+						"Labels with and without a trailing colon",
+						"Only labels with a trailing colon",
+						"Only labels without a trailing colon"
+					],
+					"default": "Both"
+				},
+				"asm-code-lens.labels.excludes": {
+					"order": 102,
+					"scope": "resource",
+					"markdownDescription": "Configure here a comma separated list of words that should not be recognized as labels. E.g. if asm-code-lens wrongly interprets an assembler directive as label you can exclude it here. For example `if;then;else;elif;endif`. The exclude is case-insensitive.",
+					"type": "string",
+					"default": ""
+				},
+				"asm-code-lens.excludeFiles": {
+					"order": 111,
+					"scope": "resource",
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Choose what files or directories to exclude e.g `**/*.{inc,s}`."
+				},
+				"asm-code-lens.hexCalculator.showInExplorer": {
+					"order": 121,
+					"scope": "window",
+					"markdownDescription": "Set to false to disable calculator in explorer view.",
+					"type": "boolean",
+					"default": true
+				},
+				"asm-code-lens.hexCalculator.showInDebug": {
+					"order": 122,
+					"scope": "resource",
+					"markdownDescription": "Set to false to disable calculator in debug view.",
+					"type": "boolean",
+					"default": true
+				},
+				"asm-code-lens.hexCalculator.hexPrefix": {
+					"order": 123,
+					"scope": "application",
+					"markdownDescription": "The prefix to use for hex values, e.g. `0x` or `$`",
+					"type": "string",
+					"default": "0x"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "asm-code-lens.whatsNew",
+				"title": "Show \"What's New\" page of this ASM-Code-Lens release.",
+				"category": "asm-code-lens"
+			},
+			{
+				"command": "asm-code-lens.find-labels-with-no-reference",
+				"title": "Find Labels with no Reference",
+				"category": "asm-code-lens"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "resourceLangId == asm-collection || resourceLangId == asm-list-file",
+					"command": "asm-code-lens.find-labels-with-no-reference",
+					"group": "0_navigation@10"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "asm-code-lens.find-labels-with-no-reference",
+					"when": "false"
+				}
+			]
+		},
+		"languages": [
+			{
+				"id": "asm-collection",
+				"extensions": [
+					".a80",
+					".z80",
+					".asm",
+					".inc",
+					".s"
+				],
+				"aliases": [
+					"Assembler file"
+				],
+				"configuration": "./config/asm-collection.language.configuration.json"
+			},
+			{
+				"id": "asm-list-file",
+				"extensions": [
+					".list",
+					".lis"
+				],
+				"aliases": [
+					"Assembler list file"
+				]
+			},
+			{
+				"id": "asm-markdown-codeblock"
+			},
+			{
+				"id": "asm-list-markdown-codeblock"
+			}
+		],
+		"grammars": [
+			{
+				"language": "asm-collection",
+				"scopeName": "source.asm",
+				"path": "./grammar/asm.json"
+			},
+			{
+				"language": "asm-list-file",
+				"scopeName": "source.asm.list",
+				"path": "./grammar/asm_list.json"
+			},
+			{
+				"language": "asm-markdown-codeblock",
+				"scopeName": "markdown.asm.codeblock",
+				"path": "./grammar/asm_markdown_codeblock.json",
+				"injectTo": [
+					"text.html.markdown"
+				]
+			},
+			{
+				"language": "asm-list-markdown-codeblock",
+				"scopeName": "markdown.asm.list.codeblock",
+				"path": "./grammar/asm_list_markdown_codeblock.json",
+				"injectTo": [
+					"text.html.markdown"
+				]
+			}
+		],
+		"problemMatchers": [
+			{
+				"name": "problem-matcher-sjasmplus",
+				"owner": "asm-code-lens",
+				"fileLocation": "autoDetect",
+				"pattern": [
+					{
+						"regexp": "^(.*)\\((\\d+)\\):\\s+(warning|error):\\s+(.*)$",
+						"file": 1,
+						"line": 2,
+						"severity": 3,
+						"message": 4
+					}
+				]
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -p ./",
+		"watch-tsc": "tsc -w -p ./",
+		"test": "mocha -u tdd ./out/tests/",
+		"vscode:prepublish": "npm run esbuild-node -- && npm run esbuild-browser --",
+		"esbuild-node": "node esbuild-node.config.js",
+		"esbuild-browser": "esbuild ./src/html/hexcalc.ts --bundle --outdir=out/html --platform=browser --minify",
+		"watch-node": "npm run esbuild-node -- --sourcemap --watch",
+		"watch-browser": "npm run esbuild-browser -- --sourcemap --watch",
+		"package": "vsce package"
+	},
+	"dependencies": {
+		"path": "^0.12.7"
+	},
+	"devDependencies": {
+		"@types/mocha": "10.0.0",
+		"@types/node": "^18.8.2",
+		"@types/vscode": "^1.98.0",
+		"@types/vscode-webview": "^1.57.0",
+		"esbuild": "^0.25.0",
+		"mocha": "^10.4.0",
+		"source-map-support": "^0.5.21",
+		"typescript": "^4.8.4"
+	},
+	"__metadata": {
+		"installedTimestamp": 1757996804992,
+		"targetPlatform": "undefined",
+		"size": 382253
+	}
+}

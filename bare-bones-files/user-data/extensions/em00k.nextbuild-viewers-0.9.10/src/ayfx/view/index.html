@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYFX Multi-Channel Editor</title>
+    <style>
+        {{style}}
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div class="controls">
+            <h3>AYFX Multi-Channel Audio Effects Editor</h3>
+
+            <div class="control-row">
+                <label>
+                    Effect name: 
+                    <input type="text" id="effect-name" placeholder="Effect name">
+                </label>
+                
+                <label>
+                    Effect: 
+                    <input type="number" id="position" min="0" max="999" value="0" style="width: 60px;">
+                    of <span id="total-effects">000</span>
+                </label>
+                
+                <div class="channel-controls" >
+                    <label>
+                        <input type="radio" name="channel-mode" value="single" checked> Single Channel
+                    </label>
+                    <label>
+                        <input type="radio" name="channel-mode" value="dual"> Dual Channel
+                    </label>
+                    <label>
+                        <input type="radio" name="channel-mode" value="triple"> Triple Channel
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-row">
+                <button data-action="play">▶ Play</button>
+                <button data-action="play-channel-a">▶ Play A</button>
+                <!-- Only using 1 AYFX chip -->
+                <!-- <button data-action="play-channel-b">▶ Play B</button> -->
+                <!-- <button data-action="play-channel-c">▶ Play C</button> -->
+                <button data-action="stop">⏹ Stop</button>
+                <button data-action="copy">📋 Copy</button>
+                <button data-action="paste">📄 Paste</button>
+                <button data-action="clear">🗑️ Clear Effect</button>
+                <button data-action="delete-effect">❌ Delete</button>
+                <button data-action="insert-effect">➕ Insert</button>
+                <button data-action="insert-blank">➕ Insert</button>
+                <!-- <button data-action="save-effect">💾 Save Effect</button> -->
+                <button data-action="download">📦 Save</button>
+            </div>
+
+            <div class="control-row">
+                <label>
+                    Import collection: 
+                    <select id="import-collection">
+                        <option value="">Select a collection...</option>
+                        <option value="zxmsx">ZX MSX</option>
+                        <option value="zxgames">ZX Games</option>
+                        <option value="tests">Tests</option>
+                        <option value="streets">Streets</option>
+                        <option value="From PSG">Import PSG</option>
+                    </select>
+                </label>
+                <button data-action="import">Import</button>
+                
+                <label>
+                    <input type="checkbox" id="sync-channels" checked> Sync channel cursors
+                </label>
+                <label>
+                    <input type="checkbox" id="combined-playback" checked> Combined playback
+                </label>
+                <label>
+                    <input type="checkbox" id="tone-logarithmic"> Logarithmic tone bars
+                </label>
+            </div>
+        </div>
+
+        <div class="multi-channel-container">
+            <!-- Channel A -->
+            <div class="channel-panel" id="channel-a" data-channel="a">
+                <div class="channel-header">
+                    <h4>Channel A (Tone 1)</h4>
+                    <div class="channel-controls">
+                        <label>
+                            <input type="checkbox" class="channel-mute" data-channel="a"> Mute
+                        </label>
+                        <label>
+                            Volume: <input type="range" class="channel-volume" data-channel="a" min="0" max="1" step="0.1" value="0.8">
+                        </label>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <form>
+                        <table class="effect-table" id="effect-table-a">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>T</th>
+                                    <th>N</th>
+                                    <th>Tone</th>
+                                    <th>Noise</th>
+                                    <th>Vol</th>
+                                    <th>Tone Bar</th>
+                                    <th>Noise Bar</th>
+                                    <th>Vol Bar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Channel B -->
+            <div class="channel-panel" id="channel-b" data-channel="b" style="display: none;">
+                <div class="channel-header">
+                    <h4>Channel B (Tone 2)</h4>
+                    <div class="channel-controls">
+                        <label>
+                            <input type="checkbox" class="channel-mute" data-channel="b"> Mute
+                        </label>
+                        <label>
+                            Volume: <input type="range" class="channel-volume" data-channel="b" min="0" max="1" step="0.1" value="0.8">
+                        </label>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <form>
+                        <table class="effect-table" id="effect-table-b">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>T</th>
+                                    <th>N</th>
+                                    <th>Tone</th>
+                                    <th>Noise</th>
+                                    <th>Vol</th>
+                                    <th>Tone Bar</th>
+                                    <th>Noise Bar</th>
+                                    <th>Vol Bar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Channel C -->
+            <div class="channel-panel" id="channel-c" data-channel="c" style="display: none;">
+                <div class="channel-header">
+                    <h4>Channel C (Tone 3)</h4>
+                    <div class="channel-controls">
+                        <label>
+                            <input type="checkbox" class="channel-mute" data-channel="c"> Mute
+                        </label>
+                        <label>
+                            Volume: <input type="range" class="channel-volume" data-channel="c" min="0" max="1" step="0.1" value="0.8">
+                        </label>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <form>
+                        <table class="effect-table" id="effect-table-c">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>T</th>
+                                    <th>N</th>
+                                    <th>Tone</th>
+                                    <th>Noise</th>
+                                    <th>Vol</th>
+                                    <th>Tone Bar</th>
+                                    <th>Noise Bar</th>
+                                    <th>Vol Bar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-keyboard">
+            <h4>🎹 Musical Notes</h4>
+            <div class="keyboard-controls">
+                <label>
+                    <input type="checkbox" id="preview-notes" checked> Preview notes on hover
+                </label>
+                <span id="octave-display">Octave: 4 (Use Page Up/Down to change)</span>
+                <label>
+                    Active channel: 
+                    <select id="active-channel">
+                        <option value="a">Channel A</option>
+                        <option value="b">Channel B</option>
+                        <option value="c">Channel C</option>
+                    </select>
+                </label>
+            </div>
+            <div id="note-keyboard-container"></div>
+        </div>
+    </div>
+
+    <script>
+        {{script}}
+    </script>
+</body>
+</html> 

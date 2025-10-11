@@ -1,0 +1,20 @@
+'!org=24576
+
+#define NEX 
+#define IM2 
+
+#include <nextlib.bas>
+
+' Load font5 from system into bank 32 
+LoadSDBank("[]font5.spr",0,0,0,32)
+' set up Layer2 320x256
+InitLayer2(MODE320X256)
+' show the layer2 
+ShowLayer2(1)
+' print using Full Layer2 Text, bank 32
+FL2Text(0,0,"WELCOME TO NEXT BUILD",32)
+
+do 
+    ' forever loop 
+    WaitRaster(192)
+loop

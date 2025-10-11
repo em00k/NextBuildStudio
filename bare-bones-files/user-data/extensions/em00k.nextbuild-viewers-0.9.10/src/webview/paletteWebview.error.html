@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+            background-color: var(--vscode-editor-background);
+            color: var(--vscode-errorForeground);
+        }
+        .error {
+            color: var(--vscode-errorForeground);
+            background-color: var(--vscode-inputValidation-errorBackground);
+            padding: 10px;
+            border-left: 3px solid var(--vscode-inputValidation-errorBorder);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Error Loading Palette File</h1>
+    <div class="error">
+        <p>__ERROR_MESSAGE__</p>
+    </div>
+    <p>Make sure the file is a valid ZX Next palette (.pal or .nxp) file.</p>
+</body>
+</html> 

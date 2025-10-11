@@ -1,0 +1,51 @@
+NextBuildStudio Barebones v1.0.0
+
+If you are using MacOS/Linux and a 3rd party fork VSCode (Codium/Cursor/VSCode etc), it is possible to manually set up most of the functionality that NextBuildStudio provides. You can do this by downloading the NextBuildStudio-barebones.zip and following these steps:
+
+	- Extract the NextBuildStudio-barebones.zip to a temporary folder
+
+	- If you already have your editor installed you can skip this step - otherwise download and install VSCode or whatever your choice is. Run the program onces and quit.
+
+	- Copy the "exstensions" folder from the "user-data" to the following place (note this folder will be customised to whatever fork of VSCode you are running)
+
+		- Linux / MacOS : ~/.vscode/ 
+		- Windows %appdata%/vscode/
+
+	- Move the NextBuildv9 folder to :
+ 
+		- Linux / MacOS : ~/Documents
+		- Windows %userprofile%/Documents
+
+	- Browse to ~/Documents/NextBuildv9/Sourcese
+	- Double click NextBuild.code-workspace, NextBuildStudio should now load. 
+        - If it doesnt open in the correct folder, use the File menu to "Open a workspace File"
+    	- Or, choose to open a folder and point it to "~/Documents/Nextbuildv9/Sources"
+
+    You will now need to edit the NextBuild.code-workspace file in the editor and fix the paths for : 
+
+    "nextbuild-viewers.linting.rootFolderForIncludes" : "/path/to/NextBuildv9/"
+
+    and
+
+    "nextbuild-viewers.playpt3Path" : "/path/to/NextBuildv9/Tools/playpt3"
+
+    Now try to open a source file, but before you can do this, go to the terminal menu and pick "Run Task" type "check" in the search field and pick "Check fo CSpect Update" to download the latest version.
+
+    Now do the same thing but pick the "Download NextZXOS Image"
+
+	Now install the correct VSIX for your OS - you do this inside VSCode, open the command
+    palette, pick type Install vsix and the option to install one should be shown, select
+    the correct one.
+
+
+    Now you should be able to load a source file click the "Compile and Run!"
+
+
+If NextBuild-Viewers (the main NBS extension) fails to load, it will be due to missing OS specific node modules, in particular Img, Sharp and Jimp. (You will know when you try and open an .spr for viewing)
+
+To fix this, make sure you have nodejs installed, use the terminal to navigate to ~/.vscode/extensions/em00k.nextbuild-viewers-0.9.8/ and now type:
+
+npm install 
+
+Once this has completed restart the IDE, if this was successful you should see the "Welcome to NextBuild" notification on start up. 
+

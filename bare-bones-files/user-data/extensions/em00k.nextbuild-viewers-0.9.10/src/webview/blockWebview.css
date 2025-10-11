@@ -1,0 +1,517 @@
+:root {
+    /* Default values, will be overridden by style attribute if needed */
+    --block-scale: 2;
+    --block-width: 16;
+    --block-height: 16;
+    --map-cols: 32;
+    --list-cols: 8;
+}
+body {
+    padding: 10px;
+    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif);
+    font-size: var(--vscode-font-size);
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    margin: 0; /* Remove default margin */
+    display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    height: 100vh; /* Full viewport height */
+    box-sizing: border-box; /* Include padding in height */
+}
+h1 {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+    color: var(--vscode-textLink-foreground);
+    font-weight: 600;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.file-info {
+    font-size: 0.9em;
+    color: var(--vscode-descriptionForeground);
+    font-weight: 500;
+    flex-shrink: 0; /* Prevent shrinking */
+    margin-bottom: 0; /* Was 1em */
+    background-color: transparent; /* Was var(--vscode-sideBar-background) */
+    padding: 0; /* Was 5px */
+    border-radius: 0; /* Was 3px */
+    border: none; /* Was 1px solid */
+}
+ .file-info strong {
+     color: var(--vscode-textLink-foreground);
+ }
+
+.toolbar {
+    display: flex;
+    flex-wrap: flex;
+    gap: 10px;
+    padding: 8px;
+    background-color: transparent; /* Was var(--vscode-sideBar-background) */
+    border-radius: 0; /* Was 4px */
+    margin-bottom: 0; /* Was 12px */
+    border: none; /* Was 1px solid */
+}
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 0;
+    min-width: unset;
+}
+label {
+    font-size: 12px;
+    color: var(--vscode-input-placeholderForeground);
+    font-weight: 500;
+    min-width: unset;
+    display: inline;
+}
+select, button, input[type="number"], input[type="range"] {
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--vscode-input-border);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    max-width: 150px; /* Prevent controls becoming too wide */
+}
+ input[type="number"] {
+     width: 40px;
+ }
+button {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 1px solid var(--vscode-button-border, transparent);
+    cursor: pointer;
+    padding: 3px 8px;
+    margin-right: 0;
+}
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+ input[type="checkbox"] { /* Consistent checkbox look */
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: var(--vscode-input-background);
+    vertical-align: middle; 
+    margin-right: 4px;
+}
+input[type="checkbox"]:checked { background-color: var(--vscode-button-background); }
+input[type="checkbox"]:checked::after {
+    content: '✔'; font-size: 10px; color: var(--vscode-button-foreground);
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+}
+
+#paletteStatus {
+    font-weight: 500;
+    color: var(--vscode-textLink-foreground);
+    font-style: italic;
+    margin-left: 5px;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+/* Common block styles (Used by block list HTML generation) */
+.block-container {
+    display: grid;
+    grid-template-columns: repeat(var(--sprite-width, 16), calc(var(--sprite-scale) * 1px));
+    grid-template-rows: repeat(var(--sprite-height, 16), calc(var(--sprite-scale) * 1px));
+    width: calc(var(--sprite-width, 16) * var(--sprite-scale) * 1px);
+    height: calc(var(--sprite-height, 16) * var(--sprite-scale) * 1px);
+    image-rendering: pixelated; /* Ensure crisp pixels */
+    background-color: #eee; /* Light background for empty pixels */
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border: 1px solid transparent; /* For spacing */
+    position: relative; /* Needed for absolute positioned grid lines */
+}
+.block-pixel {
+    width: calc(var(--sprite-scale) * 1px);
+    height: calc(var(--sprite-scale) * 1px);
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Grid styles (Applied via class to block-pixel in block list mode) */
+.show-grid .block-pixel {
+    border-right: 1px solid rgba(128, 128, 128, 0.3);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+    box-sizing: border-box;
+}
+.show-grid .block-container:last-child .block-pixel, 
+.show-grid .block-grid-row:last-child .block-pixel { /* Adjust if block-grid-row class is used */
+    border-bottom: none;
+}
+.show-grid .block-pixel:last-child {
+     border-right: none;
+}
+
+ /* Block list styles */
+.block-list-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--list-cols), max-content);
+    gap: 10px; /* Increased gap */
+    margin-bottom: 16px;
+    padding: 10px; /* Add padding */
+    background-color: var(--vscode-sideBar-background); /* Subtle background */
+    border-radius: 4px;
+}
+ .block-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--vscode-input-border);
+    padding: 4px;
+    border-radius: 3px;
+    background-color: var(--vscode-editorWidget-background);
+ }
+.block-info {
+    font-size: 10px;
+    margin-top: 4px;
+    color: var(--vscode-descriptionForeground);
+    text-align: center;
+    min-width: 80px; /* Ensure minimum width */
+}
+
+/* Map canvas container styles */
+#map-container {
+     width: fit-content; 
+     height: fit-content; 
+     /* overflow: auto; Enable scrolling for large maps */
+     border: 2px solid var(--vscode-editorWidget-border);
+     margin-bottom: 16px;
+     margin-right: 16px;
+     border-radius: 4px;
+}
+
+/* Tile Palette Styles */
+#tile-palette-container {
+    padding: 0; /* Was 8px */
+    background-color: transparent; /* Was var(--vscode-sideBar-background) */
+    border: none; /* Was 1px solid */
+    border-radius: 0; /* Was 4px */
+    display: block;
+    margin-bottom: 10px;
+}
+#tile-palette-container h2 {
+    font-size: 0.9em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: var(--vscode-textLink-foreground);
+}
+#tile-palette-scroll {
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 5px;
+    background-color: var(--vscode-editorWidget-background);
+    border-radius: 0 0 4px 4px; /* Keep only bottom radius */
+    border: 1px solid var(--vscode-sideBar-border, transparent);
+}
+#tile-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px; /* Slightly reduce gap */
+}
+.palette-tile {
+    /* Ensure border width is consistent to prevent layout shift */
+    border: 2px solid transparent; /* Use transparent border in default state */
+    cursor: pointer;
+    background-color: var(--vscode-input-background);
+    box-sizing: border-box;
+    transition: border-color 0.1s ease-in-out;
+}
+.palette-tile:hover {
+     border-color: var(--vscode-inputOption-activeBorder);
+}
+.palette-tile.selected {
+    border-color: var(--vscode-focusBorder); /* Only change border-color */
+    background-color: var(--vscode-inputOption-activeBackground, var(--vscode-list-hoverBackground));
+}
+
+/* Loading Indicator */
+#loadingIndicator {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    z-index: 1000;
+    font-size: 1.1em;
+}
+#loadingIndicator.visible {
+    display: block;
+}
+
+/* New Sticky Header Style */
+.sticky-header {
+    position: sticky; /* Back to sticky */
+    /* width: 100%; Removed */
+    top: 0;
+    /* left: 0; Removed */
+    z-index: 10; 
+    background-color: var(--vscode-editor-background); 
+    /* padding-bottom: 10px; Removed */
+    flex-shrink: 0; /* Prevent shrinking */
+} 
+
+/* Wrapper for scrollable content */
+.main-content-wrapper {
+    flex-grow: 1; /* Take remaining space */
+    overflow: auto; /* Enable scrolling */
+    position: relative; /* For potential absolute children positioning */
+    padding-top: 10px; /* Add some space above content */
+} 
+
+/* Styles for individual sprite containers within block list or map palette */
+.block-container {
+    display: grid; /* Use grid for pixels */
+    /* grid-template-columns: repeat(var(--block-width, 16), 1fr); */
+    /* grid-template-rows: repeat(var(--block-height, 16), 1fr); */
+    /* Instead of repeating columns/rows, calculate total size based on scale */
+    width: calc(var(--sprite-width, 16) * var(--sprite-scale, 1) * 1px);
+    height: calc(var(--sprite-height, 16) * var(--sprite-scale, 1) * 1px);
+    grid-template-columns: repeat(var(--sprite-width, 16), 1fr);
+    grid-template-rows: repeat(var(--sprite-height, 16), 1fr); 
+    overflow: hidden;
+    border: 1px solid transparent; /* For spacing */
+    position: relative; /* Needed for absolute positioned grid lines */
+}
+
+/* --- NEW Compound Block Styles --- */
+
+.compound-block-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the grid and info */
+    gap: 4px;
+    border: 1px solid var(--vscode-editorWidget-border, #ccc);
+    padding: 5px;
+    background-color: var(--vscode-editorWidget-background, #f0f0f0);
+    border-radius: 3px;
+    /* Maybe add some margin between compound items? Handled by block-list-grid gap */
+}
+
+.compound-block-grid {
+    display: grid;
+    /* Use the CSS variables set in the style attribute of parent */
+    grid-template-columns: repeat(var(--compound-block-width, 1), calc(var(--sprite-width) * var(--sprite-scale) * 1px));
+    grid-template-rows: repeat(var(--compound-block-height, 1), calc(var(--sprite-height) * var(--sprite-scale) * 1px));
+    /* gap: 1px; REMOVE GAP */ 
+
+    border: 1px dashed rgba(255, 255, 255, 0.2); /* Keep border for debugging */
+}
+
+.compound-block-info {
+    font-size: 0.8em;
+    color: var(--vscode-descriptionForeground);
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Adjust block-list-grid to lay out the compound items */
+.block-list-grid {
+    display: grid;
+    /* grid-template-columns: repeat(var(--list-cols), max-content); REMOVE */
+    /* Let items wrap based on available width */
+    grid-template-columns: repeat(auto-fill, minmax(max-content, 1fr)); 
+    /* Alternatively, specify a min width for compound blocks */
+    /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); Adjust minmax */
+    gap: 15px; /* Increase gap between compound blocks */
+    justify-content: center; /* Center items if grid doesn't fill width */
+    padding: 10px;
+}
+
+
+/* Adjust .block-item if it's still used or remove if replaced by compound-block-item */
+/* .block-item { ... } */
+
+
+/* Placeholder styles */
+.placeholder-missing {
+    background-color: #ccc !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--sprite-scale, 1) * 10px); 
+    color: #555;
+    border: 1px dashed #aaa;
+}
+
+.placeholder-empty {
+    background-color: #eee;
+    border: 1px dotted #ccc;
+    /* Ensure it takes up space */
+    width: calc(var(--sprite-width, 16) * var(--sprite-scale, 1) * 1px);
+    height: calc(var(--sprite-height, 16) * var(--sprite-scale, 1) * 1px);
+}
+
+/* Grid lines for individual sprites (within compound block) */
+.block-container.show-grid::before, 
+.block-container.show-grid::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+}
+
+.block-container.show-grid::before {
+    /* Vertical grid lines */
+    background: linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+    background-size: calc(100% / var(--sprite-width, 16)) 100%;
+}
+
+.block-container.show-grid::after {
+    /* Horizontal grid lines */
+    background: linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+    background-size: 100% calc(100% / var(--sprite-height, 16));
+}
+
+/* Fine pixel grid (if scale is high enough) */
+.block-container.show-grid[style*="--sprite-scale: 4"]::before, 
+/* ... add rules for scale 5, 6, 7, 8 if needed ... */
+.block-container.show-grid[style*="--sprite-scale: 8"]::before {
+    background: linear-gradient(to right, var(--pixel-grid-line-color) 1px, transparent 1px);
+    background-size: calc(var(--sprite-scale) * 1px) 100%; 
+}
+
+.block-container.show-grid[style*="--sprite-scale: 4"]::after,
+/* ... add rules for scale 5, 6, 7, 8 if needed ... */
+.block-container.show-grid[style*="--sprite-scale: 8"]::after {
+     background: linear-gradient(to bottom, var(--pixel-grid-line-color) 1px, transparent 1px);
+     background-size: 100% calc(var(--sprite-scale) * 1px);
+}
+
+
+/* Styles for sprite pixels */
+.block-pixel {
+    width: 100%; /* Fill grid cell */
+    height: 100%;
+    /* background-color is set inline */
+}
+
+/* Remove .block-info if not needed */
+/* .block-info { ... } */
+
+/* Add these new styles for collapsible sections */
+.section-header {
+    display: flex;
+    align-items: center;
+    background-color: var(--vscode-sideBar-background);
+    padding: 8px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid var(--vscode-sideBar-border, transparent);
+    border-bottom: none;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.section-header span {
+    font-weight: 600;
+    font-size: 0.9em;
+    color: var(--vscode-textLink-foreground);
+    margin-left: 5px;
+}
+
+.section-content {
+    background-color: var(--vscode-sideBar-background);
+    padding: 8px;
+    border-radius: 0 0 4px 4px;
+    border: 1px solid var(--vscode-sideBar-border, transparent);
+    border-top: none;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* When the section content is hidden, add a bottom border to the header */
+.section-header + .section-content[style*="display: none"] + .section-header {
+    margin-top: 0;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: var(--vscode-textLink-foreground);
+    cursor: pointer;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    min-width: 20px;
+    text-align: center;
+}
+
+.toggle-button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+/* Special styling for buttons in control groups */
+.control-group button {
+    padding: 4px 10px;
+    margin-right: 4px;
+}
+
+/* Make sure inputs have consistent width */
+.control-group input[type="number"] {
+    width: 60px;
+}
+
+/* Ensure status text stands out */
+#paletteStatus {
+    font-weight: 500;
+    color: var(--vscode-textLink-foreground);
+    font-style: italic;
+    margin-left: 8px;
+    padding: 4px 8px;
+    background-color: var(--vscode-editor-background);
+    border-radius: 3px;
+}
+
+/* Adjust toolbar specifically */
+
+/* #toolbar-content {
+    display: flex !important; /* Ensure it's always flex */
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px;
+    row-gap: 4px;
+    column-gap: 8px;
+*/
+
+#file-info-content {
+    display: flex;
+    flex-direction: flex;
+    flex-wrap: nowrap;
+    padding: 8px;
+    row-gap: 4px;
+    column-gap: 8px;
+}
+
+/* Control sections grouping */
+.controls-section {
+    display: inline;
+    flex-wrap: nowrap;
+    gap: 0;
+    margin-bottom: 0;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+/* Make map controls stand out */
+.map-controls, .block-controls {
+    background-color: transparent;
+    border-color: transparent;
+}

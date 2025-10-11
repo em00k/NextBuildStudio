@@ -1,0 +1,236 @@
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:604: warning: [W150] Parameter 'num' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:660: warning: [W160] SUB 'MMU8new' declared as FASTCALL with 2 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:659: warning: [W150] Parameter 'slot' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:659: warning: [W150] Parameter 'memorybank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:697: warning: [W150] Parameter 'nn' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:697: warning: [W150] Parameter 'na' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:711: warning: [W150] Parameter 'memorybank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:750: warning: [W150] Parameter 'slot' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:793: warning: [W150] Parameter 'slot' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:808: warning: [W160] SUB 'ScrollLayer' declared as FASTCALL with 2 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:807: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:807: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:820: warning: [W160] SUB 'PlotL2' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:819: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:819: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:819: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:861: warning: [W160] SUB 'PlotL2Shadow' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:860: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:860: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:860: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:882: warning: [W160] SUB 'CIRCLEL2' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:881: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:881: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:881: warning: [W150] Parameter 'radius' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:881: warning: [W150] Parameter 'col' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1082: warning: [W160] SUB 'NextRegA' declared as FASTCALL with 2 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1081: warning: [W150] Parameter 'reg' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1081: warning: [W150] Parameter 'value' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1096: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1111: warning: [W150] Parameter 'source' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1111: warning: [W150] Parameter 'dest' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1190: warning: [W150] Parameter 'Total' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1190: warning: [W150] Parameter 'spraddress' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1190: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1223: warning: [W160] SUB 'InitSprites2' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1222: warning: [W150] Parameter 'Total' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1222: warning: [W150] Parameter 'spraddress' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1222: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1222: warning: [W150] Parameter 'sprite' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1279: warning: [W150] Parameter 'flag' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1292: warning: [W150] Parameter 'spriteid' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1292: warning: [W150] Parameter 'visible' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'spriteid' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'pattern' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'mflip' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W150] Parameter 'anchor' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1447: warning: [W150] Parameter 'fname' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1614: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1798: warning: [W150] Parameter 'filen' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1798: warning: [W150] Parameter 'address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1798: warning: [W150] Parameter 'length' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1798: warning: [W150] Parameter 'offset' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1943: warning: [W150] Parameter 'address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1943: warning: [W150] Parameter 'length' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2071: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2071: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2071: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2071: warning: [W150] Parameter 'B' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2158: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2158: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2158: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2228: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2228: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2228: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2228: warning: [W150] Parameter 'b' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W150] Parameter 'X' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W150] Parameter 'Y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W150] Parameter 'T' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W150] Parameter 'b' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W150] Parameter 'c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2427: warning: [W160] SUB 'FDoTile16' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2426: warning: [W150] Parameter 'tile' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2426: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2426: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2426: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2579: warning: [W160] SUB 'FDoTile8' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2578: warning: [W150] Parameter 'tile' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2578: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2578: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2578: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2719: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2719: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2719: warning: [W150] Parameter 'm' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2719: warning: [W150] Parameter 'fntbnk' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2719: warning: [W150] Parameter 'colormask' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2821: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2821: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2821: warning: [W150] Parameter 'm' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2821: warning: [W150] Parameter 'fntbnk' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2972: warning: [W160] SUB 'FPlotL2' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2971: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2971: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2971: warning: [W150] Parameter 'c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3074: warning: [W150] Parameter 'enable' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3088: warning: [W160] SUB 'FPlotLineV' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3087: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3087: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3087: warning: [W150] Parameter 'h' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3087: warning: [W150] Parameter 'c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3164: warning: [W160] SUB 'FPlotLineW' declared as FASTCALL with 4 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3163: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3163: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3163: warning: [W150] Parameter 'w' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3163: warning: [W150] Parameter 'c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3272: warning: [W150] Parameter 'xpos' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3272: warning: [W150] Parameter 'ypos' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3272: warning: [W150] Parameter 'img_data' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3272: warning: [W150] Parameter 'frame' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3387: warning: [W160] SUB 'InitPalette' declared as FASTCALL with 5 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W150] Parameter 'pallete_sel' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W150] Parameter 'start' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W150] Parameter 'colcount' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W150] Parameter 'offset' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3428: warning: [W150] Parameter 'address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3428: warning: [W150] Parameter 'colours' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3428: warning: [W150] Parameter 'offset' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3428: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3468: warning: [W150] Parameter 'p' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3484: warning: [W150] Parameter 'x1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3484: warning: [W150] Parameter 'x2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3484: warning: [W150] Parameter 'y1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3484: warning: [W150] Parameter 'y2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3501: warning: [W150] Parameter 'x1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3501: warning: [W150] Parameter 'x2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3501: warning: [W150] Parameter 'y1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3501: warning: [W150] Parameter 'y2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3517: warning: [W150] Parameter 'x1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3517: warning: [W150] Parameter 'x2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3517: warning: [W150] Parameter 'y1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3517: warning: [W150] Parameter 'y2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3533: warning: [W150] Parameter 'x1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3533: warning: [W150] Parameter 'x2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3533: warning: [W150] Parameter 'y1' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3533: warning: [W150] Parameter 'y2' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'blkoff' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'numberoftiles' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'x' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'y' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'width' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W150] Parameter 'mapwidth' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3729: warning: [W150] Parameter 'repeats' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3752: warning: [W150] Parameter 'repeats' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3861: warning: [W160] SUB 'CopyBank' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3860: warning: [W150] Parameter 'startb' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3860: warning: [W150] Parameter 'destb' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3860: warning: [W150] Parameter 'nrbanks' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3902: warning: [W160] SUB 'CopyFromBank' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3901: warning: [W150] Parameter 'cfb_sourceb' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3901: warning: [W150] Parameter 'cfb_dest_address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3901: warning: [W150] Parameter 'cfb_lenght' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:27: warning: [W150] Parameter 'mode' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:137: warning: [W150] Parameter 'colour' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:191: warning: [W150] Parameter 'index_c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:191: warning: [W150] Parameter 'red_c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:191: warning: [W150] Parameter 'green_c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:191: warning: [W150] Parameter 'blue_c' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:44: warning: [W160] SUB 'NewMusic' declared as FASTCALL with 2 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:43: warning: [W150] Parameter 'musicbank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:43: warning: [W150] Parameter 'second_mod_address' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:62: warning: [W150] Parameter 'sfxtoplay' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:73: warning: [W160] SUB 'InitMusic' declared as FASTCALL with 3 parameters
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:72: warning: [W150] Parameter 'playerbank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:72: warning: [W150] Parameter 'musicbank' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:72: warning: [W150] Parameter 'musicaddoffset' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:474: warning: [W150] Parameter 'bank' is never used
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:50: warning: [W150] Parameter 'scancode' is never used
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:605: warning: [W190] Function 'BinToString' should return a value
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:751: warning: [W190] Function 'GetMMU' should return a value
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:763: warning: [W190] Function 'check_interrupts' should return a value
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:794: warning: [W190] Function 'GetReg' should return a value
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1594: warning: [W190] Function 'ReserveBank' should return a value
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:51: warning: [W190] Function 'MultiKeys' should return a value
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:72: warning: [W190] Function 'GetKeyScanCode' should return a value
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:604: warning: [W170] Function 'BinToString' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:659: warning: [W170] Function 'MMU8new' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:697: warning: [W170] Function 'MMU8' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:711: warning: [W170] Function 'MMU16' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:750: warning: [W170] Function 'GetMMU' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:793: warning: [W170] Function 'GetReg' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:807: warning: [W170] Function 'ScrollLayer' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:819: warning: [W170] Function 'PlotL2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:860: warning: [W170] Function 'PlotL2Shadow' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:881: warning: [W170] Function 'CIRCLEL2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1081: warning: [W170] Function 'NextRegA' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1096: warning: [W170] Function 'swapbank' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1111: warning: [W170] Function 'zx7Unpack' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1190: warning: [W170] Function 'InitSprites' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1222: warning: [W170] Function 'InitSprites2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1279: warning: [W170] Function 'ShowSprites' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1292: warning: [W170] Function 'RemoveSprite' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1316: warning: [W170] Function 'UpdateSprite' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1447: warning: [W170] Function 'LoadBMP' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1591: warning: [W170] Function 'ReserveBank' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1614: warning: [W170] Function 'FreeBank' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1798: warning: [W170] Function 'LoadSD' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:1943: warning: [W170] Function 'SaveSD' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2071: warning: [W170] Function 'DoTileBank16' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2158: warning: [W170] Function 'DoTile8' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2228: warning: [W170] Function 'DoTileBank8' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2332: warning: [W170] Function 'DoTileBank8Test' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2426: warning: [W170] Function 'FDoTile16' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2578: warning: [W170] Function 'FDoTile8' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2821: warning: [W170] Function 'FL2Text' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:2971: warning: [W170] Function 'FPlotL2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3074: warning: [W170] Function 'ShowLayer2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3087: warning: [W170] Function 'FPlotLineV' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3163: warning: [W170] Function 'FPlotLineW' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3272: warning: [W170] Function 'DrawImage' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3386: warning: [W170] Function 'InitPalette' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3428: warning: [W170] Function 'PalUpload' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3468: warning: [W170] Function 'SelectPalette' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3484: warning: [W170] Function 'ClipLayer2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3501: warning: [W170] Function 'ClipULA' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3517: warning: [W170] Function 'ClipTile' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3533: warning: [W170] Function 'ClipSprite' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3549: warning: [W170] Function 'TileMap' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3705: warning: [W170] Function 'FlipBuffer' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3717: warning: [W170] Function 'EnableShadow' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3723: warning: [W170] Function 'DisableShadow' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3729: warning: [W170] Function 'WaitRetrace' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3752: warning: [W170] Function 'WaitRetrace2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3783: warning: [W170] Function 'WaitKey' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3860: warning: [W170] Function 'CopyBank' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib.bas:3901: warning: [W170] Function 'CopyFromBank' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:137: warning: [W170] Function 'ClearLayer2' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nb_LAYER2.bas:191: warning: [W170] Function 'SetRGB' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:29: warning: [W170] Function 'StopMusic' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:36: warning: [W170] Function 'PlayMusic' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/Scripts/nextlib_ints.bas:277: warning: [W170] Function 'DisableIM' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:22: warning: [W170] Function 'GetKey' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:50: warning: [W170] Function 'MultiKeys' is never called and has been ignored
+/home/usb/Documents/NextBuildv9/zxbasic1.18.1/src/lib/arch/zxnext/stdlib/keys.bas:71: warning: [W170] Function 'GetKeyScanCode' is never called and has been ignored

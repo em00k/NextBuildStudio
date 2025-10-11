@@ -1,0 +1,111 @@
+/* Image Viewer styles */
+body { 
+    padding: 10px;
+    font-family: var(--vscode-font-family, sans-serif);
+    font-size: var(--vscode-font-size);
+    background-color: var(--vscode-editor-background);
+    color: var(--vscode-editor-foreground);
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height */
+    box-sizing: border-box;
+}
+.toolbar { 
+    display: flex; flex-wrap: wrap; gap: 10px; padding: 8px; 
+    background-color: var(--vscode-sideBar-background); border-radius: 4px; 
+    margin-bottom: 10px; border: 1px solid var(--vscode-sideBar-border, transparent);
+    flex-shrink: 0; /* Prevent toolbar from shrinking */
+}
+.control-group { display: flex; align-items: center; gap: 5px; }
+label { color: var(--vscode-input-placeholderForeground); font-weight: 500; }
+select, button, input { 
+    font-size: 12px; padding: 3px 6px; border-radius: 3px; 
+    border: 1px solid var(--vscode-input-border); 
+    background-color: var(--vscode-input-background); color: var(--vscode-input-foreground);
+}
+button { 
+    background-color: var(--vscode-button-background); color: var(--vscode-button-foreground); 
+    border: 1px solid var(--vscode-button-border, transparent); cursor: pointer;
+}
+button:hover { background-color: var(--vscode-button-hoverBackground); }
+#paletteStatus { font-weight: 500; color: var(--vscode-textLink-foreground); font-style: italic; margin-left: 5px; }
+.image-container { 
+    flex-grow: 1; /* Allow container to fill space */
+    overflow: auto; /* Add scrollbars if image is large */
+    text-align: center; /* Center the canvas */
+    padding: 10px;
+    background-color: var(--vscode-editorWidget-background);
+    border-radius: 4px;
+    border: 1px solid var(--vscode-editorWidget-border, transparent);
+    position: relative; /* For child positioning */
+}
+canvas {
+    border: 1px solid var(--vscode-input-border);
+    image-rendering: pixelated; /* Keep pixels sharp */
+    background-color: #888; /* Placeholder background */
+    max-width: 100%; /* Ensure image doesn't overflow container */
+    max-height: calc(100vh - 150px); /* Prevent image from being too tall */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+.info-bar {
+    margin-top: 5px; padding: 5px;
+    font-size: 11px; color: var(--vscode-descriptionForeground);
+    flex-shrink: 0;
+    text-align: center;
+}
+.custom-dims { padding-left: 10px; border-left: 1px solid var(--vscode-input-border); }
+.palette-controls button {
+    margin-right: 5px;
+}
+button:disabled { 
+    opacity: 0.6; 
+    cursor: not-allowed; 
+}
+.toolbar-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+.help-text {
+    font-size: 11px;
+    color: var(--vscode-descriptionForeground);
+    margin-top: 3px;
+    font-style: italic;
+}
+.warning-text {
+    color: var(--vscode-editorWarning-foreground, orange);
+}
+.checkbox-control {
+    display: flex; 
+    align-items: center; 
+    gap: 5px;
+    margin-left: 10px;
+}
+.checkbox-control input[type="checkbox"] {
+    margin: 0;
+}
+.save-controls {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid var(--vscode-input-border);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.scale-preset {
+    margin-left: 5px;
+    min-width: 70px;
+}
+
+/* Additional inline styles from HTML converted to classes */
+.hidden {
+    display: none;
+}
+.orange-warning {
+    color: orange;
+    margin-left: 10px;
+}
+.aspect-info {
+    margin-left: 10px;
+} 

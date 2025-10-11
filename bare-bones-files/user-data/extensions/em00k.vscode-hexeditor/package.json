@@ -1,0 +1,68 @@
+{
+  "name": "vscode-hexeditor",
+  "displayName": "Hex Editor",
+  "description": "Hex Editor for VSCode - View and edit binary files with ease",
+  "version": "1.0.0",
+  "publisher": "em00k",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Formatters"
+  ],
+  "keywords": [
+    "hex",
+    "binary",
+    "editor",
+    "hexadecimal",
+    "viewer"
+  ],
+  "activationEvents": [
+    "onCustomEditor:hexEditor"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "hexEditor",
+        "displayName": "Hex Editor",
+        "selector": [
+          {
+            "filenamePattern": "*"
+          }
+        ],
+        "priority": "option"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "em00k",
+    "url": "https://www.patreon.com/em00k"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/em00k/vscode-hexeditor"
+  },
+  "bugs": {
+    "url": "https://github.com/em00k/vscode-hexeditor/issues"
+  },
+  "homepage": "https://github.com/em00k/vscode-hexeditor#readme",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "icon": "media/icon.png",
+  "qna": "marketplace",
+  "extensionKind": ["workspace"],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  }
+}

@@ -1,0 +1,406 @@
+{
+	"name": "beardedtheme",
+	"displayName": "Bearded Theme",
+	"description": "The theme with a long beard.",
+	"publisher": "BeardedBear",
+	"version": "10.1.0",
+	"engines": {
+		"vscode": "^1.69.0"
+	},
+	"type": "module",
+	"scripts": {
+		"build": "vite-node src/index.ts",
+		"build:ext": "vsce package --out ./releases/%npm_package_version%.vsix",
+		"build:env": "tsc load-env.ts --esModuleInterop",
+		"dev": "nodemon --exec \"vite-node src/index.ts\"",
+		"fix": "prettier --write ./src/**/*.ts && eslint src/**/*.{vue,ts} --fix",
+		"release": "gh release create v%npm_package_version% --notes-file ./releases/%npm_package_version%.md --generate-notes",
+		"create:release-notes": "vite-node src/create-release-notes.ts",
+		"publish:vscode": "vsce publish --packagePath ./releases/%npm_package_version%.vsix",
+		"publish:ovsx": "ovsx publish ./releases/%npm_package_version%.vsix -p $OVSX_TOKEN",
+		"publish:all": "npm run build:ext && npm run publish:vscode && npm run publish:ovsx"
+	},
+	"__metadata": {
+		"id": "dffaf5a1-2219-434b-9d87-cb586fd59260",
+		"publisherDisplayName": "BeardedBear",
+		"publisherId": "a369cd52-d79a-6d36-99c8-5adc9bf1d25d",
+		"installedTimestamp": 1755467249437,
+		"targetPlatform": "universal",
+		"size": 2872102
+	},
+	"nodemonConfig": {
+		"ext": "ts",
+		"exec": "ts-node src/index.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/BeardedBear/bearded-theme"
+	},
+	"bugs": {
+		"url": "https://github.com/BeardedBear/bearded-theme/issues",
+		"email": "germain.poirrier@gmail.com"
+	},
+	"homepage": "https://github.com/BeardedBear/bearded-theme",
+	"keywords": [
+		"bearded",
+		"theme",
+		"bear",
+		"dark",
+		"solarized",
+		"arc",
+		"light",
+		"oceanic",
+		"monokai",
+		"milkshake",
+		"colorblind",
+		"oled"
+	],
+	"sponsor": {
+		"url": "https://github.com/sponsors/BeardedBear"
+	},
+	"icon": "assets/icon.png",
+	"categories": [
+		"Themes"
+	],
+	"contributes": {
+		"themes": [
+			{
+				"label": "Bearded Theme Monokai Metallian",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-monokai-metallian.json"
+			},
+			{
+				"label": "Bearded Theme Monokai Terra",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-monokai-terra.json"
+			},
+			{
+				"label": "Bearded Theme Monokai Stone",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-monokai-stone.json"
+			},
+			{
+				"label": "Bearded Theme Monokai Black",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-monokai-black.json"
+			},
+			{
+				"label": "Bearded Theme Monokai Reversed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-monokai-reversed.json"
+			},
+			{
+				"label": "Bearded Theme Solarized",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-solarized-dark.json"
+			},
+			{
+				"label": "Bearded Theme Solarized Reversed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-solarized-reversed.json"
+			},
+			{
+				"label": "Bearded Theme Solarized Light",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-solarized-light.json"
+			},
+			{
+				"label": "Bearded Theme Oceanic",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-oceanic.json"
+			},
+			{
+				"label": "Bearded Theme Oceanic Reversed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-oceanic-reversed.json"
+			},
+			{
+				"label": "Bearded Theme Arc",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-arc.json"
+			},
+			{
+				"label": "Bearded Theme Arc Eggplant",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-arc-eggplant.json"
+			},
+			{
+				"label": "Bearded Theme Arc EolStorm",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-arc-eolstorm.json"
+			},
+			{
+				"label": "Bearded Theme Arc Blueberry",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-arc-blueberry.json"
+			},
+			{
+				"label": "Bearded Theme Arc Reversed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-arc-reversed.json"
+			},
+			{
+				"label": "Bearded Theme Black & Amethyst",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-amethyst.json"
+			},
+			{
+				"label": "Bearded Theme Black & Amethyst Soft",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-amethyst-soft.json"
+			},
+			{
+				"label": "Bearded Theme Black & Diamond",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-diamond.json"
+			},
+			{
+				"label": "Bearded Theme Black & Diamond Soft",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-diamond-soft.json"
+			},
+			{
+				"label": "Bearded Theme Black & Emerald",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-emerald.json"
+			},
+			{
+				"label": "Bearded Theme Black & Emerald Soft",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-emerald-soft.json"
+			},
+			{
+				"label": "Bearded Theme Black & Gold",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-gold.json"
+			},
+			{
+				"label": "Bearded Theme Black & Gold Soft",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-gold-soft.json"
+			},
+			{
+				"label": "Bearded Theme Black & Ruby",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-ruby.json"
+			},
+			{
+				"label": "Bearded Theme Black & Ruby Soft",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-black-&-ruby-soft.json"
+			},
+			{
+				"label": "Bearded Theme Stained Purple",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-stained-purple.json"
+			},
+			{
+				"label": "Bearded Theme Stained Blue",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-stained-blue.json"
+			},
+			{
+				"label": "Bearded Theme Vivid Purple",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-vivid-purple.json"
+			},
+			{
+				"label": "Bearded Theme Vivid Black",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-vivid-black.json"
+			},
+			{
+				"label": "Bearded Theme Vivid Light",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-vivid-light.json"
+			},
+			{
+				"label": "Bearded Theme feat. Will",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-feat-will.json"
+			},
+			{
+				"label": "Bearded Theme feat. Gold D Raynh",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-feat-gold-d-raynh.json"
+			},
+			{
+				"label": "Bearded Theme feat. Melle Julie",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-feat-mellejulie.json"
+			},
+			{
+				"label": "Bearded Theme feat. Melle Julie Light",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-feat-mellejulie-light.json"
+			},
+			{
+				"label": "Bearded Theme feat. Mintshake D Raynh",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-feat-gold-d-raynh-light.json"
+			},
+			{
+				"label": "Bearded Theme feat. WebDevCody",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-feat-webDevCody.json"
+			},
+			{
+				"label": "Bearded Theme Earth",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-earth.json"
+			},
+			{
+				"label": "Bearded Theme Coffee",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-coffee.json"
+			},
+			{
+				"label": "Bearded Theme Coffee Reversed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-coffee-reversed.json"
+			},
+			{
+				"label": "Bearded Theme Coffee Cream",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-coffee-cream.json"
+			},
+			{
+				"label": "Bearded Theme Void",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-void.json"
+			},
+			{
+				"label": "Bearded Theme Altica",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-altica.json"
+			},
+			{
+				"label": "Bearded Theme Anthracite",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-classics-anthracite.json"
+			},
+			{
+				"label": "Bearded Theme Light",
+				"uiTheme": "vs",
+				"path": "./themes/bearded-theme-classics-light.json"
+			},
+			{
+				"label": "Bearded Theme Surprising Eggplant",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-surprising-eggplant.json"
+			},
+			{
+				"label": "Bearded Theme Surprising Blueberry",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-surprising-blueberry.json"
+			},
+			{
+				"label": "Bearded Theme Surprising Watermelon",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-surprising-watermelon.json"
+			},
+			{
+				"label": "Bearded Theme HC Ebony",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-ebony.json"
+			},
+			{
+				"label": "Bearded Theme HC Midnight Void",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-midnightvoid.json"
+			},
+			{
+				"label": "Bearded Theme HC Wonderland Wood",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-wonderland-wood.json"
+			},
+			{
+				"label": "Bearded Theme HC Brewing Storm",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-brewing-storm.json"
+			},
+			{
+				"label": "Bearded Theme HC Minuit",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-minuit.json"
+			},
+			{
+				"label": "Bearded Theme HC Chocolate Espresso",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-chocolate-espresso.json"
+			},
+			{
+				"label": "Bearded Theme HC Flurry",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-hc-flurry.json"
+			},
+			{
+				"label": "Bearded Theme Milkshake Raspberry",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-milkshake-raspberry.json"
+			},
+			{
+				"label": "Bearded Theme Milkshake Blueberry",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-milkshake-blueberry.json"
+			},
+			{
+				"label": "Bearded Theme Milkshake Mango",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-milkshake-mango.json"
+			},
+			{
+				"label": "Bearded Theme Milkshake Mint",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-milkshake-mint.json"
+			},
+			{
+				"label": "Bearded Theme Milkshake Vanilla Banana",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-milkshake-vanilla.json"
+			},
+			{
+				"label": "Bearded Themanopia (Experimental)",
+				"uiTheme": "hc-black",
+				"path": "./themes/bearded-theme-themanopia.json"
+			},
+			{
+				"label": "Bearded Theme Aquarelle Cymbidium",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-aquarelle-cymbidium.json"
+			},
+			{
+				"label": "Bearded Theme Aquarelle Hydrangea",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-aquarelle-hydrangea.json"
+			},
+			{
+				"label": "Bearded Theme Aquarelle Lilac",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-aquarelle-lilac.json"
+			},
+			{
+				"label": "Bearded Theme OLED (Experimental)",
+				"uiTheme": "vs-dark",
+				"path": "./themes/bearded-theme-oled.json"
+			}
+		]
+	},
+	"dependencies": {
+		"@types/node": "^22.14.1",
+		"@types/vscode": "^1.85.0",
+		"@typescript-eslint/eslint-plugin": "^8.30.0",
+		"@typescript-eslint/parser": "^8.30.0",
+		"@vscode/vsce": "^3.3.2",
+		"colord": "^2.9.3",
+		"eslint": "^9.24.0",
+		"eslint-plugin-perfectionist": "^4.11.0",
+		"ovsx": "^0.10.2",
+		"prettier": "^3.1.1",
+		"typescript": "^5.3.3",
+		"vite-node": "^3.1.1"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.9"
+	}
+}

@@ -1,0 +1,90 @@
+{
+  "TRUE": {
+    "value": 1,
+    "description": "Boolean true value (often represented as 1 or -1 in BASICs)."
+  },
+  "FALSE": {
+    "value": 0,
+    "description": "Boolean false value."
+  },
+  "PI": {
+    "value": 3.1415926535,
+    "description": "Mathematical constant Pi."
+  },
+  "BLACK": { "value": 0, "description": "Color Black (palette index 0 in standard Next ULA/L2 palettes)" },
+  "BLUE": { "value": 1, "description": "Color Blue" },
+  "RED": { "value": 2, "description": "Color Red" },
+  "MAGENTA": { "value": 3, "description": "Color Magenta" },
+  "GREEN": { "value": 4, "description": "Color Green" },
+  "CYAN": { "value": 5, "description": "Color Cyan" },
+  "YELLOW": { "value": 6, "description": "Color Yellow" },
+  "WHITE": { "value": 7, "description": "Color White (bright)" },
+  "SCREEN_WIDTH_ULA": {
+    "value": 256,
+    "description": "ULA screen width in pixels."
+  },
+  "SCREEN_HEIGHT_ULA": {
+    "value": 192,
+    "description": "ULA screen height in pixels."
+  },
+  "LAYER2_WIDTH_256": {
+    "value": 256,
+    "description": "Layer 2 width in 256x192 mode."
+  },
+  "LAYER2_HEIGHT_192": {
+    "value": 192,
+    "description": "Layer 2 height in 256x192 mode."
+  },
+  "LAYER2_WIDTH_320": {
+    "value": 320,
+    "description": "Layer 2 width in 320x256 mode."
+  },
+  "LAYER2_HEIGHT_256": {
+    "value": 256,
+    "description": "Layer 2 height in 320x256 mode."
+  },
+  "INTEGER": {
+    "value": [0,65535],
+    "description": ""
+  },
+  "MODE256X192": {
+    "value": 0,
+    "description": "Constant for setting Layer 2 with InitLayer2({MODE})"
+  },
+  "MODE320X256": {
+    "value": 1,
+    "description": "Constant for setting Layer 2 with InitLayer2({MODE})"
+  },
+  "MODE640X256": {
+    "value": 2,
+    "description": "Constant for setting Layer 2 with InitLayer2({MODE})"
+  },
+  "ULA_PALETTE_P1": {
+    "value": 0,
+    "description": "Constant for ULA_PALETTE_P1 = %00000000 "
+  },
+  "L2_PALETTE_P1": {
+    "value": 64,
+    "description": "Constant for setting L2_PALETTE_P1 = %00010000"
+  },
+  "L2_PALETTE_P2": {
+    "value": 64,
+    "description": "Constant for setting L2_PALETTE_P2 = %01010000"
+  },
+  "SPR_PALETTE_P1": {
+    "value": 64,
+    "description": "Constant for setting SPR_PALETTE_P1 = %00100000"
+  },
+  "SPR_PALETTE_P2": {
+    "value": 64,
+    "description": "Constant for setting SPR_PALETTE_P2 = %01100000"
+  },
+  "TILE_PALETTE_P1": {
+    "value": 64,
+    "description": "Constant for setting TILE_PALETTE_P1 = %00110000"
+  },
+  "TILE_PALETTE_P2": {
+    "value": 64,
+    "description": "Constant for setting TILE_PALETTE_P2 = %01110000"
+  }
+}

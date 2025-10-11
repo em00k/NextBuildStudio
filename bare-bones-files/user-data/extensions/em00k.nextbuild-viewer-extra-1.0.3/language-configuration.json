@@ -1,0 +1,23 @@
+{
+  "comments": {
+    "lineComment": "'",
+    "blockComment": ["'"]
+  },
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"]
+  ],
+  "autoClosingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "wordPattern": "\\b[A-Za-z_][A-Za-z0-9_$]*\\b"
+}

@@ -1,0 +1,326 @@
+body {
+    font-family: var(--vscode-font-family, sans-serif);
+    color: var(--vscode-editor-foreground);
+    background-color: var(--vscode-editor-background);
+    padding: 10px;
+}
+
+canvas {
+    border: 1px solid var(--vscode-input-border);
+    cursor: crosshair;
+    image-rendering: optimizeSpeed; /* Older browsers */
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard) */
+    image-rendering: -o-crisp-edges; /* Opera */
+    image-rendering: pixelated; /* Modern browsers */
+    -ms-interpolation-mode: nearest-neighbor; /* IE */
+}
+
+/* --- Style the preview canvas --- */
+#previewCanvas {
+    border: 1px solid var(--vscode-inputOption-activeBorder); /* Add border */
+    /* Inherits image-rendering from the general canvas rule */
+}
+
+#image-area {
+    margin-bottom: 15px;
+    max-width: 100%;
+    min-height: 200px; /* Give it some base height */
+    max-height: 600px; /* Increase max height */
+    overflow: auto; /* Allow scroll if image is huge/zoomed */
+    border: 1px solid var(--vscode-inputOption-activeBorder); /* Add border for clarity */
+    background-color: var(--vscode-input-background); /* Match other inputs */
+    display: inline-block; /* Important: Allow canvas CSS size to dictate container size */
+    line-height: 0; /* Prevent extra space below canvas */
+}
+
+#preview-area {
+    min-height: 200px; /* Ensure space for the 256px preview + padding */
+}
+
+#preview-area, #output-options {
+    margin-bottom: 15px;
+}
+
+#selectionInfo {
+    font-size: 0.9em;
+    margin-top: 5px;
+    color: var(--vscode-descriptionForeground);
+}
+
+/* --- Styles for Sprite List --- */
+#sprite-list-area {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid var(--vscode-editorWidget-border); /* Make border solid */
+    border-radius: 4px;
+    max-height: 150px; /* Limit height */
+    overflow-y: auto; /* Enable vertical scroll */
+    background-color: var(--vscode-input-background); /* Add subtle background */
+}
+
+#spriteList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.sprite-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px;
+    border: 1px solid var(--vscode-inputOption-activeBorder);
+    background-color: var(--vscode-input-background);
+    border-radius: 3px;
+    position: relative; /* For absolute positioning of remove button */
+}
+
+.sprite-list-item img {
+    width: 32px;  /* Fixed small preview size */
+    height: 32px;
+    image-rendering: pixelated; /* Ensure pixelated preview */
+    border: 1px solid var(--vscode-editorWidget-border);
+    margin-bottom: 4px;
+}
+
+/* --- NEW: Apply pixelated rendering to canvas previews too --- */
+.sprite-list-item canvas {
+    width: 32px;  /* Match img size */
+    height: 32px;
+    image-rendering: pixelated; 
+    border: 1px solid var(--vscode-editorWidget-border);
+    margin-bottom: 4px;
+}
+
+/* --- NEW: Style for placeholder div --- */
+.sprite-list-placeholder {
+    width: 32px;  /* Match img/canvas size */
+    height: 32px;
+    border: 1px dashed var(--vscode-editorWidget-border); /* Dashed border */
+    margin-bottom: 4px;
+    display: flex; /* Center content */
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* Make ellipsis bigger */
+    font-weight: bold;
+    color: var(--vscode-descriptionForeground);
+    background-color: var(--vscode-editorWidget-background); /* Slightly different bg? */
+}
+
+.sprite-list-item .remove-sprite-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    line-height: 14px; /* Center vertically */
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--vscode-editorError-foreground);
+    color: var(--vscode-editor-background);
+    border: 1px solid var(--vscode-input-border);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+/* --- NEW: Style for coordinate text in list --- */
+.sprite-coords {
+    font-size: 10px;
+    color: var(--vscode-descriptionForeground);
+    padding: 8px 4px; /* Give it some space like the image had */
+    text-align: center;
+    min-width: 40px; /* Ensure some width */
+    white-space: nowrap;
+}
+
+.sprite-list-item:hover .remove-sprite-button {
+    opacity: 1;
+}
+
+/* Add more styles as needed */
+
+/* --- Button Styles (copied from paletteWebview / blockWebview) --- */
+button {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: 1px solid var(--vscode-button-border, transparent);
+    cursor: pointer;
+    padding: 3px 8px; /* Add some padding */
+    border-radius: 3px; /* Match other controls */
+    font-size: 12px; /* Match other controls */
+}
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+/* --- NEW: Consistent Heading Styles --- */
+h1 {
+    font-size: 1.0em; /* Make it slightly smaller */
+    margin-bottom: 0.5em;
+    color: var(--vscode-textLink-foreground); /* Use link color */
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.0em; /* Slightly smaller than h1 */
+    font-weight: 600;
+    color: var(--vscode-textLink-foreground);
+    margin-top: 0; /* Reset margin */
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--vscode-editorWidget-border, #ccc);
+}
+
+/* --- NEW: Improved Controls Layout --- */
+#controls {
+    display: flex; /* Arrange children horizontally */
+    flex-wrap: wrap; /* Allow wrapping onto next line */
+    gap: 20px; /* Space between main groups */
+    padding: 10px;
+    background-color: var(--vscode-sideBar-background);
+    border: 1px solid var(--vscode-sideBar-border, transparent);
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+#output-options,
+#actions {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    align-items: center; /* Align items vertically */
+    gap: 8px; /* Space between items in a group */
+}
+
+/* --- Adjust output-options specifically for horizontal layout --- */
+#output-options {
+    flex-direction: row; /* Override default column direction for this group */
+    gap: 15px; /* Increase gap between dropdown groups */
+}
+
+#output-options h3, /* Remove bottom border from h3 inside flex columns */
+#actions h3 { /* (If #actions were to get an h3) */
+    border-bottom: none;
+    margin-bottom: 5px; /* Slightly less margin */
+    padding-bottom: 0;
+}
+
+/* Minor style adjustment for action buttons if needed */
+#actions button {
+    /* Example: Adjust width or alignment if desired */
+    /* width: 150px; */
+}
+
+/* --- NEW: Style Select elements consistently --- */
+select {
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 10px;
+    border: 2px solid var(--vscode-input-border);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    /* Optionally add button-like hover if desired */
+    /* cursor: pointer; */ 
+}
+
+/* --- NEW: Style Number Inputs Consistently --- */
+input[type="number"] {
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--vscode-input-border);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    width: 50px; /* Consistent width */
+    text-align: center; /* Center number */
+}
+
+/* Add styles for the conversion modal */
+.conversion-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.conversion-modal-content {
+    position: relative;
+    background-color: var(--vscode-editor-background);
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 800px;
+    border: 1px solid var(--vscode-editorWidget-border);
+    border-radius: 4px;
+}
+
+.conversion-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--vscode-foreground);
+}
+
+.conversion-options {
+    flex: 1;
+    min-width: 300px;
+}
+
+.conversion-preview {
+    flex: 1;
+    min-width: 300px;
+}
+
+.conversion-preview-container {
+    border: 1px solid var(--vscode-editorWidget-border);
+    overflow: auto;
+    max-height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--vscode-editor-background);
+}
+
+.conversion-info {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: var(--vscode-descriptionForeground);
+}
+
+/* Make buttons more consistent */
+button {
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 2px;
+}
+
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+button:active {
+    background-color: var(--vscode-button-hoverBackground);
+    transform: translateY(1px);
+}
+
+button:disabled {
+    background-color: var(--vscode-disabledForeground);
+    cursor: not-allowed;
+} 

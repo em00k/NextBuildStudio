@@ -1,0 +1,343 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "version": "1.0.0",
+  "name": "NextBuild",
+  "scopeName": "source.nextbuild",
+  "fileTypes": ["zxbas", "nbl", "bas"],
+  "firstLineMatch": "^#!.*\\bnextbuild\\b",
+  "patterns": [
+    { "include": "#precompiler" },
+    { "include": "#labels" },
+    { "include": "#macros" },
+    { "include": "#z80-asm-block" },
+    { "include": "#keywords" },
+    { "include": "#strings" },
+    { "include": "#comment" },
+    { "include": "#numbers" },
+    { "include": "#operators" },
+    { "include": "#functions" },
+    { "include": "#constants" },
+    { "include": "#types" },
+    { "include": "#nextlib" },
+    { "include": "#userFunctionDefs" },
+    { "include": "#userFunctions" },
+    { "include": "#userVariables" },
+    { "include": "#multilineString" }
+  ],
+  "repository": {
+    "labels": {
+      "patterns": [
+        {
+          "name": "entity.name.label.nextbuild",
+          "match": "^[A-Za-z_][A-Za-z0-9_]*:"
+        }
+      ]
+    },
+    "macros": {
+      "patterns": [
+        {
+          "name": "keyword.preprocessor.nextbuild",
+          "match": "^\\s*#\\w+"
+        }
+      ]
+    },
+    "multilineString": {
+      "name": "string.quoted.multi.nextbuild",
+      "begin": "'''",
+      "end": "'''",
+      "patterns": [
+        {
+          "name": "constant.character.escape.nextbuild",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.nextbuild",
+          "match": "(?i:\\b(AS|BEEP|BIN|BORDER|FART|BRIGHT|CAT|CIRCLE|CLEAR|CLS|CONTINUE|COPY|DATA|DEF FN|DIM|DRAW|ERASE|FLASH|FOR|GO SUB|GO TO|IF|INK|INPUT|INVERSE|LET|LIST|NEXT|ON|OUT|OVER|PAPER|PAUSE|PLOT|POKE|PRINT|RANDOMIZE|READ|RESTORE|RETURN|RUN|AT|LINE|STEP|TAB|THEN|TO|STOP|DO|ELSE|ELSEIF|END|EXIT|FUNCTION|GOTO|GOSUB|LOOP|WEND|WHILE|BOLD|ByRef|ByVal|CONST|DECLARE|FastCall|ITALIC|StdCall|SUB|UNTIL|TO|endif|end if|asm|end asm)\\b)"
+        },
+        {
+          "name": "keyword.operator.logical.nextbuild",
+          "match": "(?i:\\b(AND|NOT|OR|bAND|bNOT|bOR|bXOR|MOD|SHL|SHR|XOR)\\b)"
+        },
+        {
+          "name": "entity.name.function.nextbuild",
+          "match": "(?i:\\b(ABS|ACS|ASN|ATN|ATTR|CHR\\$|CODE|COS|EXP|FN|INKEY\\$|INT|IN|LEN|LN|PEEK|PI|POINT|RND|SCREEN\\$|SGN|SIN|SQR|STR\\$|TAN|USR|VAL\\$|VAL|ASC|CAST|CHR|CSRLIN|HEX|HEX16|GetKey|MultiKeys|GetKeyScanCode|LBOUND|LCase|STR|POS|SCREEN|UCase)\\b)"
+        },
+        {
+          "name": "entity.name.type.nextbuild",
+          "match": "(?i:\\b(byte|ubyte|integer|uinteger|long|ulong|string|fixed|float)\\b)"
+        }
+      ]
+    },
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.rem.nextbuild",
+          "match": "(?i:\\bREM\\b.*$)"
+        },
+        {
+          "name": "comment.line.apostrophe.nextbuild",
+          "match": "(?i:'.*$)"
+        },
+        {
+          "name": "comment.line.semicolon.nextbuild",
+          "match": "(?i:;.*$)"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.nextbuild",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.nextbuild",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.hex.nextbuild", "match": "\\$[A-Fa-f0-9]+" },
+        { "name": "constant.numeric.bin.nextbuild", "match": "@[01]+" },
+        { "name": "constant.numeric.float.nextbuild", "match": "-?\\b(?:(?:\\d+\\.\\d*|\\.\\d+)(?:[eE][+-]?\\d+)?)\\b" },
+        { "name": "constant.numeric.dec.nextbuild", "match": "-?\\b\\d+(?:[eE][+-]?\\d+)?\\b" }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "match": "&|\\*|\\-|\\+|=|<>|<=|>=|<|>|\\||\\^|<<|>>|~|\\b(?:NOT)\\b",
+          "name": "keyword.operator.arithmetic.nextbuild"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": []
+    },
+    "constants": {
+      "patterns": []
+    },
+    "types": {
+      "patterns": []
+    },
+    "nextlib": {
+      "patterns": [
+        {
+          "name": "support.function.nextlib.nextbuild",
+          "match": "(?i:\\\\b(?:BinToString|CallBackSFX|Circle2|ClearLayer2|ClipLayer2|ClipSprite|ClipTile|ClipULA|Cls256|Cls320|Console|CopyBank|CopyFromBank|Debug|DisableIM|DisableShadow|DoTile8|DoTileBank16|DoTileBank8|DoTileBank8Test|DrawImage|FDoTileBank16|FDoTileBank8|FL2Text|FPlot2|FPlotLineV|FPlotLineW|FlipBuffer|FreeBank|GetMMU|GetReg|InitLayer2|InitMusic|InitPalette|InitSFX|InitSprites|InitSprites2|L2Text|LoadBMP|LoadBMPOld|LoadSD|LoadSDBank|MMU16|MMU8|NStr|NewMusic|NextReg|NextRegA|PlayCTC|PlaySFX|PlaySample|PlotL2|RemoveSprite|ReserveBank|SaveSD|ScrollLayer2|SetCTCSampleTable|SetRGB|SetUpCTC|SetUpIM|ShowSprites|StopMusic|SwapBank|TileMap|UpdateSprite|WaitKey|WaitRetrace2|dbMemory|zx7Unpack)\\\\b)(?=\\s*\\()"
+        }
+      ]
+    },
+    "nextbuild-nextreg-call": {
+      "patterns": [
+        {
+          "begin": "(?i)\\b(NextReg|NextRegA)\\b\\s*(\\()",
+          "beginCaptures": {
+            "1": { "name": "support.function.nextreg.nextbuild" },
+            "2": { "name": "punctuation.definition.parameters.begin.nextbuild" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.parameters.end.nextbuild" }
+          },
+          "patterns": [
+            {
+              "name": "constant.language.nextreg.name.nextbuild",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+            },
+            { "include": "#numbers" },
+            {
+              "name": "punctuation.separator.parameter.nextbuild",
+              "match": ","
+            },
+            {
+              "name": "meta.whitespace.nextbuild",
+              "match": "\\s+"
+            }
+          ]
+        }
+      ]
+    },
+    "userFunctionDefs": {
+      "patterns": [
+        {
+          "begin": "(?i)^\\s*(sub|function)\\b",
+          "beginCaptures": {
+            "1": { "name": "keyword.declaration.sub.nextbuild" }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "name": "entity.name.function.user.definition.nextbuild",
+              "match": "(?i)\\b([A-Za-z_][A-Za-z0-9_]*)\\b(?=\\s*\\()",
+              "captures": { "1": { "name": "entity.name.function.user.definition.nextbuild" } }
+            }
+          ]
+        }
+      ]
+    },
+    "userFunctions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.user.nextbuild",
+          "match": "(?i)(?:\\b[A-Za-z_][A-Za-z0-9_]*\\.)*\\b([A-Za-z_][A-Za-z0-9_]*)\\b(?=\\s*\\()",
+          "captures": { "1": { "name": "entity.name.function.user.nextbuild" } }
+        }
+      ]
+    },
+    "userVariables": {
+      "patterns": [
+        {
+          "name": "variable.other.member.nextbuild",
+          "match": "(?i)(?<=\\.)[A-Za-z_][A-Za-z0-9_]*\\$?"
+        },
+        {
+          "name": "punctuation.accessor.dot.nextbuild",
+          "match": "\\."
+        },
+        {
+          "begin": "(?i)\\b([A-Za-z_][A-Za-z0-9_]*\\$?)\\s*(\\()",
+          "beginCaptures": {
+            "1": { "name": "variable.other.array.nextbuild" },
+            "2": { "name": "punctuation.definition.parameters.begin.nextbuild" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.parameters.end.nextbuild" }
+          },
+          "patterns": [
+            { "include": "#numbers" },
+            { "include": "#operators" },
+            {
+              "name": "punctuation.separator.parameter.nextbuild",
+              "match": ","
+            },
+            {
+              "name": "variable.other.index.nextbuild",
+              "match": "(?i)\\b[A-Za-z_][A-Za-z0-9_]*\\$?\\b"
+            },
+            { "match": "\\s+", "name": "meta.whitespace.nextbuild" }
+          ]
+        },
+        {
+          "name": "variable.other.readwrite.nextbuild",
+          "match": "(?i)\\b[A-Za-z_][A-Za-z0-9_]*\\$?\\b(?!\\s*\\()"
+        }
+      ]
+    },
+    "precompiler": {
+      "patterns": [
+        {
+          "name": "meta.precompiler.asm.nextbuild",
+          "match": "^\\s*'![A-Za-z0-9_]+.*$"
+        },
+        {
+          "name": "keyword.preprocessor.nextbuild",
+          "match": "^\\s*#(define|include|ifdef|ifndef|endif|pragma|error|line)\\b.*$"
+        }
+      ]
+    },
+    "z80-asm-block": {
+      "name": "meta.block.asm.nextbuild",
+      "begin": "(?i)^\\s*asm\\b",
+      "beginCaptures": { "0": { "name": "keyword.mnemonic.asm.start.nextbuild" } },
+      "end": "(?i)^\\s*end\\s+asm\\b",
+      "endCaptures": { "0": { "name": "keyword.mnemonic.asm.end.nextbuild" } },
+      "patterns": [
+        { "include": "#z80-comment-inline" },
+        { "include": "#z80-instruction-nextreg" },
+        { "include": "#z80-mnemonic-generic" },
+        { "include": "#z80-instruction-ld" },
+        { "include": "#z80-operand-sep" },
+        { "include": "#z80-register-8" },
+        { "include": "#z80-register-16" },
+        { "include": "#z80-indirect" },
+        { "include": "#z80-immediate" },
+        { "include": "#z80-label-asm" },
+        { "include": "#z80-whitespace" }
+      ]
+    },
+    "z80-instruction-ld": {
+      "begin": "(?i)^\\s*(ld)\\b",
+      "beginCaptures": { "1": { "name": "keyword.mnemonic.ld.z80" } },
+      "end": "(?=;|$)",
+      "patterns": [
+        { "include": "#z80-operand-sep" },
+        { "include": "#z80-register-8" },
+        { "include": "#z80-register-16" },
+        { "include": "#z80-indirect" },
+        { "include": "#z80-immediate" },
+        { "include": "#z80-comment-inline" },
+        { "include": "#z80-whitespace" }
+      ]
+    },
+    "z80-mnemonic-generic": {
+      "name": "keyword.mnemonic.z80",
+      "match": "(?i)^\\s*\\b(?:adc|add|and|bit|call|ccf|cp|cpd|cpdr|cpi|cpir|cpl|daa|dec|di|djnz|ei|ex|exx|halt|im|in|inc|ind|indr|ini|inir|jp|jr|ld|ldd|lddr|ldi|ldir|neg|nop|or|otdr|otir|out|outd|outi|pop|push|res|ret|reti|retn|rl|rla|rlc|rlca|rld|rr|rra|rrc|rrca|rrd|rst|sbc|scf|set|sla|sra|srl|sub|xor)\\b"
+    },
+    "z80-operand-sep": {
+      "patterns": [
+        { "name": "keyword.operator.separator.z80", "match": "," }
+      ]
+    },
+    "z80-whitespace": {
+      "patterns": [
+        { "name": "meta.whitespace.z80", "match": "\\s+" }
+      ]
+    },
+    "z80-register-8": {
+      "name": "variable.register.8bit.z80",
+      "match": "(?i)\\b(?:a|b|c|d|e|h|l|i|r|ixh|ixl|iyh|iyl)\\b"
+    },
+    "z80-register-16": {
+      "name": "variable.register.16bit.z80",
+      "match": "(?i)\\b(?:af|bc|de|hl|ix|iy|sp)\\b"
+    },
+    "z80-indirect": {
+      "name": "meta.address.indirect.z80",
+      "match": "\\((?i:(?:hl|de|bc|sp|ix(?:\\s*[+-]\\s*\\d+)?|iy(?:\\s*[+-]\\s*\\d+)?|\\$[0-9A-Fa-f]+|\\d+))\\)"
+    },
+    "z80-immediate": {
+      "patterns": [
+        { "name": "constant.numeric.hex.z80", "match": "\\$[0-9A-Fa-f]+" },
+        { "name": "constant.numeric.bin.z80", "match": "@[01]+" },
+        { "name": "constant.numeric.dec.z80", "match": "\\b\\d+\\b" }
+      ]
+    },
+    "z80-comment-inline": {
+      "name": "comment.line.semicolon.z80",
+      "match": ";.*$"
+    },
+    "z80-label-asm": {
+      "name": "entity.name.label.z80",
+      "match": "^[A-Za-z_][A-Za-z0-9_]*:"
+    },
+    "z80-instruction-nextreg": {
+      "begin": "(?i)\\b(nextreg|nextrega)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.mnemonic.nextreg.z80" }
+      },
+      "end": "(?=;|$)",
+      "patterns": [
+        { "include": "#z80-whitespace" },
+        { "include": "#z80-operand-sep" },
+        { "name": "constant.language.nextreg.name.z80", "match": "(?i)\\b[A-Za-z_][A-Za-z0-9_]*\\b" },
+        { "include": "#z80-register-8" },
+        { "include": "#z80-immediate" },
+        { "include": "#z80-comment-inline" }
+      ]
+    }
+  },
+  "injectionSelector": "L:markdown -comment",
+  "injections": {
+    "source.fenced_code.block.markdown": {
+      "patterns": [
+        { "include": "source.nextbuild" }
+      ]
+    }
+  }
+}

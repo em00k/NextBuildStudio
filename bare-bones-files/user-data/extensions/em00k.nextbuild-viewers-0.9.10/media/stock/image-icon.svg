@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="14" height="14" rx="1" fill="#B5B5B5" stroke="#333333" stroke-width="0.5"/>
+  <!-- "Mountains" -->
+  <path d="M4 13 L7 9 L9 11 L12 7 L15 13 Z" fill="#4CAF50" stroke="#333333" stroke-width="0.3"/>
+  <!-- "Sun" -->
+  <circle cx="12.5" cy="3.5" r="1.5" fill="#FFEB3B" stroke="#333333" stroke-width="0.3"/>
+  <!-- Simple border/frame effect -->
+  <rect x="1.5" y="1.5" width="13" height="13" rx="0.5" stroke="#666666" stroke-width="0.3" fill="none"/>
+</svg> 

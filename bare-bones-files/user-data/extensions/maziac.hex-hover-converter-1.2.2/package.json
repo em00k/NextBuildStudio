@@ -1,0 +1,58 @@
+{
+	"name": "hex-hover-converter",
+	"displayName": "Hex Hover Converter",
+	"description": "Provides conversion between decimal, hex and binary numbers while hovering.",
+	"version": "1.2.2",
+	"publisher": "maziac",
+	"license": "MIT",
+	"keywords": [
+		"hex",
+		"binary",
+		"decimal",
+		"convert",
+		"hover"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maziac/hex-hover-converter.git"
+	},
+	"engines": {
+		"vscode": "^1.71.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "assets/icon.png",
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"tslint": "eslint ./**/*.ts",
+		"watch": "tsc -w -p ./",
+		"test": "mocha -u tdd ./out/tests/",
+		"package": "vsce package",
+		"publish": "vsce publish"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.0",
+		"@types/node": "18.8.2",
+		"@types/vscode": "^1.71.0",
+		"typescript": "^4.8.4"
+	},
+	"__metadata": {
+		"id": "8e31f076-01e6-48d7-86af-51b6ca0a177b",
+		"publisherId": "8e0bd66d-43ba-49ba-be8e-1c11111f3e5b",
+		"publisherDisplayName": "maziac",
+		"targetPlatform": "undefined",
+		"isApplicationScoped": false,
+		"isPreReleaseVersion": false,
+		"hasPreReleaseVersion": false,
+		"installedTimestamp": 1742172869779,
+		"pinned": false,
+		"preRelease": false,
+		"source": "gallery",
+		"size": 700027
+	}
+}

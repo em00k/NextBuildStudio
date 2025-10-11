@@ -1,0 +1,936 @@
+'!org=32768
+'#!nosysvars
+'#!asm
+' NextBuild Copper Audio v2 
+' original CopperAudio by 9BitColor
+' optimized & adapted for nextbuild by em00k
+
+
+#define NEX 
+#define IM2 
+
+#include <nextlib.bas>
+#include <keys.bas>
+
+LoadSDBank("909kit.pcm",0,0,0,32)					'; Load sample into bank 32-33
+
+
+' backupsysvar() 
+
+' register block
+'
+asm 
+    ; setting registers in an asm block means you can use the global equs for register names 
+    ; 28mhz, black transparency,sprites on over border,256x192
+    nextreg PERIPHERAL_3_NR_08,%0_1_011010      ; contention off 
+    nextreg TURBO_CONTROL_NR_07,%11             ; 28 mhz 
+    nextreg GLOBAL_TRANSPARENCY_NR_14,0         ; black 
+    nextreg SPRITE_CONTROL_NR_15,%000_000_11    ; %000    S L U, %11 sprites on over border
+    nextreg LAYER2_CONTROL_NR_70,%00_00_0000    ; 5-4 %01 = 320x256x8bpp 00 = 256x192 
+    nextreg $22,00000010			; enable line interrupt 
+end asm 
+
+paper 0 : ink  6 : border 0 : cls 
+
+dim key as ubyte 
+dim timer, oldpos as ubyte 
+dim sample,pattern_position,play,sam,start as ubyte 
+dim samples(8) as string 
+samples(1)="Kick"
+samples(2)="KickClap"
+samples(3)="HH Closed"
+samples(4)="HH Open "
+samples(5)="Snare"
+samples(6)="            "
+
+
+InitCopperAudio()
+PlayCopperSample(0)
+
+play = 1
+
+do 
+	
+	SetCopperAudio()
+	 
+	CopperWaitLine()
+	border 2
+	PlayCopperAudio()
+	border 0 
+
+	if GetKeyScanCode()=KEYSPACE and key=0
+		' start play back of pattern 
+		play = 1 - play 
+		key=1
+		draw_pattern(0)
+	elseif GetKeyScanCode()=0
+		key=0
+	endif 
+
+	a = GetKeyScanCode()
+	if a > 0 and key=0 
+		if a = KEY1 
+			sam = 0
+		elseif a = KEY2 
+			sam = 1
+		elseif a = KEY3 
+			sam = 2
+		elseif a = KEY4 
+			sam = 3
+		elseif a = KEY5 
+			sam = 4
+		endif 
+		PlayCopperSample(sam)
+		key = 1
+	endif 
+
+	' timer = 6 / 125bmp MOD speed 6
+	' timer = 5 / 125bmp MOD speed 5
+
+	if play = 1
+		timer = timer + 1
+		if timer = 6
+			timer = 0 
+			update_pattern()
+			GetNextSample()
+			
+		endif 
+	endif 
+
+
+loop 
+
+sub GetNextSample()
+
+	print at sample,0;ink 2;samples(sample+1)
+
+	' oldpos = pattern_position
+
+	sample = peek (@pattern+cast(uinteger,pattern_position))-1
+	
+	print at 16,0;pattern_position;" - ";samples(sample+1);"  "
+
+	print at sample,0;ink 6;samples(sample+1)
+
+	pattern_position = pattern_position +1
+	if pattern_position>15
+		pattern_position=0 
+	endif 
+
+	if sample <5
+		PlayCopperSample(sample)
+	elseif sample=$ff 
+		pattern_position=0 
+	' else 
+	' sample = 0 
+	endif 
+	
+
+end sub 
+
+pattern:
+asm 
+
+	
+	pat1: db 1,3,4,6, 2,6,4,3, 1,3,4,3, 2,3,4,2,$ff 
+	pat2: db 1,6,4,6,2,6,4,6,1,6,4,6,2,6,4,6,$ff 
+	pat3: db 1,6,6,6,2,6,6,6,1,6,6,6,2,6,6,6,$ff 
+
+pattern_order:
+	dw pat1 
+	dw pat2 
+	dw pat2 
+	dw pat1
+	dw $ffff
+
+end asm 
+
+sub draw_pattern(pat as ubyte)
+
+	pattern_start = @pattern + (pat << 4) 		' pat * 16 
+
+	for x = 0 to 15 
+		a = peek(pattern_start+x)
+		if a < 5 
+			print at 10,x;a 
+		endif 
+	next 
+
+end sub 
+
+sub update_pattern()
+
+	print at 10,oldpos;ink 2;over 1;" "
+	print at 10,pattern_position;ink 6;over 1;"_"
+	oldpos = pattern_position
+
+end sub 
+CopperSample()
+
+sub fastcall InitCopperAudio()
+
+	asm
+		
+		ld		bc,TBBLUE_REGISTER_SELECT_P_243B
+		ld		a,VIDEO_TIMING_NR_11
+		out		(c),a
+		inc		b
+		in		a,(c)				; Display timing
+		and		7					; 0..6 VGA / 7 HDMI
+		ld		(.CopperSample.video_timing),a	; Store timing mode
+		
+		nextreg	COPPER_CONTROL_LO_NR_61,$00
+		nextreg	COPPER_CONTROL_HI_NR_62,$00
+		nextreg	COPPER_DATA_NR_60,$FF
+		nextreg	COPPER_DATA_NR_60,$FF
+
+		ld		a,SOUNDDRIVE_DF_MIRROR_NR_2D
+		ld		(.CopperSample.sample_dac),a	; Sound on
+		ret
+	end asm
+
+end sub 
+
+sub fastcall PlayCopperSample(sample as ubyte)
+	asm
+		; BREAK  
+		; get sample data 
+		ld 		hl,copper_sample_table								; point to start of sample table 
+		ld 		e,a 
+		ld 		d,6 
+		mul 	d,e 
+		add 	hl,de 												; hl now points to start of sample data 
+		ld		(.playerstack+1),sp 
+		ld 		sp,hl 											
+
+		pop 	hl 
+		ld		(.CopperSample.sample_loop),hl 						; saves bank + loop 
+		
+		pop 	hl  
+		ld		(.CopperSample.sample_ptr),hl
+
+		pop 	hl 
+		ld		(.CopperSample.sample_len),hl
+		
+		ld		hl,0
+		ld		(.CopperSample.sample_pos),hl
+
+		ld		a,SOUNDDRIVE_DF_MIRROR_NR_2D
+		ld		(.CopperSample.sample_dac),a	; Sound on		
+
+	playerstack:
+		ld 		sp,0
+
+
+	end asm
+end sub 
+
+sub fastcall SetCopperAudio()
+
+	asm 
+
+		call CopperSample.set_copper_audio
+
+	end asm 
+
+end sub 
+
+sub fastcall PlayCopperAudio()
+
+	asm
+		
+		call CopperSample.play_copper_audio
+
+	end asm
+
+end sub 
+
+sub fastcall CopperWaitLine()
+	asm
+	wait_line:	
+		ld		bc,TBBLUE_REGISTER_SELECT_P_243B
+		ld		de,($1E*256)+$1F
+
+		out		(c),d						; MSB
+		inc		b
+
+	.msb:
+		in		d,(c)
+		bit		0,d							; 256..312/311/262/261 ?
+		jp		nz,.msb
+
+		dec		b
+		out		(c),e						; LSB
+		inc		b
+
+	.lsb:
+		in		e,(c)
+		cp		e							; 0..255 ?
+		jp		nz,.lsb
+		
+		ret
+
+	end asm
+
+end sub 
+
+
+sub fastcall CopperSample()
+    asm 
+	push namespace CopperSample 
+	;    ?Updated:     em00k, adding banking                               ?
+	;    ?Programmer:  kevbrady@ymail.com                                  ?
+	;    ?Modified:    14th July 2018                                      ?
+	;    ?Description: Copper sample player (BIS version)                  ?
+	;    ?                                                                 ?
+
+
+	; Hardware registers.
+		
+	; TBBLUE_REGISTER_SELECT			equ	$243B	; TBBlue register select
+
+	PERIPHERAL_1_REGISTER			equ	$05	; Peripheral 1 setting
+	TURBO_CONTROL_REGISTER			equ	$07	; Turbo control
+	; DISPLAY_TIMING_REGISTER			equ	$11	; Video timing mode (0..7)
+	RASTER_LINE_MSB_REGISTER		equ	$1E	; Current line drawn MSB
+	RASTER_LINE_LSB_REGISTER		equ	31	; Current line drawn LSB
+	SOUNDDRIVE_MIRROR_REGISTER		equ	$2D	; SpecDrum 8 bit DAC (mirror)
+	COPPER_DATA						equ	$60	; Copper list
+	COPPER_CONTROL_LO_BYTE_REGISTER	equ	$61
+	COPPER_CONTROL_HI_BYTE_REGISTER	equ	$62
+	CONFIG1 						equ $05
+	COPHI							equ $62
+	COPLO							equ $61
+	SELECT							equ $243b
+	SAMPLEBANK						equ 32 				; sample bank to use 
+
+
+	set_copper_audio:
+		di
+		
+		ld		(.stack+1),sp
+
+		ld		ix,copper_loop				; Auto detect timing
+
+		ld		bc,SELECT
+		ld		a,CONFIG1
+		out		(c),a
+		inc		b
+		in		a,(c)						; Peripheral 1 register
+
+		ld		hl,hdmi_50_config
+		ld		de,vga_50_config
+		bit		2,a
+		jr		z,.refresh					; Refresh 50/60hz ?
+		ld		hl,hdmi_60_config
+		ld		de,vga_60_config
+	.refresh:
+		ld		a,(video_timing)
+		cp		7							; HDMI ?
+		jr		z,.hdmi
+		ex		de,hl						; Swap to VGA
+	.hdmi:
+		ld		a,(hl)						; Copper line
+		inc		hl
+		ld		(.return+1),a				; Store ruturn value
+
+		ld		sp,hl
+
+	;	------------
+	;	------------
+	;	------------
+
+		ld		hl,(sample_len)				; Calc buffer loop offset
+		ld		bc,(sample_pos)
+		xor		a							; Clear CF
+		sbc		hl,bc
+
+		ld		b,h
+		ld		c,l							; BC = loop offset (0..311)
+
+		pop		hl							;  Samples per frame (312)
+		ld		(video_lines),hl
+
+		ld		a,h							; 16 bit negate
+		cpl
+		ld		h,a
+		ld		a,l
+		cpl
+		ld		l,a
+		inc		hl							; Samples per frame (-312)
+
+		ld		a,20						; No loop (Out of range)
+
+		add		hl,bc
+		jp		c,.no_loop
+
+	;	----D---- ----E----
+	;	0000 0008 7654 3210
+	;	0000 0000 0008 7654	
+
+		ld		a,c							; Loop offset / 16
+		and		%11110000
+		or		b
+		swapnib
+	.no_loop:
+		ld		b,a							; B = 0..19 (20 no loop)
+
+		ld		a,c
+		and		%00001111
+		ld		c,a
+
+	;	------------
+
+		ld		hl,.zone+1					; Build control table
+		pop		de
+		ld		(hl),e						; Split
+		ld		a,d							; Count
+
+		pop		hl							; 0..15 samples routine
+
+		ld		(copper_audio_config+1),sp 	; **PATCH**
+
+		ld		sp,copper_audio_stack
+		
+		cp		b
+		jr		nz,.skip					; Loop 0..15 samples ?
+
+		ex		af,af'
+
+		ld		e,c							; 0..7
+		ld		d,9
+		mul		d,e							; 0..144
+		ld		a,144						; 144..0
+		sub		e
+
+		add		hl,de
+		push	hl
+		push	ix							; Output loop
+		ld		de,copper_out16
+		add		de,a
+		push	de
+
+		ex		af,af'
+
+		jr		.next
+
+	;	------------
+
+	.skip:	
+		push	hl							; Output normal
+
+	;	------------
+
+	.next:	
+		ld		hl,copper_out16				; 16 samples routine
+		dec		a
+
+	.zone:	
+		cp		7
+		jp		nz,.no_split
+
+		ld		de,copper_split
+		push	de							; Output Split
+	.no_split:
+		cp		b
+		jp		nz,.no_zone					; Loop 16 samples ?
+
+		ex		af,af'
+
+		ld		e,c							; 0..15
+		ld		d,9
+		mul		d,e							; 0..144
+		ld		a,144						; 144..0
+		sub		e
+
+		add		de,copper_out16
+		push	de
+		push	ix							; Output loop
+		ld		de,copper_out16
+		add		de,a
+		push	de
+
+		ex		af,af'
+
+		jr		.zone_next
+
+	.no_zone:
+		push	hl							; Output normal
+
+	.zone_next	
+		dec		a
+		jp		p,.zone
+
+		ld		(copper_audio_control+1),sp ; **PATCH**
+
+	.return	
+		ld		a,0							; Copper line to wait for
+
+	.stack	
+		ld		sp,0
+
+		ret
+
+
+	; --------------------------------------------------------------------------
+	; --------------------------------------------------------------------------
+	; --------------------------------------------------------------------------
+
+
+	; **MUST CALL EACH FRAME AFTER WAITING FOR LINE A FROM SET_COPPER_AUDIO**
+
+
+	; Build copper list to output one frame of sample data to DAC.
+
+	play_copper_audio: 
+		
+		ld 			a,(sample_bank)			; set sample banks 
+		nextreg 	$50,a 
+		inc 		a
+		nextreg 	$51,a 
+		
+		call 		play_copper_audio2		; set copper 
+		
+		nextreg 	$50,$ff					; return roms 
+		nextreg 	$51,$ff 
+		
+		ret 
+
+	play_copper_audio2:
+		
+		ld			(play_copper_stack+1),sp
+
+	copper_audio_config:
+		
+		ld		sp,0			; **PATCH**
+
+		pop		hl							; Index + VBLANK
+		pop		de							; Line 180 + command WAIT
+
+		ld		a,l
+		nextreg	COPLO,a
+		ld		a,h
+		nextreg	COPHI,a
+
+		ld		hl,(sample_ptr)				; Calc playback position
+		ld		bc,(sample_pos)	
+		add		hl,bc
+
+		ld		bc,SELECT					; Port
+		ld		a,COPPER_DATA
+		out		(c),a
+		inc		b
+
+		ld		a,(sample_dac)				; Register to set (DAC)
+
+	copper_audio_control:
+		ld		sp,0						; **PATCH**
+		
+		ret									; GO!!!
+
+	;	------------
+
+	copper_out16:	
+		out		(c),d		;   0 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out15:	
+		out		(c),d		;   9 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out14:	
+		out		(c),d		;  18 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out13:	
+		out		(c),d		;  27 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out12:	
+		out		(c),d		;  36 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out11:	
+		out		(c),d		;  45 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc	de
+	copper_out10:	
+		out		(c),d		;  54 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out9:
+		out		(c),d		;  63 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out8:	
+		out		(c),d		;  72 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out7:	
+		out		(c),d		;  81 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out6:	
+		out		(c),d		;  90 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out5:	
+		out		(c),d		;  99 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out4:	
+		out		(c),d		; 108 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out3:	
+		out		(c),d		; 117 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc	de
+	copper_out2:	
+		out		(c),d		; 126 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out1:	
+		out		(c),d		; 135 BYTES
+		out		(c),e
+		out		(c),a
+		OUTINB
+		inc		de
+	copper_out0:	
+
+		ret			; 144 BYTES
+
+	;	------------
+
+	copper_split:
+		out		(c),d						; Terminate
+		out		(c),e
+		ld		de,32768+0					; Line 0 + command WAIT
+		nextreg	COPPER_CONTROL_LO_BYTE_REGISTER,$00 ; Index
+		nextreg	COPPER_CONTROL_HI_BYTE_REGISTER,$C0 ; Vblank
+		ret			; GO!!!
+
+
+	copper_loop:	
+		ld		hl,sample_dac
+		ld		a,(sample_loop)
+		and		a
+		jr		z,.forever
+		dec		a
+		jr		nz,.loop	
+		ld		(hl),0						; Copper NOP (mute sound)
+
+	.loop:		
+		ld		(sample_loop),a
+
+	.forever:
+		ld		a,(hl)						; Read DAC mute state
+		ld		hl,(sample_ptr)
+		ret									; GO!!!
+
+	;	------------
+
+	copper_done:
+		ld		de,(sample_ptr)
+		xor		a
+		sbc		hl,de
+		ld		(sample_pos),hl				; Update playback position
+
+	play_copper_stack:
+		ld		sp,0
+		ret
+
+
+	; --------------------------------------------------------------------------
+
+
+	vga_50_config:
+		db		187						; Copper line 187 (50hz)
+		dw		311						; Samples per frame
+		db		6						; Split
+		db		7+12					; Count
+		dw		copper_out7				; Routine (311-304)
+		db		$1C						; Index + VBLANK
+		db		$C3
+		dw		32768+199				; Line 199 + command WAIT
+
+	vga_60_config:	
+		db		191						; Copper line 191 (60hz)
+		dw		264						; Samples per frame
+		db		3						; Split
+		db		4+12					; Count
+		dw		copper_out8				; Routine (261-256)
+		db		$20						; Index + VBLANK
+		db		$C3
+		dw		32768+200				; Line 197 + command WAIT
+
+	hdmi_50_config:	
+		db		186						; Copper line 186 (50hz)
+		dw		312						; Samples per frame
+		db		6						; Split
+		db		7+12					; Count
+		dw		copper_out8				; Routine (312-304)
+		db		$20						; Index + VBLANK
+		db		$C3
+		dw		32768+200				; Line 200 + command WAIT
+
+	hdmi_60_config:
+		db		189						; Copper line 189 (60hz)
+		dw		262						; Samples per frame
+		db		3						; Split
+		db		4+12					; Count
+		dw		copper_out6				; Routine (262-256)
+		db		$18						; Index + VBLANK
+		db		$C3
+		dw		32768+198				; Line 198 + command WAIT
+
+
+	; --------------------------------------------------------------------------
+
+
+	; Variables.
+
+
+	sample_ptr:		dw	0			; 32768
+	sample_pos:		dw	0
+	sample_len:		dw	0			; 10181
+	sample_dac:		db	0			; DAC register
+
+	sample_loop:    db	0		; 0..255
+	sample_bank:    db 	0 		; 0..255 
+
+	video_lines:	dw	0		; 312/311/262/261
+	video_timing:	db	0		; 0..7
+
+		dw	0,0,0,0,0,0,0,0		;
+		dw	0,0,0,0,0,0,0,0		; Define 23 WORDS
+		dw	0,0,0,0,0,0,0		;
+
+	copper_audio_stack:
+		dw	copper_done
+	pop namespace
+
+    end asm 
+end sub 
+
+sub backupsysvar() 
+
+	asm 
+		di 
+		nextreg MMU7_E000_NR_57,90
+		ld hl,$5C00
+		ld de,$e000 
+		ld bc,256
+		ldir 
+		
+	end asm 
+'	SaveSD("sysvar.bin",$e000,256)
+	asm
+		nextreg MMU7_E000_NR_57,1
+	end asm
+
+end sub 
+
+sub restoresys()
+
+	asm 
+	di 
+		nextreg MMU7_E000_NR_57,90
+		ld de,$5C00
+		ld hl,$e000 
+		ld bc,0
+		ldir 
+		nextreg MMU7_E000_NR_57,1
+	end asm 	
+
+end sub
+
+
+' sub fastcall PeekString2(address as uinteger,byref outstring as string)
+'     asm  
+'         ex      de, hl 
+'         pop     hl 
+'         ex      (sp), hl
+'         jp      .core.__STORE_STR 
+'     end asm 
+' end sub
+
+' sub Browser(temp$ as string,ext$ as string)
+' 	'BBREAK
+' 	'ShowLayer2(0)
+' 	'NextReg($8,$fa)
+' 	for p=0 to 2 : poke @extname+p, code(ext$(p)) : next 
+' 	for p=0 to len(temp$)-1 : poke @testtext+cast(uinteger,p), code(temp$(p)) : next 
+' 	poke @testtext+cast(uinteger,p),255
+		
+' 	asm 	
+' 			di 
+' 			im      1
+' 			IDEBROWSER	            equ	$01ba 
+' 			LAYER		            equ $9c
+' 			IDEBASIC 	            equ $1c0
+' 			; Next Registers
+' 			nextregselect           equ     $243b
+' 			nextregaccess           equ     $253b
+' 			nxrturbo                equ     $07
+' 			turbomax                equ     2
+' 			nxrmmu6                 equ     $56
+' 			nxrmmu7                 equ     $57
+' 			tstack	                equ 	$bf00
+' 			ld      (stackstore),sp 
+' 			ld      sp,tstack
+' 			ei
+' browser2:
+
+' 			ld      a,$3f			    ; 	all capabilities
+' 			ld      hl,ftbuff		    ; 	hl = filetypes 
+' 			ld      de,testtext 		; 	de info at bottom of screen +$FF 
+' 			exx
+' pressesq:
+' 			ld      c,7 				; 	RAM 7 required for most IDEDOS calls
+' 			ld      de,$01ba 		    ; 	IDEBROWSER 
+' 			rst     $8
+' 			defb    $94 	            ; MP3DOS
+' 			jp      z,FILEOK
+' 			; jp    nz,browser2
+' 			jp      nz,FILERROR
+' 			jp      c,FILERROR
+			
+' FILEOK:
+' 			ld      de,filebuffer
+' 			jp      copyRAM7tode
+' 			ret 
+	
+' FILERROR:
+' 			jp      endout
+' 			; on ya own mate
+' 			ret 
+
+' copyRAM7tode:
+'             push    hl                      ; save source address
+'             ld      bc,TBBLUE_REGISTER_SELECT_P_243B
+'             ld      a,nxrmmu6
+'             out     (c),a
+'             inc     b
+'             in      l,(c)                   ; L=current MMU6 binding
+'             ld      a,7*2+0
+'             out     (c),a                   ; rebind to RAM 7 low
+'             dec     b
+'             ld      a,nxrmmu7
+'             out     (c),a
+'             inc     b
+'             in      h,(c)                   ; H=current MMU7 binding
+'             ld      a,7*2+1
+'             out     (c),a                   ; rebind to RAM 7 high
+'             ex      (sp),hl                 ; save MMU6/7 bindings, refetch source
+'             ld      bc,$ffff                ; string len, -1 to exclude terminator
+' cr7tomainloop:
+'             ld      a,(hl)                  ; copy a byte
+'             inc     hl
+'             ld      (de),a
+'             inc     de
+'             inc     bc                      ; increment string length
+'             inc     a
+'             jr      nz,cr7tomainloop        ; back unless $ff-terminator copied
+'             pop     hl
+'             ld      a,l
+'             defb    $ed,$92,nxrmmu6         ; restore MMU6 binding
+'             ld      a,h
+'             defb    $ed,$92,nxrmmu7         ; restore MMU7 binding
+'             ld      hl,filebuffer
+'             add     hl,bc 
+'             ld      a,$ff
+'             ld      (hl),a
+'             jp      endout
+' ftbuff:   	
+' 			defb	4
+' end asm 
+' extname:
+' asm 
+'             defb	"TAP:"
+'             defb	$ff	; all files 
+' end asm 
+' testtext:
+' asm 
+' testtext:
+'             Defs    64,32
+'             DB      255
+' stackstore:		
+
+'             dw      0,0
+' endout:
+' 			di
+' 			ld      bc,32765       ;I/O address of horizontal ROM/RAM switch
+' 			ld      a,(23388)      ;get current switch state
+' 			set     4,a            ;move left to right (ROM 2 to ROM 3)
+' 			and     $F8           ;also want RAM page 0
+' 			; or 0
+' 			; ld a,$10
+' 			ld      (23388),a      ;update the system variable (very important)
+' 			out     (c),a          ;make the switch
+' 			rst     $20
+' 			ld      sp,(stackstore)
+' 			ei 
+			
+
+' end asm 
+' 	NextReg($4A,0)		
+' end sub 
+
+' messagebyte:
+' asm
+' messagebyte:
+' 	        db      0,0
+' end asm 
+
+' filebuffer:
+' asm 
+' filebuffer:
+'             db      "MOD815k.wav"
+'             db      0
+' end asm 
+
+copper_sample_table:
+asm 
+	copper_sample_table: 
+	; bank+loop , sample start, sample len
+	; eg bank 32,loop 0 = $3200 
+	; sample table sample * 6 
+	dw $2001,0000,2490						; 2,490 kick.pcm		1
+	dw $2001,2490,4412						; 4,412 kickclap.pcm	2
+	dw $2001,6902,443						; 443 hhcls.pcm			3
+	dw $2001,7345,4186						; 4,186 hhopen.pcm		4
+	dw $2001,11531,2915						; 2,915 snare.pcm		5
+	dw $2001,0,0
+end asm 
+

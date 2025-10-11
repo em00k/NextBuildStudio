@@ -1,0 +1,12 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background rectangle -->
+    <rect x="1" y="1" width="14" height="14" fill="#424242" />
+    
+    <!-- Binary pattern - 1s and 0s -->
+    <text x="4" y="5" font-family="Courier, monospace" font-size="2.5" fill="#00FF00">10101</text>
+    <text x="4" y="7.5" font-family="Courier, monospace" font-size="2.5" fill="#00FF00">01010</text>
+    <text x="4" y="10" font-family="Courier, monospace" font-size="2.5" fill="#00FF00">11001</text>
+    
+    <!-- BIN Text -->
+    <text x="8" y="13.5" font-family="Arial, sans-serif" font-size="4" font-weight="bold" text-anchor="middle" fill="#FFFFFF">BIN</text>
+</svg> 

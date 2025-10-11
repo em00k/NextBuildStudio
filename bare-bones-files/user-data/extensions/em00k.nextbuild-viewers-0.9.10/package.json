@@ -1,0 +1,678 @@
+{
+  "name": "nextbuild-viewers",
+  "displayName": "NextBuild Studio",
+  "description": "ZX Next game studio with ZX Basic Compiler on steroids",
+  "version": "0.9.10",
+  "publisher": "em00k",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/em00k/nextbuild-viewers"
+  },
+  "license": "GPL-3.0",
+  "keywords": [
+    "zx spectrum next",
+    "sprite editor",
+    "nextbuild",
+    "tools"
+  ],
+  "icon": "media/nextbuild/nextbuild-studio-main.png",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onFileSystem:file"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "nextbuild-viewers.showKeywordHelp",
+        "title": "Show NextBuild Keyword Help",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.editKeywordsFile",
+        "title": "Edit NextBuild Keywords File",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithPaletteViewer",
+        "title": "Open with ZX Next Palette Viewer",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithSpriteViewer",
+        "title": "Open with ZX Next Sprite Viewer",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithBlockViewer",
+        "title": "Open with ZX Next Block Viewer",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithImageViewer",
+        "title": "Open with ZX Next Image Viewer",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.createSpriteFile",
+        "title": "Create New Sprite/Font File...",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.createNewProject",
+        "title": "Create New Project",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openAyfxAudioEditor",
+        "title": "Open AYFX Audio Effects Editor",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.playPT3File",
+        "title": "Play PT3 Module with playpt3.exe",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.importSpriteFromImage",
+        "title": "Import Sprite From Image...",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.toggleIconTheme",
+        "title": "Toggle ZX Next File Icons",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.analyzeSpritesDuplicates",
+        "title": "Analyse Sprite Duplicates",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.convertToOptimizedBlock",
+        "title": "Convert to Optimized Block Format",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithSpriteImporter",
+        "title": "Open in Sprite Importer",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.openWithCSpect",
+        "title": "Open with CSpect Emulator",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.activateLicense",
+        "title": "Activate Premium License",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.setRootFolderForIncludes",
+        "title": "NextBuild: Set Root Folder for Includes",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.configurePythonPath",
+        "title": "NextBuild: Configure Python Path for Linting",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.configureWarningFilters",
+        "title": "NextBuild: Configure Warning Filters",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.checkForUpdates",
+        "title": "Check for Extension Updates",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.updateComponents",
+        "title": "Update Extension",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.checkForComponentUpdates",
+        "title": "Check for Component Updates",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.updateExtensionComponents",
+        "title": "Update Extension Components",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.checkForRootUpdates",
+        "title": "Check for NextBuild Root Updates",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.updateRootComponents",
+        "title": "Update NextBuild Root Components",
+        "category": "NextBuild Studio"
+      },
+      {
+        "command": "nextbuild-viewers.resetUpdateData",
+        "title": "Reset Update Tracking Data",
+        "category": "NextBuild Studio"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "f1",
+        "command": "nextbuild-viewers.showKeywordHelp",
+        "when": "editorTextFocus && editorLangId == 'nextbuild'"
+      },
+      {
+        "command": "nextbuild-viewers.searchKeywordHelp",
+        "key": "ctrl+f1",
+        "when": "editorTextFocus && editorLangId == 'nextbuild'"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceExtname == .pal || resourceExtname == .nxp",
+          "command": "nextbuild-viewers.openWithPaletteViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .spr || resourceExtname == .til || resourceExtname == .nxt",
+          "command": "nextbuild-viewers.openWithSpriteViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .nxb || resourceExtname == .nxm",
+          "command": "nextbuild-viewers.openWithBlockViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .nxi || resourceExtname == .sl2 || resourceExtname == .sll || resourceExtname == .hxi",
+          "command": "nextbuild-viewers.openWithImageViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .pt3",
+          "command": "nextbuild-viewers.playPT3File",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceExtname == .spr || resourceExtname == .til || resourceExtname == .nxt || resourceExtname == .fnt",
+          "command": "nextbuild-viewers.analyzeSpritesDuplicates",
+          "group": "7_modification"
+        },
+        {
+          "when": "resourceExtname == .nxb",
+          "command": "nextbuild-viewers.convertToOptimizedBlock",
+          "group": "7_modification"
+        },
+        {
+          "when": "resourceExtname == .png || resourceExtname == .jpg || resourceExtname == .jpeg || resourceExtname == .bmp || resourceExtname == .gif || resourceExtname == .webp",
+          "command": "nextbuild-viewers.openWithSpriteImporter",
+          "group": "7_modification"
+        },
+        {
+          "when": "resourceExtname == .nex",
+          "command": "nextbuild-viewers.openWithCSpect",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceExtname == .afb || resourceExtname == .afx",
+          "command": "nextbuild-viewers.openAyfxAudioEditor",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "when": "resourceExtname == .pal || resourceExtname == .nxp",
+          "command": "nextbuild-viewers.openWithPaletteViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .spr || resourceExtname == .til || resourceExtname == .nxt",
+          "command": "nextbuild-viewers.openWithSpriteViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .nxb || resourceExtname == .nxm",
+          "command": "nextbuild-viewers.openWithBlockViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .nxi || resourceExtname == .sl2 || resourceExtname == .sll || resourceExtname == .hxi",
+          "command": "nextbuild-viewers.openWithImageViewer",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .pt3",
+          "command": "nextbuild-viewers.playPT3File",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceExtname == .nxb",
+          "command": "nextbuild-viewers.convertToOptimizedBlock",
+          "group": "7_modification"
+        },
+        {
+          "when": "resourceExtname == .png || resourceExtname == .jpg || resourceExtname == .jpeg || resourceExtname == .bmp || resourceExtname == .gif || resourceExtname == .webp",
+          "command": "nextbuild-viewers.openWithSpriteImporter",
+          "group": "7_modification"
+        },
+        {
+          "when": "resourceExtname == .nex",
+          "command": "nextbuild-viewers.openWithCSpect",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceExtname == .afb || resourceExtname == .afx",
+          "command": "nextbuild-viewers.openAyfxAudioEditor",
+          "group": "navigation"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "nextbuild-viewers.paletteViewer",
+        "displayName": "ZX Next Palette Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.pal"
+          },
+          {
+            "filenamePattern": "*.nxp"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "nextbuild-viewers.spriteViewer",
+        "displayName": "ZX Next Sprite Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.spr"
+          },
+          {
+            "filenamePattern": "*.til"
+          },
+          {
+            "filenamePattern": "*.fnt"
+          },
+          {
+            "filenamePattern": "*.nxt"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "nextbuild-viewers.blockViewer",
+        "displayName": "ZX Next Block Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.nxb"
+          },
+          {
+            "filenamePattern": "*.nxm"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "nextbuild-viewers.imageViewer",
+        "displayName": "ZX Next Image Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.nxi"
+          },
+          {
+            "filenamePattern": "*.sl2"
+          },
+          {
+            "filenamePattern": "*.sll"
+          },
+          {
+            "filenamePattern": "*.hxi"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "nextbuild-viewers.optimizedBlockViewer",
+        "displayName": "ZX Next Optimized Block Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.oxb"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "nextbuild-viewers.ayfxAudioEditor",
+        "displayName": "AYFX Audio Effects Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.afb"
+          },
+          {
+            "filenamePattern": "*.afx"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "languages": [
+      {
+        "id": "nextbuild",
+        "extensions": [
+          ".bas"
+        ],
+        "aliases": [
+          "NextBuild Studio",
+          "nextbuild"
+        ],
+        "configuration": "./syntaxes/language-configuration.json"
+      },
+      {
+        "id": "zxnext-palette",
+        "extensions": [
+          ".pal",
+          ".nxp"
+        ],
+        "aliases": [
+          "ZX Next Palette"
+        ]
+      },
+      {
+        "id": "zxnext-sprite",
+        "extensions": [
+          ".spr",
+          ".til",
+          ".nxt"
+        ],
+        "aliases": [
+          "ZX Next Sprite"
+        ]
+      },
+      {
+        "id": "zxnext-block",
+        "extensions": [
+          ".nxb"
+        ],
+        "aliases": [
+          "ZX Next Block"
+        ]
+      },
+      {
+        "id": "zxnext-map",
+        "extensions": [
+          ".nxm"
+        ],
+        "aliases": [
+          "ZX Next Map"
+        ]
+      },
+      {
+        "id": "zxnext-image",
+        "extensions": [
+          ".nxi",
+          ".sl2",
+          ".sll",
+          ".hxi"
+        ],
+        "aliases": [
+          "ZX Next Image"
+        ]
+      },
+      {
+        "id": "zxnext-pt3",
+        "extensions": [
+          ".pt3"
+        ],
+        "aliases": [
+          "ProTracker 3 Module"
+        ]
+      },
+      {
+        "id": "zxnext-optimized-block",
+        "extensions": [
+          ".oxb"
+        ],
+        "aliases": [
+          "ZX Next Optimized Block"
+        ]
+      },
+      {
+        "id": "zxnext-nex",
+        "extensions": [
+          ".nex"
+        ],
+        "aliases": [
+          "ZX Next Executable"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nextbuild",
+        "scopeName": "source.nextbuild",
+        "path": "./syntaxes/nextbuild.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "nextbuild",
+        "path": "./snippets/nextbuild.json"
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "nextbuild-icons",
+        "label": "NextBuild File Icons",
+        "path": "./media/file-icon-theme.json"
+      }
+    ],
+    "configuration": {
+      "title": "NextBuild Studio",
+      "properties": {
+        "nextbuild-viewers.playpt3Path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to playpt3.exe for playing PT3 music modules. Can be downloaded from ZX spectrum repositories."
+        },
+        "nextbuild-viewers.cspectPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to CSpect.exe for running ZX Spectrum Next .NEX files."
+        },
+        "nextbuild-viewers.cspectArgs": {
+          "type": "string",
+          "default": "-w3 -esc -r -basickeys -brk -zxnext -16bit -mmc=\"{directory}/data/\"",
+          "description": "Arguments for CSpect.exe. {directory} will be replaced with the directory containing the .NEX file."
+        },
+        "nextbuild-viewers.respectExistingIconTheme": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, will not show icon theme notification if another theme is already active"
+        },
+        "nextbuild-viewers.showSponsorPage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show donation/sponsor page when the extension is installed or updated"
+        },
+        "nextbuild-viewers.licenseKey": {
+          "type": "string",
+          "default": "premium",
+          "description": "License key for premium features. Leave empty for free version."
+        },
+        "nextbuild-viewers.licenseType": {
+          "type": "string",
+          "enum": [
+            "free",
+            "premium"
+          ],
+          "default": "free",
+          "description": "Current license type. Do not modify manually."
+        },
+        "nextbuild-viewers.keywordHelp": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable F1 keyword help panel."
+        },
+        "nextbuild-viewers.hoverHelp.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable hover help for keywords."
+        },
+        "nextbuild-viewers.completion.enableKeywords": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable keyword completion suggestions."
+        },
+        "nextbuild-viewers.completion.enableConstants": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable constant completion suggestions."
+        },
+        "nextbuild-viewers.linting.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable linting using the external compiler."
+        },
+        "nextbuild-viewers.linting.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Path to Python executable. Use 'python' to use system Python, or provide a full path (e.g., 'C:\\Python39\\python.exe'). Use the 'NextBuild: Configure Python Path' command for automatic detection."
+        },
+        "nextbuild-viewers.linting.compilerPath": {
+          "type": "string",
+          "default": "zxbasic/zxbc.py",
+          "description": "Path to the compiler script (zxbc.py)."
+        },
+        "nextbuild-viewers.linting.compilerArgs": {
+          "type": "string",
+          "default": "",
+          "description": "Arguments to pass to the compiler (e.g., 'parse --myflag')."
+        },
+        "nextbuild-viewers.linting.rootFolderForIncludes": {
+          "type": "string",
+          "default": "./",
+          "description": "The root folder for resolving include paths. For example, if set to '/my/project', an include like '#include \"Scripts/utils.bas\"' might resolve relative to '/my/project/Scripts'. The linter will use this to construct arguments like '-I <rootFolder>/Scripts'. Leave empty to not add a specific root include path."
+        },
+        "nextbuild-viewers.linting.hiddenWarnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "List of warning codes to hide from diagnostics (e.g., ['W100', 'W110']). Warning codes like W100 (implicit type), W110 (condition warnings), etc. can be hidden."
+        },
+        "nextbuild-viewers.linting.hideAllWarnings": {
+          "type": "boolean",
+          "default": false,
+          "description": "Hide all warnings and only show errors. When enabled, only error-level diagnostics will be displayed."
+        },
+        "nextbuild-viewers.checkForUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable checking for NextBuild Studio updates."
+        },
+        "nextbuild-viewers.autoCheckUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically check for updates on startup. Requires 'checkForUpdates' to be enabled."
+        },
+        "nextbuild-viewers.updateServer": {
+          "type": "string",
+          "default": "https://zxnext.uk/nextbuild/version.json",
+          "description": "URL to check for version updates."
+        },
+        "nextbuild-viewers.checkForComponentUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable checking for extension component updates (syntax, docs, snippets)."
+        },
+        "nextbuild-viewers.checkForRootUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable checking for NextBuild root component updates (Scripts, Examples, Tools, zxbasic)."
+        },
+        "nextbuild-viewers.componentUpdateServer": {
+          "type": "string",
+          "default": "https://zxnext.uk/nextbuild/components.json",
+          "description": "URL to check for extension component updates manifest."
+        },
+        "nextbuild-viewers.rootUpdateServer": {
+          "type": "string",
+          "default": "https://zxnext.uk/nextbuild/root-components.json",
+          "description": "URL to check for root component updates manifest."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "copy-codicons": "node scripts/copy-codicons.js",
+    "precompile": "npm run copy-codicons",
+    "install": "npm run install-deps",
+    "install-deps": "npm install @vscode/codicons@^0.0.32 @vscode/webview-ui-toolkit@^1.2.2 csj@^1.0.0 fs-extra@^11.3.0 gray-matter@^4.0.3 highlight.js@^11.11.1 markdown-it@^14.1.0 sharp@^0.34.1 any-base@^1.1.0 pixelmatch@^1.0.0 jpeg-js@^0.4.0 pngjs@^2.0.0 semver@^7.6.3",
+    "build": "node build.js",
+    "debug": "npm run install-deps && npm run compile && npm run watch",
+    "package:win": "vsce package --target win32-x64 && vsce package --target win32-arm64",
+    "package:mac": "vsce package --target darwin-x64 && vsce package --target darwin-arm64",
+    "package:linux": "npm run package:linux:wsl",
+    "package:linux:wsl": "wsl -e bash -c \"cd /mnt/c/Users/em00k/Documents/GitHub/nextbuild-viewers-win && npm install && vsce package --target linux-x64 && vsce package --target linux-arm64\"",
+    "package:linux:manual": "echo 'Please run this in WSL: cd /mnt/c/Users/em00k/Documents/GitHub/nextbuild-viewers-win && npm install && vsce package --target linux-x64 && vsce package --target linux-arm64'",
+    "package:all": "npm run package:win && npm run package:mac && npm run package:linux",
+    "publish:all": "vsce publish --target win32-x64 --target win32-arm64 --target darwin-x64 --target darwin-arm64 --target linux-x64 --target linux-arm64"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/highlight.js": "^10.1.0",
+    "@types/markdown-it": "^13.0.7",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.23.0",
+    "pixelmatch": "^1.1.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@vscode/codicons": "^0.0.32",
+    "@vscode/vsce": "^2.15.0",
+    "@vscode/webview-ui-toolkit": "^1.4.0",
+    "any-base": "^1.1.0",
+    "csj": "^1.0.0",
+    "fs-extra": "^11.3.2",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "jpeg-js": "^0.4.4",
+    "markdown-it": "^14.1.0",
+    "pngjs": "^2.3.1",
+    "semver": "^7.7.2",
+    "sharp": "^0.34.4"
+  }
+}

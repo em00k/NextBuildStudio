@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{cspSource}} 'unsafe-inline'; script-src {{cspSource}} 'unsafe-inline'; img-src {{cspSource}} data:; connect-src {{cspSource}};">
+    <title>ZX Next Block/Map Viewer</title>
+    <link rel="stylesheet" type="text/css" href="{{cssUri}}">
+</head>
+<body>
+    <h1><!-- TITLE --></h1>
+    
+    <!-- File Info Section -->
+    <div class="section-header">
+        <button class="toggle-button" onclick="toggleSection('file-info-content')">▼</button>
+        <span>File Information</span>
+    </div>
+    <div id="file-info-content" class="section-content">
+        <!-- FILE_INFO -->
+    </div>
+
+    <div class="sticky-header">
+        <!-- Toolbar Section -->
+        <div id="toolbar-container">
+            <div class="section-header">
+                <button class="toggle-button" onclick="toggleSection('toolbar-content')">▼</button>
+                <span>Controls</span>
+            </div>
+            <div id="toolbar-content" class="section-content">
+                <!-- TOOLBAR_CONTENT -->
+            </div>
+        </div>
+
+        
+        <!-- Tile Palette Section -->
+        <div id="tile-palette-container">
+            <div class="section-header">
+                <button class="toggle-button" onclick="toggleSection('tile-palette-scroll')">▼</button>
+                <span>Tile Palette</span>
+            </div>
+            <div id="tile-palette-scroll" class="section-content"> 
+                <div id="tile-palette"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content-wrapper"> 
+        <div id="loadingIndicator">Loading...</div>
+
+        <div id="content-area">
+            <!-- CONTENT_AREA -->
+        </div>
+    </div>
+
+    <!-- Placeholder for initial state and renderer scripts -->
+    <!-- INITIAL_STATE_AND_RENDERER_SCRIPTS -->
+
+    <!-- Main Webview Script -->
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html> 

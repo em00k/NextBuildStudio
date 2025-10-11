@@ -1,0 +1,187 @@
+{
+	"folders": [
+		{
+			"path": "../Sources"
+		}
+	],
+	"settings": {
+        
+            "workbench.colorTheme": "Bearded Theme Vivid Purple",
+            "workbench.iconTheme": "nextbuild-icons",    
+            "workbench.colorCustomizations": {
+        
+                "tab.activeBackground": "#880202c9",
+                "tab.inactiveBackground": "#232324",
+                "tab.inactiveForeground": "#e7e7e7",
+                "tab.activeForeground": "#f1ff32",
+                "tab.selectedForeground": "#f1ff32"
+            },
+        
+            "workbench.editorAssociations": {
+                "*.pt3": "hexEditor",
+                "*.bin": "hexEditor",
+                "*.zx7": "hexEditor",
+                "*.zx0": "hexEditor",
+                "*.iff": "hexEditor",
+                "*.dat": "hexEditor",
+                "*.pcm": "hexEditor",
+                "*.md" : "vscode.markdown.preview.editor"
+            },
+            "workbench.startupEditor": "readme",
+            "workbench.welcomePage.walkthroughs.openOnInstall": false,
+            "workbench.editor.alwaysShowEditorActions": true,
+            "workbench.editor.defaultBinaryEditor": "hexEditor",
+            "terminal.integrated.hideOnStartup": "whenEmpty",
+            "terminal.integrated.hideOnLastClosed": true,
+            "workbench.editor.decorations.badges": true,
+            "workbench.tree.indent": 18, 
+            "workbench.tree.renderIndentGuides": "always",
+            "remote.explorer.showRemoteExplorer": false,
+            "workbench.welcomePage.experimental.hiddenCategories": [
+                "Remote"
+            ],
+            "window.newWindowDimensions": "maximized",
+            "window.zoomLevel": 0,
+        
+            "files.autoSave": "afterDelay",
+            "files.defaultLanguage": "nextbuild-viewers",
+            "files.defaultExtensions": {
+                "nextbuild-viewers": ".bas"
+            },
+            "javascript.preferences.quoteStyle": "single",
+            "typescript.preferences.quoteStyle": "single",
+            
+            "explorer.sortOrder": "type",
+            "editor.cursorSmoothCaretAnimation": "on",
+            "editor.cursorStyle": "block",
+            "editor.defaultFormatter": "em00k.nextbuild-viewers",
+            "editor.tokenColorCustomizations": {
+                "comments": "#7cfa06da",
+                "numbers": "#f36060",
+                "keywords": "#fafd31",
+                "functions": "#2be654"
+            },
+        
+            "git.autofetch": true,
+            "git.enableSmartCommit": true,
+            "git.confirmSync": true,
+            "security.workspace.trust.untrustedFiles": "open",
+            "terminal.integrated.tabs.defaultColor": "terminal.ansiRed",
+            "notebook.defaultFormatter": "em00k.nextbuild-viewers",
+            "explorer.confirmDelete": true,
+            "explorer.fileNesting.patterns": {
+                "*.nex": "${capture}.bas"
+            },
+            "nextbuild-viewers.playpt3Path": "Tools/playpt3.exe",
+            "[nextbuild]": {
+                "editor.defaultFormatter": "em00k.nextbuild-viewers"
+            },
+            "nextbuild-viewers.licenseType": "premium",
+            "nextbuild-viewers.linting.compilerPath": "zxbasic1.18.1/zxbc.py",
+            "nextbuild-viewers.linting.compilerArgs": "--parse-only ",
+            "nextbuild-viewers.linting.pythonPath": "python3",
+            "nextbuild-viewers.linting.rootFolderForIncludes": "/home/usb/Documents/NextBuildv9/",
+            "nextbuild-viewers.linting.hideAllWarnings": false,
+            "nextbuild-viewers.linting.hiddenWarnings": [
+                "W150",
+                "W160",
+                "W170",
+                "W190"
+            ],
+            "actionButtons": {
+        
+                        "commands": [
+        
+                    {
+                        "name": "$(book) Help",
+                        "color": "#ffeeaa",
+                        "useVsCodeApi": true,
+                        "command": "nextbuild-viewers.showKeywordHelp",
+                        "args": ["Index"]
+                     } ,
+                     {
+                        "name": "$(gear) New Project",
+                        "color": "#e7e7e7",
+                        "useVsCodeApi": true,
+                        "command": "nextbuild-viewers.createNewProject"
+                     },
+                     {
+                    "name": "$(play) Compile & Run",
+                    "color": "#39ff14",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["Build Source & Run CSpect"]
+                },
+                {
+                    "name": "$(rocket) Run Emulator", 
+                    "color": "#00eaff",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["Start CSpect"]
+                },
+                {
+                    "name": "$(chrome-restore) Build Modules",
+                    "color": "#ff6b35", 
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["MODULE : Build all modules & run"]
+                },
+                {
+                    "name": "$(package) Single Module",
+                    "color": "#8e44ad",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask", 
+                    "args": ["MODULE : Build single module & run"]
+                },
+                {
+                    "name": "$(cloud-upload) HDF Sync",
+                    "color": "#3498db",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["Sync Files to HDF"]
+                },
+                {
+                    "name": "$(clone) Start NextZXOS",
+                    "color": "#e74c3c",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["Start NextZXOS"]
+                },
+                {
+                   "name": "$(folder-opened) Explorer",
+                   "color": "#f39c12",
+                   "useVsCodeApi": true,
+                   "command": "workbench.action.files.revealActiveFileInWindows"
+                },
+                {
+                    "name": "$(gear) Settings",
+                    "color": "#95a5a6",
+                    "useVsCodeApi": true,
+                    "command": "workbench.action.tasks.runTask",
+                    "args": ["Edit Config"]
+                }
+                ],
+                "defaultColor": "white",
+                "reloadButton": "↻",
+                "loadNpmCommands": false
+            },
+            "vsicons.presets.jsonOfficial": true,
+            "telemetry.telemetryLevel": "off",
+            "update.showReleaseNotes": false,
+            "extensions.ignoreRecommendations": true,
+            "security.workspace.trust.enabled": false,
+            "update.mode": "manual",
+            "nextbuild-viewers.cspectPath": "Emu/CSpect/CSpect.exe",
+            "tabnine.experimentalAutoImports": true,
+            "editor.formatOnSave": true,
+            "terminal.integrated.suggest.enabled": true,
+            "terminal.integrated.defaultProfile.windows": "PowerShell",
+            "workbench.editor.pinnedTabsOnSeparateRow": true,
+            "security.workspace.trust.banner": "never",
+            "workbench.view.alwaysShowHeaderActions": true,
+            "workbench.preferredDarkColorTheme": "Bearded Theme Vivid Purple",
+            "workbench.preferredHighContrastLightColorTheme": "Bearded Theme Vivid Purple",
+            "workbench.view.debug.visible": false
+        },
+
+}

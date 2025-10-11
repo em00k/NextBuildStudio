@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add CSP meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'none';
+        img-src ${webview.cspSource} https: data:;
+        script-src 'nonce-__NONCE__' ${webview.cspSource};
+        style-src ${webview.cspSource} 'unsafe-inline'; 
+        font-src ${webview.cspSource};
+    ">
+    <title>ZX Next Palette Viewer</title>
+    <link rel="stylesheet" href="__CSS_URI__">
+    <style nonce="__NONCE__">
+        /* Inline styles to prevent FOUC */
+        /* We don't need to hide the content initially for the palette viewer */
+    </style>
+    <style>
+        /* Dynamic root styles injected by provider */
+        __ROOT_STYLES__
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ZX Next Palette Viewer</h1>
+        </div>
+
+        <div class="toolbar">
+            __TOOLBAR__
+        </div>
+
+        <div class="advanced-operations">
+            
+        </div>
+
+        <!-- Wrap main content -->
+        <div id="mainContentContainer">
+            <div class="main-layout">
+                <div class="palette-grid-container">
+                    __PALETTE_GRID__
+                </div>
+                <div class="editor-panel">
+                    __EDITOR_PANEL__
+                </div>
+            </div>
+
+            <div class="hover-info-container">
+                __HOVER_INFO__
+            </div>
+
+            <hr style="margin: 20px 0;">
+
+            <div class="secondary-palette-area">
+                __MERGE_TOOL__
+            </div>
+
+            <div class="info">
+                __INFO_SECTION__
+            </div>
+        </div>
+
+        <!-- Dialogs -->
+        <div id="importDialog" class="import-dialog">
+            __IMPORT_DIALOG__
+        </div>
+
+        <!-- Color Operation Dialogs -->
+        <div id="operationDialogs">
+            __COLOR_OPERATION_DIALOGS__
+        </div>
+    </div>
+
+    <!-- Inject initial state before loading main script -->
+    <script nonce="__NONCE__">
+        window.initialPalette = __INITIAL_PALETTE__;
+        __INITIAL_STATE_SCRIPT__
+        // Add debug output
+        console.log("Palette viewer HTML loaded with " + (window.initialPalette ? window.initialPalette.length : 0) + " colors");
+        
+        // Check if element structure is correct
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded - Palette container elements:", document.querySelectorAll('.palette-container').length);
+            console.log("Color boxes:", document.querySelectorAll('.color-box').length);
+            
+            // Add a class to the body element for debugging CSS
+            document.body.classList.add('palette-viewer-loaded');
+        });
+    </script>
+
+
+</body>
+</html> 
+<script nonce="__NONCE__" src="__COLOR_UTILS_URI__"></script>
+<script nonce="__NONCE__" src="__SCRIPT_URI__"></script>

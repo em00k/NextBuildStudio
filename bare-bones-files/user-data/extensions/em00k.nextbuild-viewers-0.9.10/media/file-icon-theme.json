@@ -1,0 +1,203 @@
+{
+  "hidesExplorerArrows": false,
+  "iconDefinitions": {
+    "_folder": { "iconPath": "./icons/default_folder.svg" },
+    "_folder_opened": { "iconPath": "./icons/default_folder_opened.svg" },  
+    "_file": { "iconPath": "./icons/default_file.svg" },
+    "_file_opened": { "iconPath": "./icons/default_file_opened.svg" },
+    "asm": { "iconPath": "./icons/file_type_assembly.svg" },
+    "wav": { "iconPath": "./icons/file_type_audio.svg" },
+    "pcm": { "iconPath": "./icons/file_type_audio.svg" },
+    "mp3": { "iconPath": "./icons/file_type_audio.svg" },
+    "iff": { "iconPath": "./icons/file_type_audio.svg" },
+    "mod": { "iconPath": "./icons/file_type_audio.svg" },
+    "zx0": { "iconPath": "./icons/file_type_archive.svg" },
+    "zx7": { "iconPath": "./icons/file_type_archive.svg" },
+
+    "py": {
+      "iconPath": "./icons/file_type_python.svg"
+    },
+    "cfg": {
+      "iconPath": "./icons/file_type_config.svg"
+    },
+    "bat": {
+      "iconPath": "./icons/file_type_batch.svg"
+    },
+    "cmd": {
+      "iconPath": "./icons/file_type_batch.svg"
+    },  
+    "ps1": {
+      "iconPath": "./icons/file_type_batch.svg"
+    },  
+    "sh": {
+      "iconPath": "./icons/file_type_batch.svg"
+    },  
+    "jsx": {
+      "iconPath": "./icons/file_type_js.svg"
+    },  
+    "ts": {
+      "iconPath": "./icons/file_type_js.svg"
+    },
+    "tsx": {
+      "iconPath": "./icons/file_type_js.svg"
+    },  
+    "c": {
+      "iconPath": "./icons/file_type_cpp.svg"
+    },  
+    "exe": {
+      "iconPath": "./icons/file_type_exe.svg"
+    },
+    "html": {
+      "iconPath": "./icons/file_type_html.svg"
+    },
+    "js": {
+      "iconPath": "./icons/file_type_js.svg"
+    },
+    "cpp": {
+      "iconPath": "./icons/file_type_cpp.svg"
+    },
+    "text": {
+      "iconPath": "./icons/file_type_document.svg"
+    },
+    "pdf": {
+      "iconPath": "./icons/file_type_pdf.svg"
+    },
+    "image": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-img.svg"
+    },
+    "folder_data": {
+      "iconPath": "./nextbuild/folder_type_data.svg"
+    },
+    "folder_data_opened": {
+      "iconPath": "./nextbuild/folder_type_data_opened.svg"
+    },
+    "nextbuild_nxm": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-nxm.svg"
+    },
+    "nextbuild_nxi": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-img.svg"
+    },
+    "nextbuild_nxp": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-nxp-pal.svg"
+    },
+    "nextbuild_nxb": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-nxb.svg"
+    },
+    "nextbuild_oxb": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-oxb.svg"
+    },
+    "nextbuild_pt3": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-PT3.svg"
+    },
+    "nextbuild_spr": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-spr.svg"
+    },
+    "nextbuild_nxt": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-nxt.svg"
+    },
+    "nextbuild_fnt": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-fnt.svg"
+    },
+    "nextbuild_pal": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-nxp-pal.svg"
+    },
+    "nextbuild_nex": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-NEX.svg"
+    },
+    "nextbuild_bas": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-bas.svg"
+    },    
+    "nextbuild_afb": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-afb.svg"
+    },
+    "nextbuild_zx0": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-zx0.svg"
+    },
+    "nextbuild_zx7": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-zx7.svg"
+    },
+    "nextbuild_bin": {
+      "iconPath": "./nextbuild/file_type_nextbuild-icon-bin.svg"
+    },
+    "nextbuild_main": {
+      "iconPath": "./nextbuild/nextbuild-viewer-main.png"
+    }
+  },
+  "folderExpanded": "_folder_opened",
+  "folder": "_folder",
+  "file": "_file",
+  "fileExtensions": {
+    "afb": "nextbuild_afb",
+    "afx": "nextbuild_afb",
+    "pal": "nextbuild_pal",
+    "nxp": "nextbuild_pal",
+    "spr": "nextbuild_spr",
+    "til": "nextbuild_nxt",
+    "nxt": "nextbuild_nxt",
+    "nxb": "nextbuild_nxb",
+    "nxm": "nextbuild_nxm",
+    "oxb": "nextbuild_oxb",
+    "nxi": "nextbuild_nxi",
+    "sl2": "nextbuild_nxi",
+    "sll": "nextbuild_nxi",
+    "hxi": "nextbuild_nxi",
+    "pt3": "nextbuild_pt3",
+    "fnt": "nextbuild_fnt",
+    "nex": "nextbuild_nex",
+    "bas": "nextbuild_bas",
+    "zx0": "nextbuild_zx0",
+    "zx7": "nextbuild_zx7",
+    "bin": "nextbuild_bin",
+    "vsix": "nextbuild_main",
+    "lst": "text",
+    "docx": "text",
+    "xls": "text",
+    "exe": "exe",
+    "bat": "exe",
+    "cmd": "exe",
+    "ps1": "exe",
+    "html": "html",
+    "htm": "html",
+    "xhtml": "html",
+    "js": "js",
+    "jsx": "js",
+    "ts": "js",
+    "tsx": "js",
+    "cpp": "cpp",
+    "c": "cpp",
+    "h": "cpp",
+    "hpp": "cpp",
+    "txt": "text",
+    "log": "text",
+    "md": "text",
+    "pdf": "pdf",
+    "png": "image",
+    "jpg": "image",
+    "jpeg": "image",
+    "gif": "image",
+    "bmp": "image",
+    "svg": "image",
+    "ico": "image"
+  },
+  "fileNames": {
+    "package.json": "nextbuild_main",
+    "extension.js": "nextbuild_main",
+    "extension.ts": "nextbuild_main"
+  },
+  "folderNames": {
+    "data": "folder_data"
+  },
+  "folderNamesExpanded": {
+    "data": "folder_data_opened"
+  },
+  "light": {
+    "fileExtensions": {
+      "pal": "pal_light",
+      "nxp": "pal_light",
+      "spr": "spr_light",
+      "til": "spr_light",
+      "nxt": "spr_light"
+    }
+  },
+  "version": "1.0"
+} 

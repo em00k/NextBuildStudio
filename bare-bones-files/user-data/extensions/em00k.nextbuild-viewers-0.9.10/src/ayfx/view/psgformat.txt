@@ -1,0 +1,48 @@
+## The PSG file format
+
+https://blog.qiqitori.com/2023/05/playing-psg-tunes-or-even-asc-tunes-on-the-msx/
+
+The PSG file format is very similar in concept to the VGM file format, except that only one chip is supported, the PSG. It seems it’s primarily used for ZX Spectrum chip tunes. As only one chip is supported, you don’t need the “command byte” that indicates what chip is to be written to. So you only have pairs of “register address” and “register value to write”.
+
+There’s also a header in the first 16 bytes. The first three bytes are “PSG”, dunno about the rest.
+
+The PSG only has 16 (IIRC) registers, and some of those aren’t even relevant for sound. In other words, the registers 0x10 to 0xff don’t exist and the designers of this file format used that opportunity to fit in a “wait” command at 0xff (one raster scan, so 1/50s or 1/60s depending on whether the system is PAL or NTSC). There’s also a command that waits multiple raster intervals, 0xfe, and a command that ends the tune, 0xfd. Ignoring the header, here are the first few bytes of the Popsa 2 PSG file:
+
+ff
+00 41
+01 05
+02 0b
+03 01
+04 e0
+05 00
+06 1f
+07 31
+08 0f
+09 0f
+0a 0a
+ff
+02 e0
+03 00
+07 38
+09 0d
+0a 0c
+ff
+...
+
+All this means: wait 1 raster interval, then write to registers 00 through 0a with values 41, 05, 0b, 01, …, respectively, wait 1 raster interval, write to registers 02, 03, 07, 09, 0a, with values e0, 00, 38, 0d, 0c, respectively, wait 1 raster interval. (As you can see the 0xff command doesn’t take any parameters.)
+
+ PSG
+
+   This  is  log  file  produced  by  X128 (ZX Spectrum emulator) and fMSX (MSX
+emulator). Every access to the AY 3-891x (Yamaha's soundchip) is stored in this
+file. It's much like RAW format for adlib.
+   format1:  [0]=db     'PSG',1ah                  ... file identifier
+             [4]=db     data                       ... AY data
+   data: command or parameter  command==0-15,byte  ... next byte is data for
+                                                       this AY register
+                               command==0fdh       ... eom (end of music)
+                               command==0feh,byte  ... multiple eoi
+                               command==0ffh       ... eoi (end of interrupt,
+                                                       current data will be
+                                                       send to ay-emulator)
+                                                       

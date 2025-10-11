@@ -1,0 +1,44 @@
+<div id="editorPanel" class="editor-panel">
+    <h4>Edit Color <span id="pickerColorIndex"></span></h4>
+    <div class="picker-controls">
+        <div class="slider-group">
+            <label for="sliderR">R:</label>
+            <input type="range" id="sliderR" min="0" max="7" step="1" value="0">
+            <span class="slider-value" id="valueR">0</span>
+        </div>
+        <div class="slider-group">
+            <label for="sliderG">G:</label>
+            <input type="range" id="sliderG" min="0" max="7" step="1" value="0">
+            <span class="slider-value" id="valueG">0</span>
+        </div>
+        <div class="slider-group">
+            <label for="sliderB">B:</label>
+            <input type="range" id="sliderB" min="0" max="7" step="1" value="0">
+            <span class="slider-value" id="valueB">0</span>
+        </div>
+    </div>
+    <div class="picker-preview">
+        <div id="previewBox" class="preview-box"></div>
+        <span id="previewHex">#000000</span>
+    </div>
+    <div class="byte-inputs">
+        <div class="byte-group">
+             <label for="byte1Input">Byte 1 (RRRGGGBB):</label>
+             <input type="text" id="byte1Input" class="byte-input" maxlength="2" size="4">
+        </div>
+         <div class="byte-group">
+             <label for="byte2Input">Byte 2 (-------B):</label>
+             <input type="text" id="byte2Input" class="byte-input" maxlength="2" size="4">
+        </div>
+    </div>
+    <div class="control-group" style="margin-top: 10px;">
+        <label for="colorPickerInput" style="width: auto; margin-right: 5px;">Pick:</label>
+        <input type="color" id="colorPickerInput" value="#000000">
+    </div>
+    <div class="control-group" style="margin-top: 10px; display: flex; align-items: center;">
+        <label for="priorityBitToggle" style="margin-right: 10px;">Priority Bit:</label>
+        <input type="checkbox" id="priorityBitToggle">
+        <button id="resetPriorityButton" style="margin-left: 5px; padding: 2px 5px; font-size: 0.8em;">Reset All</button>
+    </div>
+    <button id="saveChangesButton" disabled>Save Changes</button> 
+</div> 

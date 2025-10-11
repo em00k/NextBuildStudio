@@ -1,0 +1,61 @@
+{
+	"name": "nextbuild-viewer-extra",
+	"displayName": "NextBuild Viewer Extra",
+	"description": "Additional language features for NextBuild Studio",
+	"version": "1.0.3",
+	"publisher": "em00k",
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"languages": [
+			{
+				"id": "nextbuild",
+				"aliases": [
+					"NextBuild",
+					"nextbuild"
+				],
+				"extensions": [
+					".nbld",
+					".nbl",
+					".bas"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "nextbuild",
+				"scopeName": "source.nextbuild",
+				"path": "./nextbuild.tmLanguage.json"
+			}
+		]
+	},
+	"activationEvents": [
+		"onLanguage:nextbuild"
+	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.74.0",
+		"@types/node": "16.x",
+		"typescript": "^4.9.4"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^8.1.0",
+		"vscode-languageserver": "^8.1.0",
+		"vscode-languageserver-textdocument": "^1.0.8"
+	},
+	"__metadata": {
+		"installedTimestamp": 1758000971400,
+		"targetPlatform": "undefined",
+		"size": 2003979
+	}
+}

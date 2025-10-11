@@ -1,0 +1,13 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <!-- Yellow compression bar at top -->
+    <rect x="1" y="1" width="14" height="1.5" fill="#FFCC00" />
+    
+    <!-- Yellow compression bar at bottom -->
+    <rect x="1" y="13.5" width="14" height="1.5" fill="#FFCC00" />
+    
+    <!-- Main file body -->
+    <rect x="1" y="2.5" width="14" height="11" fill="#7986CB" />
+    
+    <!-- ZX7 Text -->
+    <text x="8" y="9.5" font-family="Arial, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#FFFFFF">ZX7</text>
+</svg> 

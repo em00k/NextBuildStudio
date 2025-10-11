@@ -1,0 +1,202 @@
+table {
+  width: 100%;
+  line-height: 1;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--vscode-editor-background);
+  border-bottom: 16px solid var(--vscode-editor-background);
+  border-top: 16px solid var(--vscode-editor-background);
+}
+
+table *:not(input, .pos) {
+  user-select: none;
+}
+
+tr {
+  border: 2px solid transparent;
+  position: relative;
+}
+
+tr[data-volume='0'] {
+  opacity: 0.5;
+}
+
+th {
+  text-align: left;
+}
+
+input,
+select,
+option {
+  font-size: inherit;
+}
+
+td {
+  cursor: pointer;
+  padding: 0;
+}
+
+td input {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bool input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.bool input:focus + label:before {
+  outline: 5px auto Highlight;
+  outline: 5px auto var(--vscode-focus-ring-color);
+}
+
+tr:focus {
+  outline: 5px auto Highlight;
+  /* outline: 5px auto  var(--vscode-focus-ring-color); */
+  outline: 5px auto -webkit-focus-ring-color;
+  z-index: 10;
+}
+
+.bool input:checked + label.t:before {
+  content: 'T';
+}
+
+.bool input:checked + label.n:before {
+  content: 'N';
+}
+
+.bool input + label:before {
+  content: '-';
+  width: 100%;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.wide {
+  width: 20%;
+}
+
+.wide2 {
+  width: 40%;
+}
+
+td {
+  position: relative;
+}
+
+.bar {
+  border: 1px solid #b1bc0dbc;
+  position: relative;
+  display: block;
+  height: 16px;
+  margin: 0 2px;
+  height: 100%;
+}
+
+.bar input {
+  width: 100%;
+}
+
+.bar input,
+.bar {
+  cursor: ew-resize;
+}
+
+.bar input {
+  opacity: 0;
+  height: 16px;
+}
+
+.bar {
+  --width: attr(data-width);
+}
+
+.bar label {
+  pointer-events: none;
+}
+
+.bar label:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-right: 1px solid var(--vscode-editor-foreground);
+  content: '';
+  background: #dcff14;
+  display: block;
+  width: var(--width);
+}
+
+.bar[data-value='0'] label:before {
+  border-right: 0;
+}
+
+.bar[data-value='0'] input:focus + label:before {
+  width: 1px;
+}
+
+.bar input:focus + label:before {
+  outline: 5px auto Highlight;
+}
+
+input[type='range'] {
+  pointer-events: none;
+}
+
+#import-collection + button {
+  display: none;
+}
+
+#import-collection:invalid {
+  box-shadow: none;
+}
+
+#import-collection:valid + button {
+  display: inline-block;
+}
+
+summary {
+  max-width: 100px;
+}
+
+details[open] summary {
+  font-weight: bold;
+}
+
+details {
+  margin-bottom: 20px;
+}
+
+details[open] {
+  padding-bottom: 40px;
+}
+
+/* button,
+.button {
+  margin: 0;
+  margin-bottom: 8px;
+  background: #111;
+  border: 2px solid #111;
+  border-radius: 3px;
+}
+
+button:hover,
+.button:hover {
+  background: #444;
+  outline: none;
+  border-color: #000;
+} */

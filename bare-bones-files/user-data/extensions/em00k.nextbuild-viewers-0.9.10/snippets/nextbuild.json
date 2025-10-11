@@ -1,0 +1,50 @@
+{
+  "Setup Sprite Templates From File": {
+    "prefix": "Template",
+    "body": [
+      "",
+      "' -- Load block ",
+      "LoadSDBank(\"${1:fname}\",0,0,0,${2:bank})",
+      "InitSprites2(63,\\$0000,${2:bank})       ' 63 nr of sprites to upload from bank ",
+      "' -- ",
+      ""
+    ],
+    "description": "This code loads a sprite file, pages in relevant banks and then uploads ending with putting back the default banks. This is intended ot be run in the load block of code."
+  },
+  "Simple timer snippet": {
+    "prefix": "Template",
+    "body": [
+      "if  ${1:timername} =  ${2:0}",
+      "    ' timer triggered ",
+      "     ${1:timername} = 0",
+      "else ",
+      "     ${1:timername} =  ${1:timername} - 1 ",
+      "endif ",
+      ""
+    ],
+    "description": "This code creates a simple timer that triggers on a set value"
+  },
+  "Template For 256x192L2": {
+    "prefix": "Template",
+    "body": [
+      "'!org=24576",
+      "' NextBuild Layer2 Template ",
+      "",
+      "#define NEX ",
+      "#define IM2 ",
+      "",
+      "#include <nextlib.bas>",
+      "",
+      "asm ",
+      "    ; setting registers in an asm block means you can use the global equs for register names ",
+      "    ; 28mhz, black transparency,sprites on over border,256x192/320x256",
+      "    nextreg TURBO_CONTROL_NR_07,%11         ; 28 mhz ",
+      "    nextreg GLOBAL_TRANSPARENCY_NR_14,\\$0    ; black ",
+      "    nextreg SPRITE_CONTROL_NR_15,%00000011  ; %000    S L U, %11 sprites on over border",
+      "    nextreg LAYER2_CONTROL_NR_70,%00000000  ; 5-4 %00 = 256x192x8bpp, 5-4 %01 320x256x8bpp",
+      "end asm ",
+      ""
+    ],
+    "description": "This template sets registers and include nextlib for 320x256x8bpp"
+  }
+}
