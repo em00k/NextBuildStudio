@@ -312,10 +312,7 @@ This extension contributes the following settings:
 
 ## Development
 
-1. Clone the repository
-2. Run `npm install` to install dependencies
-3. Run `npm run compile` to compile the extension
-4. Press F5 to launch the extension in debug mode
+I am looking for people to join me to help keep development going on all platforms. If you can help, get in touch.
 
 ## License
 
