@@ -91,9 +91,9 @@ sub fastcall UpdateMap(ux as ubyte, uy as ubyte, uv as ubyte, ucol as ubyte)
 		ld 		(hl),a
 		inc 	hl
 		pop 	af			; get colour 
-		; SWAPNIB 
-		and 	%01111111
-		rlca; : and %11111110
+
+		and 	%01111111  ; and the bits of the colour index 
+		rlca                ; shift left 
 		ld 		(hl),a
 outme:
 		exx : push hl : exx 
