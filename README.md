@@ -1,5 +1,5 @@
 # NextBuildStudio
-#### (currently in private beta https://www.patreon.com/posts/nextbuild-studio-133526642)
+#### https://zxnext.uk/nextbuildstudio/
 
 ![NextBuild Studio](./images/NB-1024x169.png)
 
@@ -9,7 +9,7 @@ Repo for NextBuild Studio
 
 # Overview
 
-NextBuild Studio is a Visual Studio Code fork that adds support for ZX Next development.    
+NextBuild Studio is a Visual Studio Code fork that adds support for ZX Next development. NextBuildStudio uses [Boriel's ZXBasic Compiler](https://github.com/boriel-basic/zxbasic)
 
 It includes the following features:
 
