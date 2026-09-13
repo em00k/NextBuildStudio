@@ -1,0 +1,17 @@
+>>> from test_ import process_file
+
+# Should not emit warning for these case:
+>>> process_file('arch/zx48k/warn_unreach0.bas')
+
+>>> process_file('arch/zx48k/mcleod3.bas', ['-S', '-q', '-O --expect-warnings=2'])
+mcleod3.bas:3: error: 'GenerateSpaces' is neither an array nor a function.
+>>> process_file('arch/zx48k/doloop2.bas', ['-S', '-q', '-O -W110'])
+doloop2.bas:4: warning: [W100] Using default implicit type 'ubyte' for 'a'
+doloop2.bas:4: warning: [W150] Variable 'a' is never used
+
+>>> process_file('arch/zx48k/warn_brk.bas', ['-S', '-q', '-O --enable-break'])
+
+>>> process_file('arch/zx48k/warn_lbl.bas', ['-S', '-q'])
+
+>>> process_file('arch/zx48k/letsubstr_undecl.bas', ['-S', '-q'])
+letsubstr_undecl.bas:1: warning: [W101] Accessing uninitialized string variable 'S'

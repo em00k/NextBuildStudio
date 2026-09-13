@@ -1,0 +1,16 @@
+{
+  "window": 24576,
+  "window_size": 8192,
+  "banks": [
+    {
+      "bank": 1,
+      "file": "Example2-Delta-CODEBANK.bank1.bin",
+      "org": 24576,
+      "size": 789,
+      "page": 30,
+      "pages": [
+        30
+      ]
+    }
+  ]
+}

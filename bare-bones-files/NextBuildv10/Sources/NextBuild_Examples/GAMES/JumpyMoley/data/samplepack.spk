@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "samples": [
+    {
+      "filename": "0jump.pcm",
+      "filePath": "/home/usb/Documents/NextBuildv9/Sources/NextBuild_Examples/GAMES/JumpyMoley/data/0jump.pcm",
+      "size": 4417,
+      "looped": false
+    },
+    {
+      "filename": "1pickup.pcm",
+      "filePath": "/home/usb/Documents/NextBuildv9/Sources/NextBuild_Examples/GAMES/JumpyMoley/data/1pickup.pcm",
+      "size": 7516,
+      "looped": false
+    },
+    {
+      "filename": "3punch.pcm",
+      "filePath": "/home/usb/Documents/NextBuildv9/Sources/NextBuild_Examples/GAMES/JumpyMoley/data/3punch.pcm",
+      "size": 7086,
+      "looped": false
+    },
+    {
+      "filename": "4dead.pcm",
+      "filePath": "/home/usb/Documents/NextBuildv9/Sources/NextBuild_Examples/GAMES/JumpyMoley/data/4dead.pcm",
+      "size": 3238,
+      "looped": false
+    },
+    {
+      "filename": "complete.pcm",
+      "filePath": "/home/usb/Documents/NextBuildv9/Sources/NextBuild_Examples/GAMES/JumpyMoley/data/complete.pcm",
+      "size": 11502,
+      "looped": false
+    },
+    {
+      "filename": "boom.wav",
+      "filePath": "/home/usb/Documents/Python/venv/lib/python3.13/site-packages/pygame/examples/data/boom.wav",
+      "size": 12432,
+      "looped": false
+    }
+  ]
+}

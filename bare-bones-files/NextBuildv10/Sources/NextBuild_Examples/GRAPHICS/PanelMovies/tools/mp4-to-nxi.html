@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MP4 → NXI Movie Converter (ZX Spectrum Next L2)</title>
+<style>
+  :root {
+    --bg: #1a1a1a; --fg: #e8e8e8; --panel: #242424; --accent: #ff5252;
+    --border: #3a3a3a; --muted: #888;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: -apple-system, system-ui, sans-serif;
+    margin: 0; padding: 16px; font-size: 13px;
+  }
+  h1 { font-size: 16px; margin: 0 0 4px 0; color: var(--accent); }
+  .sub { color: var(--muted); margin-bottom: 16px; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; flex: 1; min-width: 320px;
+  }
+  .panel h2 { font-size: 13px; margin: 0 0 10px 0; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  input[type=number], input[type=text], select, input[type=file] {
+    background: #111; color: var(--fg); border: 1px solid var(--border);
+    padding: 6px 8px; border-radius: 4px; font: inherit; width: 100%;
+  }
+  input[type=range] { width: 100%; }
+  button {
+    background: var(--accent); color: #111; border: 0; padding: 8px 16px;
+    border-radius: 4px; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  button:disabled { background: #555; cursor: not-allowed; color: #999; }
+  button.alt { background: #444; color: var(--fg); }
+  .field { margin-bottom: 10px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  video, canvas#preview, canvas#frameView {
+    background: #000; max-width: 100%; border: 1px solid var(--border);
+    border-radius: 4px; display: block; image-rendering: pixelated;
+  }
+  .timeline { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+  .timeline span { font-family: monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .stats {
+    background: #111; padding: 8px; border-radius: 4px;
+    font-family: monospace; font-size: 11px; color: #9cf; white-space: pre;
+  }
+  progress { width: 100%; height: 8px; }
+  .frames-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 4px; max-height: 320px; overflow-y: auto; margin-top: 8px;
+    background: #111; padding: 6px; border-radius: 4px;
+  }
+  .frames-grid .thumb {
+    position: relative; cursor: pointer;
+    border: 2px solid #333; border-radius: 3px; overflow: hidden;
+    line-height: 0;
+  }
+  .frames-grid .thumb.thumb-raw   { border-color: #4caf50; }
+  .frames-grid .thumb.thumb-delta { border-color: #4a86e8; }
+  .frames-grid .thumb:hover { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .frames-grid .thumb canvas { width: 100%; image-rendering: pixelated; display: block; }
+  .frames-grid .thumb-label {
+    position: absolute; top: 1px; left: 2px;
+    font-family: monospace; font-size: 10px; line-height: 1;
+    color: #fff; background: rgba(0,0,0,0.65);
+    padding: 2px 4px; border-radius: 2px; pointer-events: none;
+  }
+  .playback-controls {
+    display: flex; gap: 6px; align-items: center; margin-top: 8px;
+    background: #111; padding: 6px 8px; border-radius: 4px;
+  }
+  .playback-controls button { padding: 4px 10px; font-size: 12px; min-width: 68px; }
+  .playback-controls input[type=range] { flex: 1; width: auto; }
+  .playback-controls .counter {
+    font-family: monospace; font-size: 11px; color: #9cf;
+    min-width: 130px; text-align: right;
+  }
+  .log {
+    font-family: monospace; font-size: 11px; color: #9cf;
+    max-height: 120px; overflow-y: auto;
+    background: #111; padding: 6px; border-radius: 4px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .settings-bar { margin-bottom: 12px; }
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+    gap: 6px 12px;
+    align-items: start;
+  }
+  .settings-grid .field { margin-bottom: 0; min-width: 0; }
+  .settings-grid .field label { margin-bottom: 2px; }
+  /* number inputs never need the full cell width */
+  .settings-grid input[type=number] { max-width: 96px; }
+  /* keep the "All available" checkbox tight */
+  .settings-grid label[style*="inline-flex"] { margin-top: 2px !important; }
+  .settings-grid .field .hint {
+    font-size: 10px; color: #888; margin-top: 2px; line-height: 1.25;
+  }
+  .action-row {
+    display: flex; gap: 8px; align-items: center;
+    margin-top: 14px; flex-wrap: wrap;
+  }
+  .action-row button { min-width: 130px; }
+  .action-row .stats-inline {
+    flex: 1; min-width: 260px;
+    background: #111; padding: 6px 10px; border-radius: 4px;
+    font-family: monospace; font-size: 11px; color: #9cf;
+    white-space: pre; overflow-x: auto;
+  }
+  .zoom-controls {
+    display: flex; gap: 4px; align-items: center;
+    margin-bottom: 8px; font-size: 11px; color: var(--muted);
+  }
+  .zoom-controls button {
+    padding: 3px 8px; font-size: 11px; min-width: 34px;
+    background: #444; color: var(--fg); border-radius: 3px;
+  }
+  .zoom-controls button.active {
+    background: var(--accent); color: #111;
+  }
+</style>
+</head>
+<body>
+
+<h1>MP4 → NXI Movie Converter</h1>
+<div class="sub">ZX Spectrum Next Layer 2 · RRRGGGBB · contiguous frames for Example4-Movie.bas</div>
+
+<!-- TOP: OUTPUT SETTINGS (full-width horizontal band) -->
+<div class="panel settings-bar">
+  <h2>Output settings</h2>
+  <div class="settings-grid">
+    <div class="field">
+      <label>Resolution preset</label>
+      <select id="resPreset">
+        <option value="128x96">128 × 96 (small)</option>
+        <option value="192x128" selected>192 × 128 (medium)</option>
+        <option value="custom">Custom…</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Width</label>
+      <input type="number" id="outW" value="192" min="8" max="320" disabled>
+    </div>
+    <div class="field">
+      <label>Height</label>
+      <input type="number" id="outH" value="128" min="8" max="256" disabled>
+    </div>
+    <div class="field">
+      <label>Target L2 mode</label>
+      <select id="l2mode">
+        <option value="256x192" selected>256 × 192 (RGB332, standard)</option>
+        <option value="320x256" disabled title="Column-oriented decoder not yet implemented">320 × 256 column (future)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>FPS</label>
+      <input type="number" id="fps" value="12" min="1" max="60" step="0.1">
+    </div>
+    <div class="field">
+      <label>Max frames</label>
+      <input type="number" id="maxFrames" value="64" min="1" max="8192">
+      <label style="display:inline-flex;align-items:center;gap:4px;font-weight:normal;margin-top:4px;">
+        <input type="checkbox" id="allFrames"> All available
+      </label>
+    </div>
+    <div class="field">
+      <label>Scaling</label>
+      <select id="scaleMode">
+        <option value="cover">Cover (fill, crop)</option>
+        <option value="contain" selected>Contain (fit, letterbox)</option>
+        <option value="stretch">Stretch</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Dither</label>
+      <select id="dither">
+        <option value="none">Nearest (no dither)</option>
+        <option value="bayer2">Ordered 2×2 (Bayer)</option>
+        <option value="bayer" selected>Ordered 4×4 (Bayer)</option>
+        <option value="bayer8">Ordered 8×8 (Bayer)</option>
+        <option value="ign">Interleaved Gradient (~blue noise)</option>
+      </select>
+      <div class="hint">Deterministic per-pixel — delta-RLE safe.</div>
+    </div>
+    <div class="field">
+      <label>Output format</label>
+      <select id="outFormat">
+        <option value="nxi" selected>Raw .nxi (PlayMovie)</option>
+        <option value="nmv">Delta-RLE .nmv (NextMovieFrame)</option>
+        <option value="nms">Streaming .nms (StreamMovieFrame)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Frame mode</label>
+      <select id="frameMode">
+        <option value="auto" selected>Auto — smallest per frame</option>
+        <option value="raw">Always raw — seekable</option>
+        <option value="keyframe">Keyframe every N; others auto</option>
+        <option value="delta">Always delta — smallest file</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Keyframe N</label>
+      <input type="number" id="keyInterval" value="30" min="1" max="9999" step="1">
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button id="convert" disabled>Convert</button>
+    <button id="cancel" class="alt" disabled>Cancel</button>
+    <button id="saveBtn" disabled>Save as…</button>
+    <button id="previewFrame" class="alt">Preview current frame</button>
+    <div class="stats-inline" id="stats">Load a video to begin.</div>
+  </div>
+</div>
+
+<!-- BOTTOM: SOURCE (left) + PREVIEW (right) -->
+<div class="row">
+
+  <div class="panel">
+    <h2>1 · Source video</h2>
+    <div class="field">
+      <label>MP4 file</label>
+      <input type="file" id="videoFile" accept="video/mp4,video/*">
+    </div>
+    <video id="video" controls muted playsinline></video>
+
+    <div class="field" style="margin-top: 10px;">
+      <label>Start <span id="startLabel" class="muted"></span></label>
+      <input type="range" id="startTime" min="0" max="0" step="0.04" value="0">
+    </div>
+    <div class="field">
+      <label>End <span id="endLabel" class="muted"></span></label>
+      <input type="range" id="endTime" min="0" max="0" step="0.04" value="0">
+    </div>
+    <div class="timeline">
+      <button id="setStart" class="alt">Set start = now</button>
+      <button id="setEnd" class="alt">Set end = now</button>
+    </div>
+    <label style="margin-top: 12px;">Status</label>
+    <div class="log" id="log">Ready.</div>
+  </div>
+
+  <div class="panel">
+    <h2>2 · Frame preview</h2>
+    <div class="zoom-controls">
+      <span>Zoom:</span>
+      <button data-zoom="1">1×</button>
+      <button data-zoom="2" class="active">2×</button>
+      <button data-zoom="3">3×</button>
+      <button data-zoom="4">4×</button>
+    </div>
+    <canvas id="frameView" width="192" height="128" style="width: 384px; height: 256px;"></canvas>
+    <div class="playback-controls" id="playbackControls" style="display: none;">
+      <button id="stepBack" class="alt" title="Previous frame">⏮</button>
+      <button id="playBtn" class="alt" title="Play / pause (space)">▶ Play</button>
+      <button id="stepFwd" class="alt" title="Next frame">⏭</button>
+      <input type="range" id="frameScrub" min="0" max="0" value="0">
+      <span class="counter" id="frameCounter">0 / 0</span>
+    </div>
+    <div style="margin-top: 8px;">
+      <progress id="prog" value="0" max="1"></progress>
+    </div>
+    <h2 style="margin-top: 14px;">Generated frames <span id="framesGridHint" style="font-size: 10px; color: #888; text-transform: none; letter-spacing: 0; font-weight: normal;">— click to jump · green = raw · blue = delta</span></h2>
+    <div class="frames-grid" id="framesGrid"></div>
+  </div>
+
+</div>
+
+<canvas id="work" style="display: none;"></canvas>
+
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+const vid = $('video');
+const work = $('work');
+const wctx = work.getContext('2d', { willReadFrequently: true });
+const frameView = $('frameView');
+const fvctx = frameView.getContext('2d');
+const framesGrid = $('framesGrid');
+const stats = $('stats');
+const logEl = $('log');
+
+let videoLoaded = false;
+let lastFramesBuf = null;
+let pendingSave = null;   // { bytes, name, ext } — populated after convert, consumed by Save button
+let sourceStem = 'movie'; // base filename derived from the loaded video (no extension)
+let previewZoom = 2;      // display multiplier for the preview canvas
+let cancelRequested = false; // Cancel button flips this; capturePlayback checks it
+
+// Playback preview state. previewFrames holds the RRRGGGBB byte array for
+// every generated frame (~24KB each at 192×128); previewInfo holds parallel
+// metadata (encoded size + type). Both are cleared at the start of each
+// conversion so we don't leak the previous run's buffers.
+let previewFrames = [];
+let previewInfo = [];
+let previewW = 128, previewH = 96;
+let previewFps = 12;
+let previewIdx = 0;
+let playing = false;
+let playTimer = null;
+const THUMB_CAP = 2048;
+
+// Bayer matrices, normalized to [-0.5, +0.5]. All deterministic per (x,y),
+// so identical input pixels produce identical output across frames — safe for delta-RLE.
+const BAYER2 = [
+  [0, 2],
+  [3, 1]
+].map(row => row.map(v => (v / 4) - 0.5));
+
+const BAYER4 = [
+  [ 0,  8,  2, 10],
+  [12,  4, 14,  6],
+  [ 3, 11,  1,  9],
+  [15,  7, 13,  5]
+].map(row => row.map(v => (v / 16) - 0.5));
+
+const BAYER8 = [
+  [ 0, 32,  8, 40,  2, 34, 10, 42],
+  [48, 16, 56, 24, 50, 18, 58, 26],
+  [12, 44,  4, 36, 14, 46,  6, 38],
+  [60, 28, 52, 20, 62, 30, 54, 22],
+  [ 3, 35, 11, 43,  1, 33,  9, 41],
+  [51, 19, 59, 27, 49, 17, 57, 25],
+  [15, 47,  7, 39, 13, 45,  5, 37],
+  [63, 31, 55, 23, 61, 29, 53, 21]
+].map(row => row.map(v => (v / 64) - 0.5));
+
+// Interleaved Gradient Noise (Jorge Jimenez). Cheap blue-noise approximation,
+// purely a function of (x,y), so delta-RLE-safe. Returns value in [-0.5, +0.5].
+function ign(x, y) {
+  const v = (52.9829189 * ((0.06711056 * x + 0.00583715 * y) % 1)) % 1;
+  return v - 0.5;
+}
+
+function log(msg) {
+  logEl.textContent = msg + '\n' + logEl.textContent;
+}
+
+function fmtTime(t) {
+  const m = Math.floor(t / 60);
+  const s = (t - m * 60).toFixed(2);
+  return `${m}:${s.padStart(5, '0')}`;
+}
+
+function updateLabels() {
+  $('startLabel').textContent = fmtTime(+$('startTime').value);
+  $('endLabel').textContent = fmtTime(+$('endTime').value);
+}
+
+$('videoFile').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  vid.src = URL.createObjectURL(f);
+  // Strip the file extension so we can suffix .nmv/.nms/.nxi at save time.
+  sourceStem = (f.name || 'movie').replace(/\.[^.\/\\]+$/, '') || 'movie';
+  log(`Loaded ${f.name} (${(f.size / 1024 / 1024).toFixed(2)} MB)`);
+});
+
+
+vid.addEventListener('loadedmetadata', () => {
+  videoLoaded = true;
+  const dur = vid.duration;
+  for (const id of ['startTime', 'endTime']) {
+    const el = $(id);
+    el.max = dur.toFixed(2);
+    el.step = 0.04;
+  }
+  $('startTime').value = 0;
+  $('endTime').value = dur.toFixed(2);
+  updateLabels();
+  $('convert').disabled = false;
+  stats.textContent = `Video: ${vid.videoWidth}×${vid.videoHeight}, ${dur.toFixed(2)}s`;
+});
+
+$('startTime').addEventListener('input', () => { updateLabels(); vid.currentTime = +$('startTime').value; });
+$('endTime').addEventListener('input', () => { updateLabels(); vid.currentTime = +$('endTime').value; });
+$('setStart').addEventListener('click', () => { $('startTime').value = vid.currentTime; updateLabels(); });
+$('setEnd').addEventListener('click', () => { $('endTime').value = vid.currentTime; updateLabels(); });
+
+$('allFrames').addEventListener('change', () => {
+  $('maxFrames').disabled = $('allFrames').checked;
+});
+
+// Resolution preset: fill and disable W/H when a preset is chosen,
+// re-enable for Custom.
+$('resPreset').addEventListener('change', () => {
+  const v = $('resPreset').value;
+  const isCustom = (v === 'custom');
+  $('outW').disabled = !isCustom;
+  $('outH').disabled = !isCustom;
+  if (!isCustom) {
+    const [w, h] = v.split('x').map(n => +n);
+    $('outW').value = w;
+    $('outH').value = h;
+  }
+});
+
+// Preview zoom buttons — swap the CSS width/height on the frameView
+// canvas without touching its pixel resolution. Persisted across
+// sessions so the user's choice sticks.
+function applyZoom(z) {
+  previewZoom = z;
+  try { localStorage.setItem('mp4nxi.zoom', String(z)); } catch (_) {}
+  frameView.style.width = (frameView.width * z) + 'px';
+  frameView.style.height = (frameView.height * z) + 'px';
+  document.querySelectorAll('.zoom-controls button').forEach(b => {
+    b.classList.toggle('active', +b.dataset.zoom === z);
+  });
+}
+document.querySelectorAll('.zoom-controls button').forEach(b => {
+  b.addEventListener('click', () => applyZoom(+b.dataset.zoom));
+});
+(function restoreZoom() {
+  try {
+    const saved = +localStorage.getItem('mp4nxi.zoom');
+    if (saved >= 1 && saved <= 4) applyZoom(saved);
+  } catch (_) {}
+})();
+
+// Build a suggested save name: last-used name for this extension wins
+// (user's established habit); otherwise base it on the source video.
+function suggestedSaveName(ext) {
+  return loadLastName(ext) || (sourceStem + '.' + ext);
+}
+
+// Encode a frame as delta-RLE chunks against prev frame.
+// Stream format: repeated [skip:1, copy:1, ...copy bytes] until width*height pixels processed.
+// Decoder counts pixels and stops at width*height; no per-frame header needed.
+function encodeFrameDeltaRLE(curr, prev) {
+  const out = [];
+  let i = 0;
+  const n = curr.length;
+  while (i < n) {
+    let skip = 0;
+    while (i < n && skip < 255 && curr[i] === prev[i]) { skip++; i++; }
+    let change = 0;
+    const changeStart = i;
+    while (i < n && change < 255 && curr[i] !== prev[i]) { change++; i++; }
+    out.push(skip, change);
+    for (let k = 0; k < change; k++) out.push(curr[changeStart + k]);
+  }
+  return new Uint8Array(out);
+}
+
+// Build the 16-byte v2 file header. See docs at top of nextlib_movie_v2.bas.
+//   magic       "NMV2" or "NMS2"
+//   version     1
+//   flags       bit 0: L2 mode (0 = 256x192, 1 = 320x256 future)
+//   width/height  LE uint16
+//   frame_count   LE uint16 (0 if unknown / open-ended NMS)
+//   4 bytes reserved (zero)
+function buildV2Header(fmt, w, h, flags, frameCount) {
+  const hdr = new Uint8Array(16);
+  hdr[0] = 0x4E; // 'N'
+  hdr[1] = 0x4D; // 'M'
+  hdr[2] = (fmt === 'nmv') ? 0x56 : 0x53; // 'V' or 'S'
+  hdr[3] = 0x32; // '2'
+  hdr[4] = 1;
+  hdr[5] = flags & 0xFF;
+  hdr[6] = w & 0xFF;
+  hdr[7] = (w >> 8) & 0xFF;
+  hdr[8] = h & 0xFF;
+  hdr[9] = (h >> 8) & 0xFF;
+  hdr[10] = frameCount & 0xFF;
+  hdr[11] = (frameCount >> 8) & 0xFF;
+  return hdr;
+}
+
+// Fallback raw encoding inside the same chunk format (skip=0, copy=255 chunks).
+// Used when a delta frame would exceed the raw chunked size for that frame.
+function encodeFrameRawChunked(curr) {
+  const out = [];
+  const n = curr.length;
+  let i = 0;
+  while (i < n) {
+    const chunk = Math.min(255, n - i);
+    out.push(0, chunk);
+    for (let k = 0; k < chunk; k++) out.push(curr[i + k]);
+    i += chunk;
+  }
+  return new Uint8Array(out);
+}
+
+// Convert a single canvas image to RRRGGGBB byte array.
+// dither: 'none' | 'bayer2' | 'bayer' (4×4) | 'bayer8' | 'ign'
+// All dither modes are deterministic per (x,y) — identical input pixels yield
+// identical output across frames, which is what delta-RLE needs to stay compact.
+function frameToRRRGGGBB(imageData, dither) {
+  const { data, width, height } = imageData;
+  const out = new Uint8Array(width * height);
+  // R/G: 8 levels (step ~36), B: 4 levels (step ~85)
+  const STEP_RG = 36, STEP_B = 85;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * 4;
+      let r = data[i], g = data[i + 1], b = data[i + 2];
+      let t = 0;
+      if (dither === 'bayer2')      t = BAYER2[y & 1][x & 1];
+      else if (dither === 'bayer')  t = BAYER4[y & 3][x & 3];
+      else if (dither === 'bayer8') t = BAYER8[y & 7][x & 7];
+      else if (dither === 'ign')    t = ign(x, y);
+      if (t !== 0) {
+        r = Math.max(0, Math.min(255, r + t * STEP_RG));
+        g = Math.max(0, Math.min(255, g + t * STEP_RG));
+        b = Math.max(0, Math.min(255, b + t * STEP_B));
+      }
+      const rb = (r >> 5) & 0x07;
+      const gb = (g >> 5) & 0x07;
+      const bb = (b >> 6) & 0x03;
+      out[y * width + x] = (rb << 5) | (gb << 2) | bb;
+    }
+  }
+  return out;
+}
+
+// Render an RRRGGGBB byte array back to a canvas for preview
+function rrrgggbbToImageData(buf, w, h) {
+  const img = new ImageData(w, h);
+  for (let p = 0; p < w * h; p++) {
+    const v = buf[p];
+    const r = (v >> 5) & 0x07;
+    const g = (v >> 2) & 0x07;
+    const b = v & 0x03;
+    img.data[p * 4 + 0] = (r * 255 / 7) | 0;
+    img.data[p * 4 + 1] = (g * 255 / 7) | 0;
+    img.data[p * 4 + 2] = (b * 255 / 3) | 0;
+    img.data[p * 4 + 3] = 255;
+  }
+  return img;
+}
+
+// ----- Playback preview -----------------------------------------------------
+
+function showFrame(i) {
+  if (!previewFrames.length) return;
+  if (i < 0) i = 0;
+  if (i >= previewFrames.length) i = previewFrames.length - 1;
+  previewIdx = i;
+  frameView.width = previewW;
+  frameView.height = previewH;
+  frameView.style.width = (previewW * previewZoom) + 'px';
+  frameView.style.height = (previewH * previewZoom) + 'px';
+  fvctx.putImageData(rrrgggbbToImageData(previewFrames[i], previewW, previewH), 0, 0);
+  const info = previewInfo[i];
+  const suffix = info
+    ? ` · ${info.size} B · ${info.type}`
+    : '';
+  $('frameCounter').textContent = `${i + 1} / ${previewFrames.length}${suffix}`;
+  $('frameScrub').value = i;
+}
+
+function pausePreview() {
+  playing = false;
+  $('playBtn').textContent = '▶ Play';
+  if (playTimer !== null) {
+    clearInterval(playTimer);
+    playTimer = null;
+  }
+}
+
+function playPreview() {
+  if (!previewFrames.length) return;
+  playing = true;
+  $('playBtn').textContent = '⏸ Pause';
+  const interval = Math.max(1, 1000 / previewFps);
+  playTimer = setInterval(() => {
+    if (!playing) return;
+    let next = previewIdx + 1;
+    if (next >= previewFrames.length) next = 0;
+    showFrame(next);
+  }, interval);
+}
+
+function togglePlay() {
+  if (playing) pausePreview(); else playPreview();
+}
+
+function jumpToFrame(i) {
+  pausePreview();
+  showFrame(i);
+}
+
+function resetPlayback() {
+  pausePreview();
+  previewFrames = [];
+  previewInfo = [];
+  previewIdx = 0;
+  $('playbackControls').style.display = 'none';
+  $('frameScrub').value = 0;
+  $('frameCounter').textContent = '0 / 0';
+}
+
+function initPlayback(w, h, fps) {
+  previewW = w;
+  previewH = h;
+  previewFps = fps;
+  previewIdx = 0;
+  const scrub = $('frameScrub');
+  scrub.max = Math.max(0, previewFrames.length - 1);
+  scrub.value = 0;
+  $('playbackControls').style.display = previewFrames.length ? 'flex' : 'none';
+  if (previewFrames.length) showFrame(0);
+}
+
+$('playBtn').addEventListener('click', togglePlay);
+$('stepBack').addEventListener('click', () => { pausePreview(); showFrame(previewIdx - 1); });
+$('stepFwd').addEventListener('click',  () => { pausePreview(); showFrame(previewIdx + 1); });
+$('frameScrub').addEventListener('input', e => { pausePreview(); showFrame(+e.target.value); });
+
+// Space toggles play/pause when the player is visible and focus isn't in a text field.
+window.addEventListener('keydown', e => {
+  if (e.code !== 'Space') return;
+  if ($('playbackControls').style.display === 'none') return;
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
+  e.preventDefault();
+  togglePlay();
+});
+
+// ----- Save (with folder picker on Chromium) --------------------------------
+
+// Persist a per-extension name across sessions so the Save dialog opens
+// with the last filename you actually used, not "movie.nmv" every time.
+// The File System Access API also lets the browser remember the last
+// directory when we pass a stable `id` — one per extension so .nmv and
+// .nms don't fight over the same slot.
+function loadLastName(ext) {
+  try {
+    return localStorage.getItem('mp4nxi.lastName.' + ext) || '';
+  } catch (_) { return ''; }
+}
+function saveLastName(ext, name) {
+  try { localStorage.setItem('mp4nxi.lastName.' + ext, name); } catch (_) {}
+}
+
+async function saveBlob(bytes, suggestedName, ext) {
+  const blob = new Blob([bytes], { type: 'application/octet-stream' });
+
+  if ('showSaveFilePicker' in window) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName,
+        // `id` alone is what makes the browser remember the last folder
+        // per file type across sessions. Do NOT pass `startIn` — Chromium
+        // treats it as an override that yanks the dialog back to that
+        // folder every time, killing the memory the id was set up for.
+        id: 'mp4nxi-' + ext,
+        types: [{
+          description: 'Movie data',
+          accept: { 'application/octet-stream': ['.' + ext] }
+        }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      saveLastName(ext, handle.name);
+      log(`Saved: ${handle.name}`);
+      return;
+    } catch (e) {
+      if (e && e.name === 'AbortError') {
+        log('Save cancelled.');
+        return;
+      }
+      log(`Save picker failed (${e && e.message}); using default Downloads.`);
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = suggestedName; a.click();
+  URL.revokeObjectURL(url);
+  saveLastName(ext, suggestedName);
+  log(`Downloaded ${suggestedName} to default Downloads folder.`);
+}
+
+// Draw the current video frame into the work canvas at outW x outH using scale mode
+function rasteriseCurrentFrame(outW, outH, scaleMode) {
+  work.width = outW; work.height = outH;
+  wctx.fillStyle = '#000';
+  wctx.fillRect(0, 0, outW, outH);
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  let sx = 0, sy = 0, sw = vw, sh = vh;
+  let dx = 0, dy = 0, dw = outW, dh = outH;
+  if (scaleMode === 'cover') {
+    const srcAspect = vw / vh, dstAspect = outW / outH;
+    if (srcAspect > dstAspect) { sw = vh * dstAspect; sx = (vw - sw) / 2; }
+    else { sh = vw / dstAspect; sy = (vh - sh) / 2; }
+  } else if (scaleMode === 'contain') {
+    const srcAspect = vw / vh, dstAspect = outW / outH;
+    if (srcAspect > dstAspect) { dh = outW / srcAspect; dy = (outH - dh) / 2; }
+    else { dw = outH * srcAspect; dx = (outW - dw) / 2; }
+  }
+  wctx.imageSmoothingEnabled = true;
+  wctx.imageSmoothingQuality = 'high';
+  wctx.drawImage(vid, sx, sy, sw, sh, dx, dy, dw, dh);
+  return wctx.getImageData(0, 0, outW, outH);
+}
+
+function seekTo(t) {
+  return new Promise(resolve => {
+    // Skip the seek if currentTime already matches — the browser won't
+    // fire 'seeked' for a same-value assignment and the promise would hang.
+    if (Math.abs(vid.currentTime - t) < 0.0005) { resolve(); return; }
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      vid.removeEventListener('seeked', onSeeked);
+      resolve();
+    };
+    // 'seeked' fires when the seek arithmetic is done, but the new frame
+    // may not yet be painted into the <video> element. If we draw the
+    // element to canvas at that instant we get the previous frame. Once
+    // the decoder falls behind (typically after ~40 frames on heavier
+    // videos) this manifests as the same frame repeating until the end.
+    // Two rAF ticks force a compositor cycle so the new frame is in the
+    // element before we sample it. (requestVideoFrameCallback is unreliable
+    // here because the page may skip paints while awaiting promises.)
+    const onSeeked = () => {
+      requestAnimationFrame(() => requestAnimationFrame(finish));
+    };
+    vid.addEventListener('seeked', onSeeked);
+    vid.currentTime = t;
+    // Watchdog: if seek + decode genuinely hangs, resolve anyway so the
+    // run continues. 8s tolerates slow seeks on long/high-bitrate videos.
+    setTimeout(finish, 8000);
+  });
+}
+
+// Capture frames by playing the video and grabbing each one as the
+// decoder produces it. Far more reliable than seek-per-frame for
+// long/heavy videos. Falls back to seek-based if rVFC is unavailable.
+async function capturePlayback(startT, endT, dt, maxFrames, onFrame) {
+  if (typeof vid.requestVideoFrameCallback !== 'function') {
+    return capturePlaybackSeek(startT, endT, dt, maxFrames, onFrame);
+  }
+
+  // Seek once to the start, then play through.
+  await seekTo(startT);
+
+  return new Promise((resolve, reject) => {
+    let frameIdx = 0;
+    let lastMt = startT;
+    let nextWanted = startT;
+    let finished = false;
+    // Small epsilon so we don't miss the start frame due to float drift.
+    const EPS = 1e-4;
+
+    // Capture as many output frames as the current mediaTime allows.
+    // Pulled out so both `tick` and the 'ended' handler can flush.
+    const drainUpTo = (mt) => {
+      while (!finished && mt + EPS >= nextWanted && frameIdx < maxFrames) {
+        onFrame(frameIdx, mt);
+        frameIdx++;
+        nextWanted = startT + frameIdx * dt;
+      }
+    };
+
+    const onEnded = () => {
+      if (finished) return;
+      // Video reached its natural end before we'd captured every wanted
+      // frame (typical when endT is the video duration and naturalFrames
+      // has a +1 off-by-one). Flush remaining frames against the final
+      // mediaTime — duplicates the last decoded frame, which is what the
+      // user would see anyway if playback stopped there.
+      try {
+        const endMt = Number.isFinite(vid.duration) ? vid.duration : lastMt;
+        drainUpTo(Math.max(endMt, nextWanted));
+      } catch (e) {
+        cleanup();
+        reject(e);
+        return;
+      }
+      cleanup();
+      resolve(frameIdx);
+    };
+
+    const onError = () => {
+      if (finished) return;
+      cleanup();
+      reject(new Error('Video element error during capture'));
+    };
+
+    const cleanup = () => {
+      finished = true;
+      vid.removeEventListener('ended', onEnded);
+      vid.removeEventListener('error', onError);
+      try { vid.pause(); } catch (_) {}
+    };
+
+    const tick = (now, metadata) => {
+      if (finished) return;
+
+      // User hit Cancel — flush what we have and stop.
+      if (cancelRequested) {
+        cleanup();
+        resolve(frameIdx);
+        return;
+      }
+
+      const mt = metadata.mediaTime;
+      lastMt = mt;
+
+      // Capture every wanted timestamp that this frame covers.
+      // (For output fps <= source fps this fires once per source frame.)
+      try {
+        drainUpTo(mt);
+      } catch (e) {
+        cleanup();
+        reject(e);
+        return;
+      }
+
+      if (frameIdx >= maxFrames || mt >= endT) {
+        cleanup();
+        resolve(frameIdx);
+        return;
+      }
+
+      vid.requestVideoFrameCallback(tick);
+    };
+
+    vid.addEventListener('ended', onEnded);
+    vid.addEventListener('error', onError);
+    vid.requestVideoFrameCallback(tick);
+    vid.play().catch(err => { cleanup(); reject(err); });
+
+    // Watchdog: if the first frame never lands within 15s, playback is
+    // wedged (bad codec, browser silently blocked play(), etc.). Reject
+    // loudly so the UI doesn't sit disabled indefinitely; leave the
+    // diagnosis to the user rather than pointing at file:// blindly.
+    setTimeout(() => {
+      if (!finished && frameIdx === 0) {
+        cleanup();
+        reject(new Error('No frames decoded in 15s — video playback is stuck. Try Cancel + reload.'));
+      }
+    }, 15000);
+  });
+}
+
+// Fallback for browsers without requestVideoFrameCallback (older Firefox).
+async function capturePlaybackSeek(startT, endT, dt, maxFrames, onFrame) {
+  let f = 0;
+  for (; f < maxFrames; f++) {
+    if (cancelRequested) break;
+    const t = Math.min(endT, startT + f * dt);
+    await seekTo(t);
+    onFrame(f, t);
+    await new Promise(r => setTimeout(r, 0));
+  }
+  return f;
+}
+
+$('previewFrame').addEventListener('click', async () => {
+  if (!videoLoaded) return;
+  pausePreview();
+  const outW = +$('outW').value, outH = +$('outH').value;
+  const dither = $('dither').value;
+  const scaleMode = $('scaleMode').value;
+  const img = rasteriseCurrentFrame(outW, outH, scaleMode);
+  const buf = frameToRRRGGGBB(img, dither);
+  frameView.width = outW; frameView.height = outH;
+  frameView.style.width = (outW * previewZoom) + 'px';
+  frameView.style.height = (outH * previewZoom) + 'px';
+  fvctx.putImageData(rrrgggbbToImageData(buf, outW, outH), 0, 0);
+});
+
+$('cancel').addEventListener('click', () => {
+  if (!cancelRequested) {
+    cancelRequested = true;
+    log('Cancel requested — stopping after current frame.');
+  }
+});
+
+$('convert').addEventListener('click', async () => {
+  if (!videoLoaded) return;
+  $('convert').disabled = true;
+  $('cancel').disabled = false;
+  cancelRequested = false;
+  const start = +$('startTime').value;
+  const end = +$('endTime').value;
+  const fps = +$('fps').value;
+  const allFrames = $('allFrames').checked;
+  const maxFrames = +$('maxFrames').value;
+  const outW = +$('outW').value, outH = +$('outH').value;
+  const dither = $('dither').value;
+  const scaleMode = $('scaleMode').value;
+  const fmt = $('outFormat').value;
+  const outName = suggestedSaveName(fmt);
+
+  if (end <= start) {
+    alert('End must be greater than start');
+    $('convert').disabled = false;
+    $('cancel').disabled = true;
+    return;
+  }
+
+  try {
+
+  const dt = 1 / fps;
+  const naturalFrames = Math.floor((end - start) * fps) + 1;
+  const totalFrames = allFrames ? naturalFrames : Math.min(maxFrames, naturalFrames);
+  const frameSize = outW * outH;
+
+  framesGrid.innerHTML = '';
+  resetPlayback();
+  pendingSave = null;
+  $('saveBtn').disabled = true;
+  $('prog').max = totalFrames;
+  $('prog').value = 0;
+  log(`Generating ${totalFrames} frames in ${fmt} format…`);
+
+  // Output buffer building: raw uses a single Uint8Array; delta/streaming
+  // concatenate per-frame streams. NMS is identical to NMV except each
+  // frame gets a 2-byte little-endian size prefix so the on-Next streaming
+  // decoder can fReadBytes exactly one frame at a time.
+  const isDelta = (fmt === 'nmv' || fmt === 'nms');
+  const withSize = (fmt === 'nms');
+  // No user-facing "stream budget" any more -- the stats panel already
+  // reports Max frame + required bank count. Keep a local so the
+  // per-frame accounting below still runs; the number is only used to
+  // colour a warning if a raw-chunked frame somehow exceeds a 64K stream
+  // window (which would need >8 stream banks on the Next).
+  const streamBudget = 65536;
+  const frameMode = $('frameMode').value;
+  const keyInterval = Math.max(1, +$('keyInterval').value | 0);
+  let rawBlob = null;
+  let nmvParts = null;
+  let prevFrame = null;
+  if (fmt === 'nxi') {
+    rawBlob = new Uint8Array(frameSize * totalFrames);
+  } else {
+    nmvParts = [];
+    prevFrame = new Uint8Array(frameSize); // zeros — matches ResetMovieDelta clearing the work buffer
+  }
+  let nmvBytes = 0;
+  let nmvFallbacks = 0;
+  let nmvMaxFrame = 0;
+  let nmvOverBudget = 0;
+
+  // --- Per-frame work (called once per captured output frame) ---
+  const processFrame = (f, mediaTime) => {
+    const img = rasteriseCurrentFrame(outW, outH, scaleMode);
+    const buf = frameToRRRGGGBB(img, dither);
+
+    let isRaw = true;   // .nxi is always raw; overwritten below for delta formats
+    let encSize = buf.length;
+
+    if (fmt === 'nxi') {
+      rawBlob.set(buf, f * frameSize);
+    } else {
+      const delta = encodeFrameDeltaRLE(buf, prevFrame);
+      const raw = encodeFrameRawChunked(buf);
+      // Frame 0 is always raw — the work buffer holds undefined bytes at startup,
+      // and a delta encode would leave those visible wherever the frame happens to
+      // match. All modes honour this.
+      let chosen;
+      if (f === 0) {
+        chosen = raw;
+      } else if (frameMode === 'raw') {
+        chosen = raw;
+      } else if (frameMode === 'delta') {
+        chosen = delta;
+      } else if (frameMode === 'keyframe') {
+        chosen = (f % keyInterval === 0) ? raw : (delta.length <= raw.length ? delta : raw);
+      } else { // 'auto'
+        chosen = (delta.length <= raw.length ? delta : raw);
+      }
+      isRaw = (chosen === raw);
+      encSize = chosen.length;
+      if (isRaw) nmvFallbacks++;
+      if (chosen.length > nmvMaxFrame) nmvMaxFrame = chosen.length;
+      if (withSize && chosen.length > streamBudget) nmvOverBudget++;
+      if (withSize) {
+        const sized = new Uint8Array(chosen.length + 2);
+        sized[0] = chosen.length & 0xFF;
+        sized[1] = (chosen.length >> 8) & 0xFF;
+        sized.set(chosen, 2);
+        nmvParts.push(sized);
+        nmvBytes += sized.length;
+      } else {
+        nmvParts.push(chosen);
+        nmvBytes += chosen.length;
+      }
+      prevFrame = buf;
+    }
+
+    // Capture for the playback preview (kept in-memory; ~24KB per frame at 192×128)
+    previewFrames.push(buf);
+    previewInfo.push({ size: encSize, type: isRaw ? 'raw' : 'delta', mt: mediaTime });
+
+    frameView.width = outW; frameView.height = outH;
+    frameView.style.width = (outW * previewZoom) + 'px';
+    frameView.style.height = (outH * previewZoom) + 'px';
+    fvctx.putImageData(rrrgggbbToImageData(buf, outW, outH), 0, 0);
+
+    if (f < THUMB_CAP) {
+      const wrap = document.createElement('div');
+      wrap.className = 'thumb ' + (isRaw ? 'thumb-raw' : 'thumb-delta');
+      wrap.title = `Frame ${f} · ${encSize} B · ${isRaw ? 'raw' : 'delta'} · ${mediaTime.toFixed(2)}s`;
+      const c = document.createElement('canvas');
+      c.width = outW; c.height = outH;
+      c.getContext('2d').putImageData(rrrgggbbToImageData(buf, outW, outH), 0, 0);
+      wrap.appendChild(c);
+      const label = document.createElement('span');
+      label.className = 'thumb-label';
+      label.textContent = f;
+      wrap.appendChild(label);
+      const frameIdx = f;
+      wrap.addEventListener('click', () => jumpToFrame(frameIdx));
+      framesGrid.appendChild(wrap);
+    }
+
+    $('prog').value = f + 1;
+    const rawSoFar = (f + 1) * frameSize;
+    if (fmt === 'nxi') {
+      stats.textContent =
+        `Frames:     ${f + 1} / ${totalFrames}\n` +
+        `Frame size: ${outW}×${outH} = ${frameSize} bytes\n` +
+        `Total:      ${(rawSoFar / 1024).toFixed(2)} KB\n` +
+        `Banks (8K): ${Math.ceil(rawSoFar / 8192)}`;
+    } else {
+      const ratio = (nmvBytes / rawSoFar * 100).toFixed(1);
+      let line = `Frames:        ${f + 1} / ${totalFrames}\n` +
+        `Mode:          ${frameMode}${frameMode === 'keyframe' ? ` (N=${keyInterval})` : ''}\n` +
+        `Raw equiv:     ${(rawSoFar / 1024).toFixed(2)} KB\n` +
+        `Compressed:    ${(nmvBytes / 1024).toFixed(2)} KB (${ratio}%)\n` +
+        `Raw frames:    ${nmvFallbacks}\n` +
+        `Max frame:     ${nmvMaxFrame} bytes\n` +
+        `Banks (8K):    ${Math.ceil(nmvBytes / 8192)}`;
+      if (withSize && nmvOverBudget > 0) {
+        line += `\n⚠ ${nmvOverBudget} frame(s) > 64K — need > 8 stream banks`;
+      }
+      stats.textContent = line;
+    }
+  };
+
+  // Capture by *playing* the video rather than seeking. HTMLVideoElement's
+  // seek pipeline degrades badly after ~30-50 rapid seeks on heavier MP4s
+  // — same frame returned forever, growing latency. Playback uses the
+  // standard decoder path and is rock-solid. We use requestVideoFrameCallback
+  // to get notified for every decoded source frame with its true mediaTime,
+  // and we sample one output frame each time mediaTime crosses a wanted
+  // timestamp (start + f*dt).
+  const captured = (await capturePlayback(start, end, dt, totalFrames, processFrame)) || totalFrames;
+  if (captured < totalFrames) {
+    log(`Note: captured ${captured} of ${totalFrames} requested frames (video ended early).`);
+  }
+
+  let finalBlob;
+  if (fmt === 'nxi') {
+    // Trim trailing unfilled frames so we don't emit black tail bytes.
+    finalBlob = (captured < totalFrames) ? rawBlob.subarray(0, captured * frameSize) : rawBlob;
+  } else {
+    // v2 header + concatenated frames. Header ordering matters:
+    // preloaded (.nmv) decoders skip 16 bytes on frame 0; streaming
+    // (.nms) reads 16 bytes at fOpenFile time before the per-frame
+    // size prefix loop.
+    const flags = ($('l2mode').value === '320x256') ? 1 : 0;
+    const header = buildV2Header(fmt, outW, outH, flags, captured);
+    finalBlob = new Uint8Array(header.length + nmvBytes);
+    finalBlob.set(header, 0);
+    let off = header.length;
+    for (const p of nmvParts) { finalBlob.set(p, off); off += p.length; }
+  }
+
+  lastFramesBuf = finalBlob;
+
+  // Enable the playback preview now that all frames are captured
+  initPlayback(outW, outH, fps);
+
+  log(`Done. ${captured} frames · ${(finalBlob.length / 1024).toFixed(2)} KB`);
+  if (isDelta) {
+    log(`Max compressed frame: ${nmvMaxFrame} bytes (needs ≥ ${Math.ceil(nmvMaxFrame / 8192)} stream banks).`);
+    if (withSize && nmvOverBudget > 0) {
+      log(`⚠ ${nmvOverBudget} frame(s) exceed 64K compressed. You will need > 8 stream banks (each 8K) allocated in your movie table's stream_banks field.`);
+    }
+  }
+
+  // Stash the result for the Save button. The File System Access API's
+  // showSaveFilePicker() must run from a real user gesture, so we can't
+  // call it here (the await above kills the gesture context) — the user
+  // clicks Save when they're ready and that click carries the gesture.
+  pendingSave = { bytes: finalBlob, name: outName, ext: fmt };
+  $('saveBtn').disabled = false;
+  log(`Ready to save. Click "Save as…" to pick a folder.`);
+  } catch (err) {
+    log(`Convert failed: ${err && err.message ? err.message : err}`);
+  } finally {
+    $('convert').disabled = false;
+    $('cancel').disabled = true;
+    cancelRequested = false;
+  }
+});
+
+$('saveBtn').addEventListener('click', async () => {
+  if (!pendingSave) return;
+  await saveBlob(pendingSave.bytes, pendingSave.name, pendingSave.ext);
+});
+</script>
+</body>
+</html>

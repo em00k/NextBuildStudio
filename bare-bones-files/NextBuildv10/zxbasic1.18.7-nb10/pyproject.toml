@@ -1,0 +1,166 @@
+[tool.poetry]
+name = "zxbasic"
+version = "1.18.7"
+description = "Boriel's ZX BASIC Compiler"
+authors = ["Jose Rodriguez <zxbasic@boriel.com>"]
+license = "AGPL-3.0-or-later"
+documentation = "https://zxbasic.readthedocs.io"
+repository = "https://github.com/boriel-basic/zxbasic"
+homepage = "https://github.com/boriel-basic"
+readme = "README.md"
+
+classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Programming Language :: Python :: 3.11',
+        ]
+
+keywords = ['compiler', 'zxspectrum', 'BASIC', 'z80']  # arbitrary keywords
+
+packages = [
+    { include = "src/**/*" }
+]
+
+[tool.poetry.scripts]
+zxbc = 'src.zxbc:main'
+zxbasm = 'src.zxbasm:main'
+zxbpp = 'src.zxbpp:entry_point'
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+bump2version = "^1.0.0"
+pre-commit = "*"
+mkdocs = "^1.2.2"
+poethepoet = "*"
+pytest-cov = "*"
+ruff = "*"
+mypy = "^1.8.0"
+pytest-xdist = "*"
+setuptools = ">=70.1.1,<79.0.0"
+
+[build-system]
+requires = ["poetry>=2.3.1"]
+build-backend = "poetry.masonry.api"
+
+[tool.poe.tasks]
+[[tool.poe.tasks.lint]]
+help = "Check code style and typing..."
+shell = """
+    ruff check . &&
+    ruff format --check . &&
+    mypy .
+    """
+
+[[tool.poe.tasks.test]]
+help = "Run tests"
+shell = "pytest tests"
+
+[[tool.poe.tasks.test-no-cov]]
+help = "Run tests faster (with no coverage)"
+shell = "pytest tests --no-cov"
+
+[[tool.poe.tasks.format]]
+help = "Formats code"
+shell = """
+    ruff check --select I --fix .
+    ruff format .
+    """
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "tests/*",
+    "src/ply/*"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+norecursedirs = ["test_*tmp", "runtime"]
+addopts = "--cov=src -n auto --dist=loadgroup --color=yes"
+
+[tool.mypy]
+check_untyped_defs = true
+disable_error_code = [
+    "arg-type",
+    "assignment",
+    "attr-defined",
+    "call-overload",
+    "import-not-found",
+    "list-item",
+    "misc",
+    "name-defined",
+    "operator",
+    "union-attr",
+    "var-annotated",
+]
+exclude = [
+    'src/ply/.*\.py$',
+    'scratch/*',
+]
+
+[[tool.mypy.overrides]]
+module = [
+  "src.ply.*",
+]
+follow_imports = "skip"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+    "src/ply"  # PLY, external 3rd party tool
+]
+
+[tool.ruff.lint]
+select = [
+    "C4",
+    "E",
+    "EXE",
+    "F",
+    "I",
+    "PLR",
+    "PLW",
+    "RET",
+    "RUF",
+    "UP",
+]
+ignore = [
+    "E713",
+    "E722",
+    "E731",
+    "E741",
+    "EXE002",
+    "PLR0124",
+    "PLR0911",
+    "PLR0912",
+    "PLR0913",
+    "PLR0915",
+    "PLW1641",
+    "PLR1714",
+    "PLR1730",
+    "PLR2004",
+    "PLR5501",
+    "PLW0603",
+    "PLW2901",
+    "PLW0602",
+    "RET501",
+    "RET503",
+    "RET504",
+    "RET507",
+    "RUF005",
+    "RUF012",
+    "RUF013",
+    "RUF021",
+    "RUF022", # isort sorting style is not alphabetical and seems not natural either (despite the doc)
+    "UP008",
+    "UP015",  # KEEP: redundant-open-modes
+    "UP024",
+    "UP028",
+    "UP030",
+    "UP031",
+]

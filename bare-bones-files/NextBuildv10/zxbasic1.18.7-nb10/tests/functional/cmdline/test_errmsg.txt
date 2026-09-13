@@ -1,0 +1,170 @@
+>>> from test_ import process_file
+
+>>> process_file('arch/zx48k/subcall1.bas')
+subcall1.bas:6: error: 'test' is a SUB not a FUNCTION
+>>> process_file('arch/zx48k/subcall2.bas')
+subcall2.bas:6: error: 'test' is a SUB, not a FUNCTION
+>>> process_file('arch/zx48k/param3.bas')
+param3.bas:5: error: Function 'test' (previously declared at 3) type mismatch
+param3.bas:6: error: Type Error: Function must return a numeric value, not a string
+>>> process_file('arch/zx48k/typecast1.bas')
+typecast1.bas:5: error: Cannot convert value to string. Use STR() function
+>>> process_file('arch/zx48k/typecast2.bas')
+typecast2.bas:1: warning: Parameter 'c' is never used
+typecast2.bas:10: error: Cannot convert string to a value. Use VAL() function
+>>> process_file('arch/zx48k/mcleod3.bas')
+mcleod3.bas:3: error: 'GenerateSpaces' is neither an array nor a function.
+mcleod3.bas:1: warning: Parameter 'path' is never used
+mcleod3.bas:6: warning: Parameter 'n' is never used
+>>> process_file('arch/zx48k/poke3.bas')
+poke3.bas:4: error: Syntax Error. Unexpected token ',' <COMMA>
+>>> process_file('arch/zx48k/poke5.bas')
+poke5.bas:4: error: Syntax Error. Unexpected token ',' <COMMA>
+>>> process_file('arch/zx48k/arrlabels10.bas')
+arrlabels10.bas:3: warning: Using default implicit type 'float' for 'a'
+arrlabels10.bas:3: error: Can't convert non-numeric value to float at compile time
+>>> process_file('arch/zx48k/arrlabels10c.bas')
+arrlabels10c.bas:3: error: Cannot initialize array of type string
+>>> process_file('arch/zx48k/arrlabels10d.bas')
+arrlabels10d.bas:3: error: Undeclared array "a"
+>>> process_file('arch/zx48k/arrlabels11.bas')
+arrlabels11.bas:4: error: Initializer expression is not constant.
+>>> process_file('arch/zx48k/lexerr.bas')
+lexerr.bas:1: error: ignoring illegal character '%'
+lexerr.bas:1: warning: Using default implicit type 'float' for 'a'
+lexerr.bas:1: error: Syntax Error. Unexpected token '%' <ERROR>
+>>> process_file('arch/zx48k/opt2_nogoto.bas')
+opt2_nogoto.bas:2: error: Undeclared label "nolabel"
+>>> process_file('arch/zx48k/nosub.bas')
+nosub.bas:3: error: sub 'nofunc' declared but not implemented
+>>> process_file('arch/zx48k/strict.bas')
+strict.bas:2: warning: Using default implicit type 'float' for 'b'
+strict.bas:4: error: strict mode: missing type declaration for 'a'
+>>> process_file('arch/zx48k/errletfunc.bas')
+errletfunc.bas:5: error: Cannot assign a value to 'x'. It's not a variable
+>>> process_file('arch/zx48k/ifempty4.bas')
+ifempty4.bas:3: warning: Useless empty IF ignored
+>>> process_file('arch/zx48k/ifempty1.bas')
+ifempty1.bas:3: warning: Useless empty IF ignored
+>>> process_file('arch/zx48k/ifempty5.bas')
+ifempty5.bas:3: warning: Condition is always True
+>>> process_file('arch/zx48k/ifempty0.bas')
+ifempty0.bas:3: warning: Useless empty IF ignored
+>>> process_file('arch/zx48k/llb.bas')
+llb.bas:3: error: Undeclared function "f$"
+>>> process_file('arch/zx48k/substr_expr_err.bas')
+substr_expr_err.bas:3: error: Expected a string type expression. Got byte type instead
+>>> process_file('arch/zx48k/dup_func_decl.bas')
+dup_func_decl.bas:5: error: duplicated declaration for function 'f'
+>>> process_file('arch/zx48k/def_func_inline.bas')
+def_func_inline.bas:2: error: Syntax Error. Unexpected token 'END' <END>
+>>> process_file('arch/zx48k/let_array_substr4.bas')
+let_array_substr4.bas:2: error: Array 'a' is not of type String
+>>> process_file('arch/zx48k/let_array_substr6.bas')
+let_array_substr6.bas:2: error: Array 'a' is not of type String
+>>> process_file('arch/zx48k/let_array_substr8.bas')
+let_array_substr8.bas:3: error: Array 'a' has 1 dimensions, not 2
+>>> process_file('arch/zx48k/let_array_wrong_dims.bas')
+let_array_wrong_dims.bas:2: error: Array 'a' has 1 dimensions, not 2
+>>> process_file('arch/zx48k/alxinho1.bas')
+alxinho1.bas:3: error: Undeclared array "a"
+>>> process_file('arch/zx48k/func0.bas')
+func0.bas:5: warning: Using default implicit type 'float' for 'f'
+func0.bas:4: warning: Function 'f' should return a value
+>>> process_file('arch/zx48k/bad_sigil.bas')
+bad_sigil.bas:2: error: expected type string for 'y$', got float
+bad_sigil.bas:2: warning: Parameter 'y' is never used
+>>> process_file('arch/zx48k/params_implicit.bas')
+params_implicit.bas:2: warning: Using default implicit type 'float' for 'y'
+params_implicit.bas:2: warning: Parameter 'y' is never used
+>>> process_file('arch/zx48k/array_err.bas')
+array_err.bas:2: error: Mismatched vector size. Expected 11 elements, got 1.
+>>> process_file('arch/zx48k/arrbase1.bas')
+>>> process_file('arch/zx48k/param_byref_warn.bas')
+>>> process_file('arch/zx48k/pararray2.bas')
+pararray2.bas:8: error: Array q type does not match parameter type
+>>> process_file('arch/zx48k/pararray4.bas')
+pararray4.bas:8: error: Array q type does not match parameter type
+>>> process_file('arch/zx48k/array_check_warn.bas')
+array_check_warn.bas:3: warning: Array 'aux' subscript out of range
+array_check_warn.bas:6: warning: Array 'aux1' subscript out of range
+>>> process_file('arch/zx48k/dim_at_label5.bas')
+dim_at_label5.bas:3: error: Circular dependency between 'x' and 'x'
+>>> process_file('arch/zx48k/dim_at_label6.bas')
+dim_at_label6.bas:2: error: Circular dependency between 'b' and 'a'
+dim_at_label6.bas:2: error: Circular dependency between 'a' and 'c'
+dim_at_label6.bas:3: error: Circular dependency between 'c' and 'b'
+>>> process_file('arch/zx48k/dim_at_label7.bas')
+dim_at_label7.bas:3: error: Circular dependency between 'b' and 'a'
+dim_at_label7.bas:3: error: Circular dependency between 'a' and 'c'
+dim_at_label7.bas:4: error: Circular dependency between 'c' and 'b'
+>>> process_file('arch/zx48k/include_error.bas')
+llb.bas:3: error: Undeclared function "f$"
+>>> process_file('arch/zx48k/opt2_include_unused.bas')
+func0.bas:5: warning: Using default implicit type 'float' for 'f'
+func0.bas:4: warning: Function 'f' should return a value
+func0.bas:4: warning: Function 'f' is never called and has been ignored
+>>> process_file('arch/zx48k/due_par.bas')
+due_par.bas:2: error: Syntax error. Unexpected end of line
+>>> process_file('arch/zx48k/due_inc_main.bas')
+due_par.bas:2: error: Syntax error. Unexpected end of line
+due_par.bas:4: error: Syntax error. Unexpected end of file
+>>> process_file('arch/zx48k/error_array.bas')
+error_array.bas:3: error: Invalid assignment. Variable z$() is an array
+>>> process_file('arch/zx48k/line_err.bas')
+line_err.bas:5: error: Variable 'q' already declared at line_err.bas:1
+>>> process_file('arch/zx48k/let_expr_type_crash.bas')
+let_expr_type_crash.bas:3: error: Syntax Error. Unexpected token 's' <ID>
+let_expr_type_crash.bas:8: error: Too many arguments for Function 'editStringFN'
+>>> process_file('arch/zx48k/opt2_unused_var1.bas')
+opt2_unused_var1.bas:2: warning: Variable 'a' is never used
+>>> process_file('arch/zx48k/dim_at_init_err.bas')
+dim_at_init_err.bas:3: error: Syntax Error. Unexpected token 'AT' <AT>
+dim_at_init_err.bas:4: error: Syntax Error. Unexpected token 'AT' <AT>
+>>> process_file('arch/zx48k/bad_pragma.bas')
+bad_pragma.bas:2: warning: Ignoring unknown pragma 'BAD_PRAGMA'
+bad_pragma.bas:4: warning: Ignoring unknown pragma 'BAD_PRAGMA'
+bad_pragma.bas:6: warning: Ignoring unknown pragma 'BAD_PRAGMA'
+>>> process_file('arch/zx48k/opt2_global_array2.bas')
+opt2_global_array2.bas:1: warning: Variable 'myArray' is never used
+>>> process_file('arch/zx48k/end.bas')
+>>> process_file('arch/zx48k/dim_str_error0.bas')
+dim_str_error0.bas:3: error: Cannot initialize array of type string
+>>> process_file('arch/zx48k/dim_str_error1.bas')
+dim_str_error1.bas:3: error: Cannot initialize array of type string
+
+>>> process_file('arch/zx48k/sn_crash.bas')
+sn_crash.bas:4: error: Cannot convert string to a value. Use VAL() function
+
+# Test line numbers
+>>> process_file('arch/zx48k/line_number_after_macro.bas')
+line_number_after_macro.bas:8: warning: Using default implicit type 'float' for 'a'
+line_number_after_macro.bas:11: error: Syntax Error. Unexpected token '+' <PLUS>
+>>> process_file('arch/zx48k/tap_asm_error_line.bas', ['-S', '-q'])
+tap_asm_error_line.bas:3: error: Syntax error. Unexpected token '10' [INTEGER]
+tap_asm_error_line.bas:7: error: Syntax error. Unexpected token '10' [INTEGER]
+>>> process_file('arch/zx48k/tap_errline0.bas')
+tap_errline0.bas:10: error: Syntax error. Unexpected token 'HL' [HL]
+>>> process_file('arch/zx48k/tap_errline1.bas')
+tap_errline1.bas:15: error: Syntax error. Unexpected token 'HL' [HL]
+
+# Test error file names
+>>> process_file('arch/zx48k/bad_fname_err0.bas', ['-S', '-q'])
+ND.Controls.bas:4: error: Expected a variable name, not an expression (parameter By Reference)
+>>> process_file('arch/zx48k/bad_fname_err1.bas', ['-S', '-q'])
+ND.Controls.bas:4: error: Too many arguments for Function 'Controls_LABEL'
+>>> process_file('arch/zx48k/bad_fname_err2.bas', ['-S', '-q'])
+ND.Controls.bas:4: error: Invalid argument 'dirData'
+>>> process_file('arch/zx48k/bad_fname_err3.bas', ['-S', '-q'])
+ND.Controls.bas:2: warning: [W150] Variable 'dirData' is never used
+>>> process_file('arch/zx48k/bad_fname_err4.bas', ['-S', '-q'])
+ND.Controls.bas:2: error: sub 'Controls_LABEL' declared but not implemented
+>>> process_file('arch/zx48k/bad_fname_err5.bas', ['-S', '-q'])
+file2.bas:4: error: Function 'foo' takes 2 parameters, not 1
+>>> process_file('arch/zx48k/bad_fname_err6.bas', ['-S', '-q'])
+file2.bas:4: error: Too many arguments for Function 'foo'
+
+# DO LOOP type errors
+>>> process_file('arch/zx48k/do_crash.bas', ['-S', '-q'])
+do_crash.bas:2: error: Cannot convert string to a value. Use VAL() function
+do_crash.bas:2: warning: [W130] Empty loop

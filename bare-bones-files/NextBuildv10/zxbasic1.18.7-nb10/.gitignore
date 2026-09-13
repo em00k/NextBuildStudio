@@ -1,0 +1,27 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.egg-info/
+*.pyc
+.cache/
+.pytest_cache/
+.mypy_cache/
+.pytype/
+.idea/
+.python-version
+.tox/
+MANIFEST
+dist/
+examples/*.bin
+examples/*.tzx
+scratch/
+.coverage
+htmlcov/
+build/
+venv/
+.pypi-token
+.coverage.*
+src/parsetab/tabs.dbm*
+# PLY's LALR table dump. Only written under ZXB_PARSER_DEBUG=1; see
+# src/api/utils.ply_yacc_kwargs.
+parser.out
+python/
+codebanks-fork/examples/

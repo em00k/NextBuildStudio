@@ -1,0 +1,16 @@
+{
+  "window": 24576,
+  "window_size": 8192,
+  "banks": [
+    {
+      "bank": 1,
+      "file": "Example1-Movie-Stream-L2.bank1.bin",
+      "org": 24576,
+      "size": 274,
+      "page": 30,
+      "pages": [
+        30
+      ]
+    }
+  ]
+}

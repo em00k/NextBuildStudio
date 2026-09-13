@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# run tests in parallel, one per CPU
+parallel ./test_case ::: cases/*.bas

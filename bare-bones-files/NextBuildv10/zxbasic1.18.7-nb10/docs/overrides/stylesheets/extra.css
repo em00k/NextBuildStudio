@@ -1,0 +1,148 @@
+/* Light mode - very light yellow header */
+[data-md-color-scheme="default"] .md-header {
+  background-color: #d0d6da; /* Very light yellow background color */
+  height: 4rem;
+}
+
+[data-md-color-scheme="default"] .md-header__title {
+  color: #23231c;
+  padding-left: 2rem;
+}
+
+/* Dark mode - dark gray header */
+[data-md-color-scheme="slate"] .md-header {
+  background-color: #333333; /* Dark gray background color */
+  /*background-image: url('../img/boriel-basic-sinclair.png');*/
+  /*background-repeat: no-repeat;*/
+  /*background-position: center center;*/
+  /*background-size: auto 90%;*/
+  height: 4rem;
+}
+
+[data-md-color-scheme="slate"] .md-header__title {
+  color: #af0d0d;
+  padding-left: 2rem;
+}
+
+.md-header__title {
+  font-family: 'Press Start 2P', cursive;
+ }
+
+/* Make the site name responsive */
+.md-header__title .md-header__ellipsis {
+  font-size: 1.2rem;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 1220px) {
+  [data-md-color-scheme="default"] .md-header {
+    height: 3.5rem;
+  }
+
+  [data-md-color-scheme="slate"] .md-header {
+    height: 3.5rem;
+  }
+
+  [data-md-color-scheme="default"] .md-header__title {
+    padding-left: 3.0rem;
+  }
+
+  [data-md-color-scheme="slate"] .md-header__title {
+    padding-left: 3.0rem;
+  }
+
+  .md-header__title .md-header__ellipsis {
+    font-size: 1rem;
+  }
+
+  .md-header__inner {
+    display: flex;
+  }
+
+  .md-header__button {
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  .md-header__button[for="__drawer"] {
+    order: 3;
+  }
+
+  label[for="__search"] {
+    order: 2;
+  }
+}
+
+.md-header__inner {
+  background-image: url('../img/zxbasic_logo.png');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: auto 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 480px) {
+  [data-md-color-scheme="default"] .md-header {
+    height: 3rem;
+  }
+
+  [data-md-color-scheme="slate"] .md-header {
+    height: 3rem;
+  }
+
+  [data-md-color-scheme="default"] .md-header__title {
+    padding-left: 48px;
+  }
+
+  [data-md-color-scheme="slate"] .md-header__title {
+    padding-left: 48px;
+  }
+
+  .md-header__title .md-header__ellipsis {
+    font-size: 0.8rem;
+  }
+
+  .md-header__inner {
+    display: flex;
+  }
+
+  .md-header__button {
+    margin: 2px;
+    padding: 2px;
+  }
+
+  .md-header__button[for="__drawer"] {
+    order: 3; /* Ponlo al final (tras tema y búsqueda) */
+  }
+
+  label[for="__search"] {
+    order: 2;
+  }
+}
+
+/*!* Make the logo size 100% of the header *!*/
+.md-header__button.md-logo {
+  color: #ff000000;
+  height: 100%;
+}
+
+/* Increase font weight for headings */
+h1, h2, h3, h4, h5, h6 {
+  /* font-weight: 600; /* Bold */
+  font-family: "Roboto Mono", sans-serif;
+}
+
+/* Target Material theme specific heading classes if any */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-weight: 600; /* Bold */
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.75rem
+}

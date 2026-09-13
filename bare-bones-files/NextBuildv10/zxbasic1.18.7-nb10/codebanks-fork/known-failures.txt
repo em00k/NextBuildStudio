@@ -1,0 +1,51 @@
+# Functional tests that fail on this fork, and why.
+#
+# Every one of these is caused by the fork, deliberately. The golden .asm files
+# embed the runtime library source and the exact code we generate, so any
+# intended change to either shows up here as a "failure".
+#
+# run-tests.sh diffs the live failures against this list, so a NEW failure is
+# reported even though the count does not move. Blank lines and #comments are
+# ignored. Refresh by deleting this file and re-running --func, having read
+# every difference first.
+#
+#   19x arch/zxnext   our ZX Next runtime keeps its own implementations where
+#                     upstream stubs out to zx48k -- e.g. array/array.asm uses a
+#                     local buffer for LBOUND_PTR instead of MEMBOT (23698), and
+#                     the goldens contain the library text verbatim.
+#
+#    5x arch/zx48k    back-port f181dc88 "detect static expressions better".
+#     (dim_at0,       `DIM x AS Uinteger = @label` inside a SUB now compiles to a
+#      dimconst2*)    direct store rather than an LDIR from a 2-byte blob. Ours
+#                     is the smaller code; upstream v1.19.0's golden still shows
+#                     the LDIR, so we diverge from them here too.
+#
+#    2x cmdline       back-port f7849bd6 "fixes wrong sigil allowed" emits an
+#                     extra diagnostic the expected output predates.
+
+tests/functional/cmdline/test_cmdline.txt::test_cmdline.txt
+tests/functional/cmdline/test_errmsg.txt::test_errmsg.txt
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zx48k/dim_at0.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zx48k/dimconst2.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zx48k/dimconst2b.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zx48k/dimconst2c.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zx48k/dimconst2d.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/addstr.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/array03.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/array06.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/array07.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/array08.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/array09.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/arraycopy1.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/arraycopy2.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/arraycopy3.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/arraycopy4.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/arraycopy5.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/inkey.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/lbound12.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/print_f.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/stdlib_alloc.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/stdlib_hex.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/stdlib_screen.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/stdlib_spectranet.bas]@test_basic
+tests/functional/test_basic.py::test_basic[tests/functional/arch/zxnext/ubound12.bas]@test_basic

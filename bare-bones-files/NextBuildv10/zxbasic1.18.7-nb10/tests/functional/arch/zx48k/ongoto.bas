@@ -1,0 +1,9 @@
+
+DIM a as UBYte = 1
+ON a + 1 GOTO 10, 20, 30
+
+10 POKE 0, 10
+20 POKE 0, 20
+30 POKE 0, 30
+
+POKE 0, 99

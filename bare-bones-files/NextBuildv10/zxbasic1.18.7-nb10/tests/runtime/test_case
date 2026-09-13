@@ -1,0 +1,17 @@
+#!/bin/bash
+# vim:et:ts=4:
+
+# Test a single case (prog.bas file)
+# A RAM dump /expected/prog.tzx.scr must exists
+
+TIMEOUT=180
+TIMEKILL=$((TIMEOUT+30))
+
+echo -n "Testing $(basename $1): "
+RUN=$(basename -s .bas $1).z80
+EXPECTED=$(basename -s .bas $1).tzx.scr
+../../zxbc.py -f z80 -aB -o "$RUN" $1 $(grep "PARAMS:" $1 |cut -d':' -f2-) --debug-memory 2>/dev/null
+timeout -k $TIMEKILL $TIMEOUT ./check_test.py "$RUN" "./expected/${EXPECTED}"
+RETVAL=$?
+rm -f "$RUN" 2>/dev/null
+exit $RETVAL

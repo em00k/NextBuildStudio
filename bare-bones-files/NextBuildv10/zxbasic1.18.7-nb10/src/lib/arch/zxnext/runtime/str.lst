@@ -1,0 +1,118 @@
+# file opened: str.asm
+ 1    0000              ; The STR$( ) BASIC function implementation
+ 2    0000
+ 3    0000              ; Given a FP number in C ED LH
+ 4    0000              ; Returns a pointer (in HL) to the memory heap
+ 5    0000              ; containing the FP number string representation
+ 6    0000
+str.asm(7): error: Invalid labelname: #include
+str.asm(7): error: Unrecognized instruction: once <mem/alloc.asm>
+ 7    0000              #include once <mem/alloc.asm>
+str.asm(8): error: Invalid labelname: #include
+str.asm(8): error: Unrecognized instruction: once <stackf.asm>
+ 8    0000              #include once <stackf.asm>
+str.asm(9): error: Invalid labelname: #include
+str.asm(9): error: Unrecognized instruction: once <sysvars.asm>
+ 9    0000              #include once <sysvars.asm>
+10    0000
+str.asm(11): error: Label not found: namespace
+str.asm(11): error: Unexpected: core
+11    0000 ED 8A 00 00      push namespace core
+12    0004
+str.asm(13): error: Invalid labelname: #include
+str.asm(13): error: Unrecognized instruction: once <zxnext_utils.asm>
+13    0004              #include once <zxnext_utils.asm>
+14    0004
+15    0004              __STR:
+16    0004
+17    0004              __STR_FAST:
+18    0004
+str.asm(19): error: Unrecognized instruction: PROC
+19    0004                  PROC
+str.asm(20): error: Unrecognized instruction: LOCAL __STR_END
+20    0004                  LOCAL __STR_END
+str.asm(21): error: Unrecognized instruction: LOCAL RECLAIM2
+21    0004                  LOCAL RECLAIM2
+str.asm(22): error: Unrecognized instruction: LOCAL STK_END
+22    0004                  LOCAL STK_END
+23    0004
+str.asm(24): error: Label not found: __zxnbackup_sysvar_bank
+24    0004 CD 00 00         call __zxnbackup_sysvar_bank
+25    0007
+26    0007 2A 65 5C         ld hl, (STK_END)
+27    000A E5               push hl; Stores STK_END
+str.asm(28): error: Label not found: ATTR_T
+28    000B 2A 00 00         ld hl, (ATTR_T)	; Saves ATTR_T since it's changed by STR$ due to a ROM BUG
+29    000E E5               push hl
+30    000F
+str.asm(31): error: Label not found: __FPSTACK_PUSH
+31    000F CD 00 00         call __FPSTACK_PUSH ; Push number into stack
+32    0012 EF               rst 28h		; # Rom Calculator
+33    0013 2E               defb 2Eh	; # STR$(x)
+34    0014 38               defb 38h	; # END CALC
+str.asm(35): error: Label not found: __FPSTACK_POP
+35    0015 CD 00 00         call __FPSTACK_POP ; Recovers string parameters to A ED CB (Only ED LH are important)
+36    0018
+37    0018 E1               pop hl
+str.asm(38): error: Label not found: ATTR_T
+38    0019 22 00 00         ld (ATTR_T), hl	; Restores ATTR_T
+39    001C E1               pop hl
+40    001D 22 65 5C         ld (STK_END), hl	; Balance STK_END to avoid STR$ bug
+41    0020
+42    0020 C5               push bc
+43    0021 D5               push de
+44    0022
+45    0022 03               inc bc
+46    0023 03               inc bc
+str.asm(47): error: Label not found: __MEM_ALLOC
+47    0024 CD 00 00         call __MEM_ALLOC ; HL Points to new block
+48    0027
+49    0027 D1               pop de
+50    0028 C1               pop bc
+51    0029
+52    0029 E5               push hl
+53    002A 7C               ld a, h
+54    002B B5               or l
+55    002C 28 0B            jr z, __STR_END  ; Return if NO MEMORY (NULL)
+56    002E
+57    002E C5               push bc
+58    002F D5               push de
+59    0030 71               ld (hl), c
+60    0031 23               inc hl
+61    0032 70               ld (hl), b
+62    0033 23               inc hl		; Copies length
+63    0034
+64    0034 EB               ex de, hl	; HL = start of original string
+65    0035 ED B0            ldir		; Copies string content
+66    0037
+67    0037 D1               pop de		; Original (ROM-CALC) string
+68    0038 C1               pop bc		; Original Length
+69    0039
+70    0039              __STR_END:
+71    0039 EB               ex de, hl
+72    003A 03               inc bc
+73    003B
+74    003B CD E8 19         call RECLAIM2 ; Frees TMP Memory
+75    003E E1               pop hl		  ; String result
+76    003F
+str.asm(77): error: Label not found: __zxnbackup_sysvar_bank_restore
+77    003F C3 00 00         jp __zxnbackup_sysvar_bank_restore
+78    0042
+79    0042              RECLAIM2 EQU 19E8h
+80    0042              STK_END EQU 5C65h
+81    0042
+str.asm(82): error: Unrecognized instruction: ENDP
+82    0042                  ENDP
+83    0042
+str.asm(84): error: Illegal instruction:     pop namespace
+84    0042                  pop namespace
+85    0042
+# file closed: str.asm
+
+Value    Label
+------ - -----------------------------------------------------------
+0x19E8   RECLAIM2
+0x0039   __STR_END
+0x5C65   STK_END
+0x0004 X __STR_FAST
+0x0004 X __STR

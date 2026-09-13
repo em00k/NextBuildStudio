@@ -1,0 +1,199 @@
+8000  .core.__START_PROGRAM:
+8018  .core.__CALL_BACK__:
+801A  .core.__CODE_BANK_TABLE:
+801C  .core.ZXBASIC_MEM_HEAP:
+801C  .core.ZXBASIC_USER_DATA:
+841C  ._movie_frames:
+841E  ._movie_width:
+841F  ._movie_height:
+8420  ._tick:
+8421  ._frame:
+8423  ._video:
+8424  .core.ZXBASIC_USER_DATA_END:
+8424  .core.__MAIN_PROGRAM__:
+8428  .__NEW_PLOT_END_:
+8428  ._nb_layer2_enabled_:
+8429  ._screen_mode:
+8434  .LABEL._filename:
+8434  .filename:
+8634  .LABEL._INTERNAL_STACK_TOP:
+8634  .endfilename:
+8634  .nbtempstackstart:
+863A  .shadowlayerbit:
+863B  .core.__zxnbackup_sysvar_bank:
+8651  .core.__zxnbackup_sysvar_bank_restore:
+8656  .core.__MUL16:
+8659  .core.__MUL16_FAST:
+866D  .LABEL.__temp_buffer:
+866D  ._temp_buffer:
+866D  .nextbuild_file_end:
+86F1  .LABEL.__LABEL3:
+86F9  .LABEL.__LABEL1:
+872F  .LABEL.__LABEL8:
+873A  .core.__END_PROGRAM:
+8743  ._check_interrupts:
+8759  .interrupt_enabled_flag:
+875A  ._check_interrupts__leave:
+875B  ._NextRegA:
+8764  ._NextRegA__leave:
+8765  ._ShowLayer2:
+8780  .disable_:
+8785  ._ShowLayer2__leave:
+8786  ._WaitRetrace2:
+87A7  ._WaitRetrace2__leave:
+87A8  ._InitLayer2:
+87E2  ._pick_screenmode:
+87FD  .mode_common:
+880F  ._InitLayer2__leave:
+8810  ._ClearLayer2:
+881B  ._ClearLayer2__leave:
+881C  .__clear_banks:
+8825  .bank:
+8845  .__clear_banks__leave:
+8846  ._UpdateImage:
+8880  .LABEL.__LABEL14:
+888A  .LABEL.__LABEL15:
+888D  .LABEL.__LABEL12:
+8896  .LABEL.__LABEL13:
+889A  .LABEL.__LABEL11:
+88B8  ._UpdateImage__leave:
+88B9  ._MainInit:
+88CA  ._MainInit__leave:
+88CB  ._DecodePreloadedFrame:
+88D1  ._InitPreloadedMovieV2:
+88D7  ._PlayFrameV2:
+88DD  ._RewindV2:
+88E3  .LABEL.__LABEL2:
+88F7  .LABEL.__LABEL5:
+8911  .LABEL.__LABEL6:
+8925  .LABEL.__LABEL7:
+893B  .LABEL.__LABEL16:
+893F  .core.SCREEN_ADDR:
+8941  .core.SCREEN_ATTR_ADDR:
+8943  .core.__ERROR:
+8947  .core.__ERROR_CODE:
+8949  .core.__STOP:
+894D  .core.__IN_SCREEN:
+8957  .core.__OUT_OF_SCREEN_ERR:
+895C  .core.__ATTR_ADDR:
+896D  .core.SET_ATTR:
+8974  .core.__SET_ATTR:
+8974  .core.__SET_ATTR2:
+8981  .core.__LOAD_S_POSN:
+898D  .core.__SAVE_S_POSN:
+8996  .core.__SET_SCR_PTR:
+89B3  .core.JUMP_HL_PLUS_2A:
+89B4  .core.JUMP_HL_PLUS_A:
+89B7  .core.JUMP_HL_PLUS_DE:
+89BC  .core.CALL_HL:
+89BD  .core.INK:
+89DE  .core.PAPER:
+89FC  .core.PAPER_TMP:
+8A02  .core.FLASH:
+8A05  .core.__SET_FLASH:
+8A1C  .core.FLASH_TMP:
+8A21  .core.BRIGHT:
+8A24  .core.__SET_BRIGHT:
+8A3B  .core.BRIGHT_TMP:
+8A40  .core.OVER:
+8A56  .core.OVER_TMP:
+8A6E  .core.INVERSE:
+8A7B  .core.INVERSE_TMP:
+8A89  .core.BOLD:
+8A96  .core.BOLD_TMP:
+8AA2  .core.ITALIC:
+8AAF  .core.ITALIC_TMP:
+8ABD  .core.__PRINT_INIT:
+8AE1  .core.__PRINTCHAR:
+8AE5  .core.__PRINT_CHR:
+8B22  .core.__PRGRAPH0:
+8B3F  .core.PRINT_MODE:
+8B40  .core.INVERSE_MODE:
+8B58  .core.__PRINT_SPECIAL:
+8B5F  .core.__PRINT_0Dh:
+8B70  .core.__PRINT_EOL_END:
+8BA1  .core.__PRINT_AT:
+8BA6  .core.__PRINT_NOP:
+8BA6  .core.__PRINT_RESTART:
+8BC6  .core.__PRINT_DEL:
+8BE1  .core.__PRINT_INK2:
+8BEB  .core.__PRINT_PAP2:
+8BF0  .core.__PRINT_FLA:
+8BF5  .core.__PRINT_FLA2:
+8BFA  .core.__PRINT_BRI:
+8BFF  .core.__PRINT_BRI2:
+8C04  .core.__PRINT_INV:
+8C09  .core.__PRINT_INV2:
+8C0E  .core.__PRINT_OVR:
+8C13  .core.__PRINT_OVR2:
+8C69  .core.PRINT_COMMA:
+8C71  .core.PRINT_TAB:
+8CBC  .core.COPY_ATTR:
+8CFA  .core.__FAR_CUR_BANK:
+8CFB  .core.__FAR_SP:
+8CFD  .core.__FAR_STACK:
+8D2D  .core.__FAR_CALL:
+8D4F  .core.__FAR_CALL_SWITCH:
+8D89  .core.__FAR_RETURN:
+8DB5  .core.__FAR_INIT:
+8DCD  .core.__MEM_INIT:
+8DD3  .core.__MEM_INIT2:
+8DF1  .core.MEM_FREE:
+8DF1  .core.__MEM_FREE:
+8E4B  .core.PRINT_STR:
+8E4B  .core.__PRINTSTR:
+8E68  .core.__PRINT_STR:
+8E6D  .core.__PRINTU_START:
+8E80  .core.__PRINT_MINUS:
+8E85  .core.__ABS16:
+8E88  .core.__NEGHL:
+8E90  .core.__DIVU16:
+8E90  .core.__DIVU16_FAST:
+8E97  .core.__DIV16LOOP:
+8EA2  .core.__DIV16NOADD:
+8EA8  .core.__MODU16:
+8EAD  .core.__DIVI16:
+8EAD  .core.__DIVI16_FAST:
+8EBB  .core.__DIVI16A:
+8EC0  .core.__DIVI16B:
+8EC9  .core.__MODI16:
+8ECE  .core.__PRINTI16:
+8EF0  .__EXIT_FUNCTION:
+B1 6000: .LABEL.__v2_table:
+B1 600A: ._DecodePreloadedFrame.__far:
+B1 605E: .dpf_decode_loop:
+B1 606C: .dpf_skip_zero:
+B1 6080: .dpf_no_copy:
+B1 60CB: .dpf_setup_l2_de:
+B1 60ED: .dpf_advance_skip:
+B1 60ED: .dpf_skip_loop:
+B1 6112: .dpf_skip_within:
+B1 611D: .dpf_copy_bc:
+B1 6121: .dpf_copy_loop:
+B1 6141: .dpf_cpy_use_avail:
+B1 6142: .dpf_cpy_use_rem:
+B1 6181: .dpf_src_check:
+B1 6199: .dpf_src_done:
+B1 619B: .dpf_xpos:
+B1 619C: .dpf_ypos:
+B1 619D: .dpf_width:
+B1 619E: .dpf_height:
+B1 619F: .dpf_cur_stream:
+B1 61A0: .dpf_fx:
+B1 61A1: .dpf_fy:
+B1 61A2: .dpf_bytes_left:
+B1 61A4: .dpf_adv_lo:
+B1 61A5: .dpf_adv_hi:
+B1 61A6: .dpf_cpy_rem:
+B1 61A8: .dpf_cpy_chunk:
+B1 61A9: ._DecodePreloadedFrame__leave:
+B1 61A9: .dpf_end:
+B1 61B4: ._InitPreloadedMovieV2.__far:
+B1 629B: .LABEL.__LABEL18:
+B1 629E: ._InitPreloadedMovieV2__leave:
+B1 62A7: ._PlayFrameV2.__far:
+B1 62BE: ._PlayFrameV2__leave:
+B1 62C8: ._RewindV2.__far:
+B1 630E: ._RewindV2__leave:
+B1 6313: .__v2_handle:
+B1 6314: .__v2_ended:
