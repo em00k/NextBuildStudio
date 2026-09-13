@@ -1,0 +1,58 @@
+{
+    "version": "1.0",
+    "fileName": "band_2_32x8.bmp",
+    "width": 512,
+    "height": 8,
+    "columns": 16,
+    "rows": 1,
+    "frames": [
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        }
+    ]
+}

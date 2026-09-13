@@ -1,0 +1,19 @@
+<!-- save this as file_type_fnt-icon-1.svg in your vsicons-custom-icons folder -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 1) Black background -->
+  <rect width="64" height="64" fill="#000000"/>
+
+
+
+  <!-- 3) "aA" text, white fill with red outline -->
+  <text x="6" y="48"
+        font-family="Arial, sans-serif"
+        font-weight="bold"
+        font-size="42"
+        fill="#ffffff"
+        stroke="#ff0000"
+        stroke-width="2"
+        paint-order="stroke fill">
+    aA
+  </text>
+</svg>

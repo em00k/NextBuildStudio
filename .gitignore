@@ -1,3 +1,7 @@
 /Old-nextbuild-linux/*
 /bare-bones-files/NextBuildv9/python
 /.gitignore
+/bare-bones-files/NextBuildv10/python
+/bare-bones-files/NextBuildv9/zxbasic1.18.1
+/bare-bones-files/LegacyV9/NextBuildv9/zxbasic1.18.1
+/bare-bones-files/LegacyV9/user-data/extensions

@@ -1,0 +1,58 @@
+{
+    "version": "1.0",
+    "fileName": "box-32x32.bmp",
+    "width": 32,
+    "height": 512,
+    "columns": 1,
+    "rows": 16,
+    "frames": [
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        }
+    ]
+}

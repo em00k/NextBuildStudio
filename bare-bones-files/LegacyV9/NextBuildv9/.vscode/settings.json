@@ -1,0 +1,47 @@
+{
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Bearded Theme Stained Blue",
+    "cursor.composer.shouldChimeAfterChatFinishes": true,
+    "git.enableSmartCommit": true,
+    "git.openRepositoryInParentFolders": "never",
+    "nextbuild-viewers.linting.rootFolderForIncludes": "NextBuildv9-Gold/Sources",
+    "nextbuild-viewers.playpt3Path": "Tools/playpt3",
+    "workbench.iconTheme": "nextbuild-icons",
+    "files.autoSave": "afterDelay",
+    "explorer.confirmDragAndDrop": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "cursor.cpp.disabledLanguages": [
+        "markdown",
+        "plaintext"
+    ],
+    "editor.minimap.enabled": true,
+    "php.validate.executablePath": "/usr/bin/php",
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.pinnedTabsOnSeparateRow": true,
+    "workbench.editor.wrapTabs": true,
+    "workbench.iconTheme": "nextbuild-icons",
+    "workbench.colorCustomizations": {
+
+        "tab.activeBackground": "#880202c9",
+        "tab.inactiveBackground": "#232324",
+        "tab.inactiveForeground": "#e7e7e7",
+        "tab.activeForeground": "#f1ff32",
+        "tab.selectedForeground": "#f1ff32"
+    },
+    "editor.tokenColorCustomizations": {
+    "textMateRules": [
+        { "scope": "keyword.mnemonic.z80", "settings": { "foreground": "#FF6E6E", "fontStyle": "bold" } },
+        { "scope": "variable.register.8bit.z80", "settings": { "foreground": "#8BE9FD" } },
+        { "scope": "variable.register.16bit.z80", "settings": { "foreground": "#50FA7B" } },
+        { "scope": "meta.address.indirect.z80", "settings": { "foreground": "#BD93F9" } },
+        { "scope": "constant.numeric.hex.z80", "settings": { "foreground": "#F1FA8C" } },
+        { "scope": "keyword.mnemonic.nextreg.z80",            "settings": { "foreground": "#FF6E6E", "fontStyle": "bold" } },
+        { "scope": "constant.language.nextreg.name.z80",      "settings": { "foreground": "#BD93F9" } },
+        { "scope": "support.function.nextreg.nextbuild",      "settings": { "foreground": "#FF79C6", "fontStyle": "bold" } },
+
+        { "scope": "keyword.preprocessor.nextbuild", "settings": { "foreground": "#7FDBCA", "fontStyle": "bold" } },
+        { "scope": "meta.precompiler.asm.nextbuild", "settings": { "foreground": "#ca04d5", "fontStyle": "bold" } },
+        { "scope": "comment.line.apostrophe.nextbuild", "settings": { "foreground": "#97d70d", "fontStyle": "italic " } },
+    ]
+    }
+}

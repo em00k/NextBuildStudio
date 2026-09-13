@@ -1,0 +1,34 @@
+{
+    "version": "1.0",
+    "fileName": "band_3_32x8.bmp",
+    "width": 256,
+    "height": 8,
+    "columns": 8,
+    "rows": 1,
+    "frames": [
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        },
+        {
+            "duration": 80
+        }
+    ]
+}
